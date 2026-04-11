@@ -668,18 +668,18 @@ html, body {
 .s16-panel-good .s16-title { color: var(--blue); }
 
 /* Slide 17 — loop epoch */
-#slide-17 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 5vw; gap: 20px; }
-.epoch-states { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; width: 100%; }
-.epoch-state { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden; }
-.epoch-state-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); padding: 8px 14px 6px; border-bottom: 1px solid rgba(63,79,103,0.3); }
+#slide-17, #slide-17b, #slide-17c { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 5vw; gap: 20px; }
+.epoch-states { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 860px; }
+.epoch-state { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; overflow: hidden; }
+.epoch-state-label { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); padding: 12px 20px 10px; border-bottom: 1px solid rgba(63,79,103,0.3); }
 .epoch-table { width: 100%; border-collapse: collapse; }
-.epoch-table th { padding: 6px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(63,79,103,0.4); text-align: center; }
+.epoch-table th { padding: 10px 18px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(63,79,103,0.4); text-align: center; }
 .epoch-table th.th-row { text-align: left; color: var(--dim); }
 .epoch-table th.th-x   { color: var(--muted); }
 .epoch-table th.th-p1  { color: var(--blue); }
 .epoch-table th.th-p2  { color: var(--purple); }
-.epoch-table td { padding: 7px 10px; text-align: center; font-family: 'ui-monospace', monospace; font-size: clamp(11px,0.95vw,13px); border-bottom: 1px solid rgba(63,79,103,0.15); color: var(--muted); }
-.epoch-table td.td-row { text-align: left; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.epoch-table td { padding: 12px 18px; text-align: center; font-family: 'ui-monospace', monospace; font-size: clamp(15px,1.4vw,19px); border-bottom: 1px solid rgba(63,79,103,0.15); color: var(--muted); }
+.epoch-table td.td-row { text-align: left; font-family: 'Inter', sans-serif; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
 .epoch-table tr:last-child td { border-bottom: none; }
 .epoch-table td.e-blue   { color: var(--blue); }
 .epoch-table td.e-purple { color: var(--purple); }
@@ -1368,12 +1368,12 @@ html, body {
   </div>
 
   <!-- ──────────────── SLIDE 17 — LOOP EPOCH: MECANISMO ──────────────── -->
+  <!-- ─────────────── SLIDE 17 — LOOP EPOCH: ESTADO 1 / 3 ───────────── -->
   <div class="slide" id="slide-17">
     <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
       Loop epoch: <em>versionado distribuido</em>
     </h2>
     <div class="epoch-states">
-      <!-- Estado A: bucle detectado, ambos paquetes llegan con dist=8 -->
       <div class="epoch-state">
         <p class="epoch-state-label">Bucle detectado</p>
         <table class="epoch-table">
@@ -1385,9 +1385,17 @@ html, body {
             <tr><td class="td-row">loop epoch</td><td>0</td><td>0</td><td>0</td></tr>
           </tbody>
         </table>
-        <p style="font-size:10px; color:var(--muted); padding:8px 10px; line-height:1.4;">dist paquete &gt; dist nodo → bucle detectado para P1 y P2</p>
+        <p style="font-size:14px; color:var(--muted); padding:10px 16px; line-height:1.4;">dist paquete &gt; dist nodo → bucle detectado para P1 y P2</p>
       </div>
-      <!-- Estado B: P1 procesado → reexploración, epoch→1 -->
+    </div>
+  </div>
+
+  <!-- ─────────────── SLIDE 17b — LOOP EPOCH: ESTADO 2 / 3 ──────────── -->
+  <div class="slide" id="slide-17b">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Loop epoch: <em>versionado distribuido</em>
+    </h2>
+    <div class="epoch-states">
       <div class="epoch-state" style="border-color:rgba(56,189,248,0.2);">
         <p class="epoch-state-label" style="color:var(--blue);">P1 procesado</p>
         <table class="epoch-table">
@@ -1399,9 +1407,17 @@ html, body {
             <tr><td class="td-row">loop epoch</td><td class="e-blue">1</td><td class="e-blue">1</td><td>0</td></tr>
           </tbody>
         </table>
-        <p style="font-size:10px; color:var(--blue); padding:8px 10px; line-height:1.4; opacity:0.85;">epoch local = epoch P1 → reexploración, epoch incrementado</p>
+        <p style="font-size:14px; color:var(--blue); padding:10px 16px; line-height:1.4; opacity:0.85;">epoch local = epoch P1 → reexploración, epoch incrementado</p>
       </div>
-      <!-- Estado C: P2 procesado → usa decisión vigente, no reexplora -->
+    </div>
+  </div>
+
+  <!-- ─────────────── SLIDE 17c — LOOP EPOCH: ESTADO 3 / 3 ──────────── -->
+  <div class="slide" id="slide-17c">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Loop epoch: <em>versionado distribuido</em>
+    </h2>
+    <div class="epoch-states">
       <div class="epoch-state" style="border-color:rgba(129,140,248,0.2);">
         <p class="epoch-state-label" style="color:var(--purple);">P2 procesado</p>
         <table class="epoch-table">
@@ -1413,7 +1429,7 @@ html, body {
             <tr><td class="td-row">loop epoch</td><td>1</td><td class="e-blue">1</td><td class="e-purple">1</td></tr>
           </tbody>
         </table>
-        <p style="font-size:10px; color:var(--purple); padding:8px 10px; line-height:1.4; opacity:0.85;">epoch local &gt; epoch P2 → bucle ya resuelto, usa next hop vigente</p>
+        <p style="font-size:14px; color:var(--purple); padding:10px 16px; line-height:1.4; opacity:0.85;">epoch local &gt; epoch P2 → bucle ya resuelto, usa next hop vigente</p>
       </div>
     </div>
     <p class="s3-footnote" style="text-align:center;">
@@ -1543,8 +1559,10 @@ html, body {
   <div class="dot" onclick="goTo(27)"></div>
   <div class="dot" onclick="goTo(28)"></div>
   <div class="dot" onclick="goTo(29)"></div>
+  <div class="dot" onclick="goTo(30)"></div>
+  <div class="dot" onclick="goTo(31)"></div>
 </div>
-<div id="slide-counter">1 / 30</div>
+<div id="slide-counter">1 / 32</div>
 
 <script>
 'use strict';
