@@ -1,0 +1,250 @@
+\section{Biblioteca H3}
+
+\subsection{Descripción general}
+H3 \cite{uber_h3_blog} \cite{h3geo_docs} es un sistema de indexación geoespacial jerárquico creado por Uber para representar la superficie de la Tierra mediante una teselación (recubrimiento completo de una superficie con figuras geométricas) global de celdas hexagonales.  Un sistema de indexación geoespacial es un método estructurado para asignar identificadores a regiones de la superficie terrestre de forma que sea fácil localizar y comparar ubicaciones. La jerarquía significa que existen múltiples niveles de resolución: cada celda en un nivel puede subdividirse en varias celdas más pequeñas en niveles más altos de precisión, lo que permite analizar datos desde escalas globales hasta locales sin perder consistencia en la referencia espacial.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.4\textwidth]{secciones/image/h3.jpeg}
+    \caption{Teselación hexagonal de H3 sobre la superficie terrestre, ilustrando la uniformidad de las celdas y la presencia de pentágonos necesarios para cerrar la superficie.}
+    \label{fig:myimage}
+\end{figure}
+
+Para construir esta teselación, H3 usa un icosaedro como estructura intermedia. Un icosaedro es un poliedro regular de veinte caras, donde cada cara es un triángulo equilátero. Este sólido se “inscribe” dentro de la esfera terrestre, lo que significa que sus vértices tocan la superficie de la Tierra. Luego, se proyecta una rejilla de hexágonos sobre cada una de las caras triangulares del icosaedro y dicha rejilla se “mapea” de vuelta a la esfera mediante una proyección gnomónica \cite{h3geo_overview} policéntrica (se utilizan varios centros en vez de uno solo), un tipo de transformación matemática que permite llevar formas planas a la superficie curva de la Tierra con distorsión controlada.
+
+La orientación del icosaedro se basa en la proyección Dymaxion \cite{h3geo_overview} (también llamada proyección de Fuller, por Buckminster Fuller), que es una forma de desplegar la superficie esférica sobre un poliedro de manera que minimiza la distorsión de áreas y mantiene las masas terrestres lo más intactas posibles cuando se proyecta en dos dimensiones.
+
+Debido a una limitación geométrica fundamental, ningún sistema puede cubrir completamente una esfera usando solo hexágonos regulares; por ello, en cada nivel de resolución, H3 incluye exactamente doce celdas pentagonales además de los hexágonos, ubicadas en los vértices del icosaedro. Estos pentágonos (celdas con cinco lados) permiten cerrar los huecos que quedarían si se intentara cubrir toda la superficie con solo hexágonos.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\textwidth]{secciones/image/fuller.png}
+    \caption{Mapa Dymaxion desplegado y doblado para formar un icosaedro.}
+    \label{fig:myimage}
+\end{figure}
+
+La biblioteca emplea un sistema de resoluciones que va de 0 a 15, donde cada número representa un nivel de granularidad diferente en la teselación hexagonal. En la resolución 0, la superficie de la Tierra está dividida en 122 celdas grandes (denominadas \textit{base cells}), y a medida que aumenta el número de resolución, cada celda se subdivide en celdas más pequeñas que cubren la misma área con mayor detalle. Por ejemplo, un hexágono de resolución 0 se subdivide en aproximadamente siete hexágonos de resolución 1, y cada uno de ellos a su vez en otros siete de resolución 2, y así sucesivamente, lo cual permite una división jerárquica y exponencial del espacio. Esto permite adaptar el nivel de detalle del análisis espacial a las necesidades del problema: resoluciones bajas para visión global, y resoluciones altas para análisis muy locales con celdas de área muy reducida.
+
+\subsection{Sistema de indexación}
+
+H3 asigna índices discretos de 64 bits (\texttt{H3Index}) a celdas hexagonales y pentagonales que cubren toda la superficie terrestre. Cada \texttt{H3Index} codifica tanto el tipo de objeto como la resolución de la celda y una secuencia de dígitos que permite reconstruir su posición dentro de la jerarquía global del sistema. Esta representación compacta y uniforme habilita operaciones eficientes de comparación, navegación jerárquica y análisis espacial en múltiples escalas.
+
+La indexación en H3 se basa en funciones que realizan la conversión entre coordenadas geográficas (latitud y longitud) y estos índices discretos:
+
+\begin{itemize}
+\item Conversión de coordenadas geográficas a índice H3 — \texttt{latLngToCell}:
+esta función ubica una coordenada geográfica en la celda H3 que la contiene para una resolución dada. Internamente, el proceso consiste en proyectar las coordenadas geográficas sobre una de las caras del icosaedro subyacente, transformarlas a un sistema cartográfico bidimensional asociado a grillas hexagonales (Hex2d), luego convertir esas coordenadas a un sistema discreto de coordenadas IJK y finalmente codificar toda esta información en un H3Index.
+
+\item Conversión de índice H3 a coordenadas geográficas — \texttt{cellToLatLng}:
+A partir de un \texttt{H3Index} se obtiene el centro geográfico de la celda correspondiente. El índice se decodifica para identificar la cara del icosaedro y las coordenadas IJK normalizadas en esa cara; estas se proyectan de vuelta a coordenadas Hex2d y, mediante una proyección inversa, a latitud y longitud sobre la esfera terrestre.
+\end{itemize}
+
+Para realizar estas conversiones y otras operaciones espaciales, H3 utiliza una serie de sistemas de coordenadas intermedios que facilitan la representación y manipulación de posiciones dentro de la rejilla hexagonal.
+
+\subsection{Sistema de coordenadas}
+
+En primer lugar, existe IJK: un sistema de coordenadas discretas planas en el que las tres componentes espacialmente correlacionadas ($i$, $j$ y $k$) describen posiciones sobre una rejilla hexagonal con ejes separados 120° entre sí. H3 normaliza estas coordenadas para evitar redundancias, lo que permite una representación única dentro de cada cara del icosaedro.
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\textwidth]{secciones/image/ijkh3.png}
+    \caption{Sistema de coordenadas IJK en H3.}
+    \label{fig:h3-ijk}
+\end{figure}
+
+También existen otros tres métodos de indexación: FaceIJK, Hex2d y Local IJ, que combinados al anterior, permiten que H3 ofrezca una indexación espacial robusta, jerárquica y eficiente, integrando la geometría de la esfera terrestre con estructuras discretas manejables computacionalmente. Mediante las funciones de conversión mencionadas, es posible mapear puntos geográficos a índices discretos para su almacenamiento, comparación y análisis, y reconstruir posiciones geográficas a partir de índices cuando sea necesario.
+
+\subsection{Construcción de direcciones ANTop}
+
+Se utiliza la indexación de H3 como base para asignar direcciones ANTop a las celdas que discretizan la superficie terrestre
+
+Las direcciones son números binarios que representan una serie de movimientos \textit{ijk} que permiten ir desde un origen hasta una celda en cuestión. Tomando como ejemplo la figura \ref{fig:h3-ijk}, se elige como origen a la celda ubicada en $(0,0,0)$. La dirección para esa celda serían todos ceros, dado que no hay que moverse en ninguna dirección para llegar a sí misma.
+
+Si en cambio se quisiese construir la dirección para la celda $(2,1,0)$, para llegar desde el origen con el camino más corto, hay que realizar tres movimientos: dos en $i$ hacia la derecha y uno en $j$ hacia arriba, lo cual se puede descomponer en: $(1,0,0)$ + $(1,0,0)$ + $(0,1,0)$.
+
+Dicha descomposición es la que se codifica en la dirección, donde cada posición es un bit, quedando entonces: $100$ $100$ $010$.
+A su vez, cada movimiento puede ser traducido en un número entero del uno al seis. En este caso, 4, 4 y 2, respectivamente.
+
+Debido a que la cantidad de celdas a las cuales se les debe asignar direcciones es extensa, incluso en resolución 1, las direcciones son comprimidas para que ocupen la menor cantidad de bits posibles. Dicha compresión consiste en almacenar hasta dos movimientos en un byte, completando con ceros los bits restantes. Retomando el ejemplo de la celda $(2,1,0)$, su dirección es codificada tal que:
+\begin{enumerate}
+\item Se codifica el primer $(1,0,0)$ en los últimos tres bits del primer byte de la dirección.
+\item Se codifica el segundo $(1,0,0)$ en los siguientes tres bits del primer byte de la dirección.
+\item Debido a que restan solamente dos bits en el primer byte, es necesario asignar un nuevo byte para continuar codificando.
+\item Se codifica $(0,1,0)$ en los últimos tres bits del segundo byte de la dirección.
+\item Como ya no se deben codificar más movimientos, la dirección queda codificada como la secuencia de los bytes, con aquellos bits inutilizados en 0: 00100100 00000010.
+\end{enumerate}
+
+Este mismo ejemplo puede verse representado paso a paso en la Figura \ref{fig:compress}, al igual que una implementación del proceso en el Algoritmo \ref{alg:address-push}. El paso 1 transforma la coordenada de entrada en su correspondiente dígito direccional, mientras que los pasos 2 a 4 validan que dicho valor obtenido corresponda a una dirección válida (valor entre 1 y 6, ya que un hexágono tiene como máximo 6 desplazamientos posibles).
+
+Una vez validado el movimiento, el algoritmo determina cómo debe almacenarse dentro del arreglo de bytes \texttt{data}. Para ello se evalúa la paridad de la variable \texttt{size}, la cual indica la cantidad total de movimientos ya almacenados. Si \texttt{size} es impar, significa que el último byte aún puede contener un movimiento adicional. De lo contrario, es necesario crear un nuevo byte. A la hora de agregar un movimiento a un byte ya existente (paso 9), resulta necesario realizar una operación de shift a la izquierda, con el objetivo de que el nuevo movimiento quede alineado con la segunda posición de almacenamiento dentro del byte.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.4\textwidth]{secciones/image/compress.png}
+    \caption{Ejemplo de algoritmo de compresión de direcciones ANTop}
+    \label{fig:compress}
+\end{figure}
+
+\begin{algorithm}
+\caption{\texttt{Address.push(coord)}}
+\label{alg:address-push}
+\begin{algorithmic}[1]
+\Require CoordIJK \texttt{coord}
+
+\State \texttt{direction} $\leftarrow$ \texttt{unitIjkToDigit(coord)}
+\If{\texttt{direction} $\notin \{1,\dots,6\}$}
+    \State \Return
+\EndIf
+
+\If{\texttt{isEven(size)}}
+    \State \texttt{data[len]} $\gets$ \texttt{direction}
+    \State \texttt{len} $\gets$ \texttt{len} + 1
+\Else
+    \State \texttt{data[len - 1]} $\gets$ \texttt{data[len - 1]} + (\texttt{direction} $\ll$ 3)
+\EndIf
+
+\State \texttt{size} $\leftarrow$ \texttt{size + 1}
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Definición del origen y partición del espacio}
+
+Inicialmente, se consideró la utilización de un único sistema de coordenadas local basado en el esquema \textit{ijk} de H3, extendido progresivamente para cubrir la totalidad de las celdas de la resolución seleccionada. Sin embargo, debido a la naturaleza geométrica del sistema H3 y a su proyección sobre la superficie esférica de la Tierra, este enfoque introduce distorsiones acumulativas a medida que se incrementa la distancia respecto del origen del hipercubo. En particular, la presencia de celdas pentagonales genera discontinuidades en la orientación de los ejes locales, lo que provoca rotaciones implícitas del sistema de coordenadas \textit{ijk} y afecta la consistencia de los cálculos de distancia entre celdas alejadas del origen.
+
+Para mitigar estos efectos, se optó por dividir el espacio discretizado en múltiples hipercubos independientes, cada uno con su propio sistema de coordenadas local. Cada hipercubo se define tomando como origen una celda pentagonal. Esta elección se fundamenta en varias propiedades relevantes de los pentágonos dentro del sistema H3. En primer lugar, cada pentágono se encuentra centrado respecto de su base cell, ya que los pentágonos coinciden con los vértices del icosaedro subyacente y su base cell es, a su vez, un pentágono. En segundo lugar, para cualquier resolución dada, existe una cantidad finita y determinística de pentágonos, específicamente doce. Finalmente, estos pentágonos se encuentran distribuidos de manera aproximadamente uniforme sobre la superficie terrestre, lo que permite una partición equilibrada del espacio.
+
+Que la celda origen se encuentre centrada respecto de su base cell resulta especialmente relevante para garantizar la coherencia entre sistemas de coordenadas. En el esquema de coordenadas \textit{ijk} de H3, una celda que se encuentra centrada en su base cell presenta, respecto de sí misma, un vector de coordenadas \textit{ijk} igual a $(0,0,0)$. Esta propiedad permite una correspondencia directa con el sistema de coordenadas global adoptado en el algoritmo de creación de direcciones.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.5\textwidth]{secciones/image/pentagons.png}
+    \caption{Los doce pentágonos de H3 en resolución cero.}
+    \label{}
+\end{figure}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.5\textwidth]{secciones/image/origins.png}
+    \caption{Ejemplo de posible origen en H3: hexágono ubicado en el centro de su base cell.}
+    \label{}
+\end{figure}
+
+
+En contraste, si se seleccionara como origen una celda que no estuviese centrada respecto de su base cell, el valor de salida del sistema \textit{ijk} para dicha celda podría ser distinto de $(0,0,0)$, por ejemplo $(1,0,0)$. Esta discrepancia introduce un desplazamiento artificial entre el sistema de coordenadas local de H3 y el sistema global del algoritmo, lo que complica la interpretación y el uso de las coordenadas, y puede derivar en distorsiones adicionales en los cálculos de distancia y enrutamiento.
+
+Mediante este enfoque, se limita el alcance espacial de cada sistema de coordenadas local, reduciendo la influencia de las distorsiones geométricas asociadas a la rotación de los ejes \textit{ijk}. Como resultado, los cálculos de distancia y las operaciones de enrutamiento se realizan dentro de dominios donde la geometría local se mantiene más estable, mejorando la consistencia y robustez general de la simulación.
+
+
+\subsection{Dimensiones}
+
+La Figura \ref{fig:h3-ijk} ilustra el sistema de coordenadas locales \textit{ijk} utilizado por H3. Este sistema define tres ejes sobre la grilla hexagonal, permitiendo expresar la posición de cada celda como un desplazamiento discreto respecto de un origen. Sin embargo, debido a que cada hexágono posee seis vecinos pero el sistema \textit{ijk} sólo dispone de tres ejes, no todas las direcciones de vecindad coinciden con un eje del sistema. Como consecuencia, existen desplazamientos físicamente adyacentes que requieren más de un desplazamiento en el sistema \textit{ijk}.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\textwidth]{secciones/image/ijk.png}
+    \caption{Sistema de coordenadas locales \textit{ijk} de H3. Se resaltan dos celdas: una adyacente al origen (verde) y otra a dos saltos físicos (celeste).}
+    \label{fig:h3-ijk-short}
+\end{figure}
+
+Este fenómeno puede ser observado en la Figura \ref{fig:h3-ijk-short}, donde se destacan dos celdas. La celda resaltada en verde se encuentra a un salto físico de distancia del origen, mientras que la celda celeste se encuentra a dos saltos físicos. No obstante, sus direcciones en el sistema \textit{ijk} son $(1,0,1)$ y $(2,1,0)$ respectivamente. En términos de desplazamientos en el sistema \textit{ijk}, estas celdas se encuentran a distancia dos y tres del origen, lo que evidencia que la utilización de un único sistema de coordenadas no refleja fielmente la conectividad hexagonal subyacente.
+
+Para reducir esta discrepancia geométrica, se introduce una segunda dimensión de direccionamiento construida a partir de una rotación de $60^\circ$ en sentido horario de los ejes del sistema \textit{ijk}. La Figura \ref{fig:h3-ijk-prime} muestra este sistema rotado, denominado dimensión prima. En esta nueva orientación, las mismas celdas destacadas adoptan direcciones distintas: la celda verde pasa a representarse como $(1,0,0)$, posibilitando llegar desde el origen a esta en un solo desplazamiento, mientras que la celda celeste adopta la dirección $(1,2,0)$.
+
+Al igual que el sistema \textit{ijk} original, la dimensión prima dispone únicamente de tres ejes, por lo que continúan existiendo direcciones de vecindad que no coinciden con un eje del sistema. Es por esta razón que nuevamente resulta imposible alcanzar la celda celeste desde el origen en solo dos desplazamientos. No obstante, ambos sistemas definen, en su conjunto, seis direcciones independientes de desplazamiento, equivalentes a las seis direcciones de adyacencia de la grilla hexagonal.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.6\textwidth]{secciones/image/ijkp.png}
+    \caption{Sistema de coordenadas \textit{ijk} rotado $60^\circ$ (dimensión prima). Las mismas celdas de la Figura \ref{fig:h3-ijk-short} son representadas con direcciones distintas.}
+    \label{fig:h3-ijk-prime}
+\end{figure}
+
+En la dimensión principal (Figura~\ref{fig:h3-ijk-short}), es posible avanzar desde el origen hasta la celda intermedia de dirección $(1,0,0)$. Sin embargo, continuar el desplazamiento dentro de esta dimensión requeriría dos saltos adicionales para alcanzar a la celda celeste (dirección $(2,1,0)$). No obstante, si se considera la dimensión prima (Figura~\ref{fig:h3-ijk-prime}), dicha celda intermedia (ahora dirección $(1,1,0)$) está a distancia uno de la celda celeste (dirección $(1,2,0)$). Este cambio de dimensión permite alcanzar el destino en un único salto adicional.
+
+Cada una de estas dimensiones define un hipercubo de direccionamiento independiente dentro del esquema de ANTop. En consecuencia, las direcciones pertenecientes a distintas dimensiones no son directamente comparables entre sí, ya que cada hipercubo constituye una estructura algebraica autónoma que modela la misma topología física desde una orientación distinta.
+
+Cuando una celda dispone de direcciones en múltiples hipercubos, como ocurre en el esquema propuesto, un nodo puede utilizar cualquiera de estas representaciones para realizar un salto hacia un vecino. Desde el punto de vista físico, el desplazamiento es único ya que lo que varía es el sistema de coordenadas empleado para representarlo.
+
+En síntesis, la introducción de una dimensión rotada no busca redefinir la estructura de la grilla hexagonal, sino proporcionar una representación complementaria al sistema \textit{ijk}. La combinación de ambos sistemas permite aproximar de forma más precisa la conectividad real entre celdas y reducir la longitud de los caminos utilizados por el protocolo de ruteo.
+
+\subsection{Algoritmo}
+El algoritmo de creación de direcciones se basa en un recorrido expansivo del grafo de celdas H3, comenzando desde una celda origen y propagándose hacia sus vecinos inmediatos utilizando una estrategia de búsqueda en anchura (BFS). El objetivo es asignar a cada celda una o más direcciones de forma consistente, garantizando unicidad, vecindad lógica y compatibilidad con la topología hexagonal subyacente.
+
+Para cada hipercubo, a la celda origen se le asignan inicialmente las direcciones base correspondientes a las dimensiones principal y prima. Estas direcciones constituyen el punto de partida del proceso de propagación y se almacenan tanto en la estructura interna de la celda como en una tabla global que mantiene la correspondencia entre direcciones y celdas.
+
+A continuación, se inicia el recorrido BFS. Para cada celda visitada, se obtienen sus celdas vecinas utilizando las primitivas provistas por la API de H3 (\texttt{gridDisk}) \cite{h3_github}. Para cada vecino válido que aún no haya sido procesado, se calculan sus coordenadas relativas respecto de la celda origen en el sistema de coordenadas locales \textit{ijk}. Este cálculo se realiza mediante la función \texttt{cellToLocalIjk}, permitiendo expresar la posición del vecino como un desplazamiento discreto sobre la grilla hexagonal.
+
+A partir de este desplazamiento se generan dos variantes: la original y una versión rotada $60^\circ$ en sentido horario. Cada una de estas variantes se utiliza para extender la dirección correspondiente a una de las dimensiones, generando así dos direcciones candidatas para la celda vecina. Estas direcciones se obtienen copiando la dirección base del hipercubo correspondiente y agregando el desplazamiento \textit{ijk} calculado.
+
+Previo a la asignación, cada dirección candidata es validada mediante un proceso de verificación que asegura dos propiedades fundamentales: (i) que la dirección no haya sido asignada previamente a otra celda, y (ii) que cualquier dirección que difiera en un único bit corresponda efectivamente a una celda vecina en la topología H3. Esta validación garantiza que la distancia lógica entre direcciones refleje correctamente la vecindad espacial entre celdas.
+
+Si ambas direcciones candidatas resultan válidas, se asignan a la celda vecina, la cual se incorpora a la cola del BFS, permitiendo que el proceso continúe de manera expansiva hasta cubrir todas las celdas requeridas.
+
+Una vez finalizada la asignación de direcciones base, el algoritmo realiza una segunda pasada destinada a la creación de direcciones suplementarias. Esta etapa tiene como objetivo compensar la pérdida de vecindad que se produce en los hexágonos ubicados en los bordes de la proyección. Debido a los límites del dominio, algunas celdas no disponen del conjunto completo de vecinos definido por la topología H3, lo que implica que queden con menos vecinos que las celdas interiores.
+
+Para mitigar este efecto, se consideran pares de celdas que no son vecinas directas en la topología H3, pero que pueden alcanzarse mediante combinaciones válidas de desplazamientos \textit{ijk}. En particular, se analizan aquellas configuraciones donde la falta de vecindad se debe únicamente a la condición de borde. Para cada una de estas celdas, el algoritmo intenta extender las direcciones existentes respetando las restricciones de direccionalidad y unicidad previamente definidas. Cuando se identifica una dirección válida, esta se asigna a la celda correspondiente, permitiendo así restaurar la conectividad que se pierde en los límites de la proyección.
+
+Finalmente, con todas las direcciones asignadas, se construye explícitamente el grafo de vecindad entre celdas. Para cada celda, se almacenan únicamente aquellos vecinos cuya distancia topológica es exactamente uno.
+
+Este procedimiento asegura que cada celda obtenga un conjunto de direcciones que preserva la estructura hexagonal de H3, mantiene relaciones de vecindad consistentes y habilita un enrutamiento eficiente y determinista sobre la topología resultante.
+
+
+\section{Mediciones de error de distancias}
+
+Con el objetivo de evaluar la precisión de la solución propuesta, se analiza el comportamiento del error en función de la distancia en H3 y de la resolución empleada. En particular, se estudia, para cada par de celdas, la diferencia entre la distancia estimada por ANTop y la distancia real provista por H3. Para ello, se consideran tanto el error absoluto como el error relativo, lo que permite evaluar no solo la magnitud de las desviaciones, sino también su impacto proporcional.
+
+En este contexto, el error se define como la diferencia entre la distancia real mínima en la grilla H3 (expresada como cantidad de saltos entre celdas) y la distancia estimada a partir de las direcciones generadas por ANTop en el hipercubo. Formalmente, para un par de celdas $u$, $v$, se define:
+
+\begin{equation}
+\text{Error absoluto}(u,v) = \left| d_{H3}(u,v) - d_{ANTop}(u,v) \right|
+\end{equation}
+\begin{equation}
+\text{Error relativo}(u,v) = \frac{\left| d_{H3}(u,v) - d_{ANTop}(u,v) \right|}{d_{H3}(u,v)}
+\end{equation}
+donde \(d_{H3}(u,v)\) representa la distancia real mínima entre las celdas \(u\) y \(v\) en la grilla H3 (expresada en cantidad de saltos), mientras que \(d_{ANTop}(u,v)\) corresponde a la distancia entre dichas celdas según sus direcciones en el espacio del hipercubo.
+
+La Figura \ref{fig:hypercube_errors_boxplot} muestra la distribución del error en función de la resolución de H3. Si bien se puede apreciar un crecimiento del error en absoluto conforme aumenta la resolución de H3, este incremento no se traduce en un deterioro incremental del error relativo ya que, si bien este mismo aumenta considerablemente entre las resoluciones 0 y 1, no lo hace así entre las resoluciones 1 y 2, siendo el aumento poco significante.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/relative_error_boxplot.jpg}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/absolute_error_boxplot.jpg}
+    \caption{Error relativo y absoluto en función de la resolución de H3.}
+    \label{fig:hypercube_errors_boxplot}
+\end{figure}
+
+La Figura \ref{fig:hypercube_errors_per_distance} muestra el error para cada resolución, medido en función de la distancia entre celdas. Para mejorar la legibilidad, las distancias reales en H3 se agrupan en intervalos (bins), donde cada punto del eje X representa un rango de distancias (por ejemplo, $(5,10]$, $(10,20]$ etc.), en lugar de valores individuales.
+
+En primer lugar, se destacada la precisión y exactitud de la solución para distancias cortas, siendo el error absoluto (y por ende el relativo) de 0 o, en el caso del rango de distancias de 5 a 10 en resolución 1, de 1.
+
+A su vez, y al igual que puede ser observado en la Figura \ref{fig:hypercube_errors_boxplot}, el error absoluto tiende a incrementar con la resolución, evidenciando que discretizaciones más finas introducen una mayor distorsión acumulada en la aproximación. Sin embargo, el error absoluto no escala proporcionalmente con la distancia; por el contrario, su crecimiento se atenúa a medida que la distancia aumenta, sugiriendo un comportamiento sublineal.
+
+Por su lado, el error relativo presenta una tendencia distinta. Se observa que alcanza sus valores máximos en distancias moderadas (particularmente en el rango (5, 10] y (10, 20]), para luego disminuir progresivamente a medida que aumenta la distancia. Este comportamiento se explica por el efecto de normalización: pequeñas desviaciones absolutas tienen un mayor impacto proporcional cuando las distancias reales son reducidas.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/relative_error_vs_distance_per_resolution.jpg}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/absolute_error_vs_distance_per_resolution.jpg}
+    \caption{Error relativo y absoluto en función de la distancia entre celdas de H3.}
+    \label{fig:hypercube_errors_per_distance}
+\end{figure}
+
+Por último, la Figura \ref{fig:hypercube_errors_cdf} muestra la función de distribución acumulada (CDF) para el error relativo y el absoluto. En el caso de este último, se observa una clara separación entre resoluciones. Las resoluciones más bajas concentran la mayoría de los errores en valores pequeños, mientras que resoluciones más altas presentan colas más largas, indicando una mayor dispersión y la presencia de errores más elevados.
+
+En contraste, las CDF del error relativo muestran curvas considerablemente más próximas entre sí. Esto indica que, a pesar del incremento del error absoluto con la resolución, la precisión relativa de la solución se mantiene relativamente consistente. En particular, la mayor parte de los errores relativos se encuentra acotada por valores moderados, independientemente de la resolución.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/relative_error_cdf.jpg}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/absolute_error_cdf.jpg}
+    \caption{Función de distribución acumulada (CDF) del error relativo y absoluto según resolución de H3.}
+    \label{fig:hypercube_errors_cdf}
+\end{figure}
+
+En conjunto, los resultados indican que el aumento de la resolución tiene un impacto significativo en el error absoluto, pero un efecto más limitado en el error relativo. Esto sugiere que, si bien la solución propuesta introduce mayores desviaciones en términos absolutos a escalas más finas, mantiene una consistencia razonable en términos proporcionales.
+
+Se observa que el peor desempeño en términos de error relativo no ocurre en las distancias más cortas ni más largas, sino en rangos intermedios. En distancias muy pequeñas, el error absoluto es prácticamente nulo, lo que resulta en errores relativos bajos. Sin embargo, en distancias moderadas, el error absoluto deja de ser despreciable mientras que la distancia aún no es lo suficientemente grande como para compensarlo, produciendo un pico en el error relativo. A mayores distancias, el error relativo disminuye nuevamente al diluirse el impacto del error absoluto.
+
+Finalmente, debe tenerse en cuenta que los resultados correspondientes a distancias elevadas presentan mayor incertidumbre debido al reducido número de observaciones, por lo que cualquier interpretación en dichos rangos debe considerarse con cautela.
+
+En este sentido, el nivel de error observado puede considerarse aceptable para el problema abordado, dado que el objetivo no es obtener distancias exactas, sino aproximaciones suficientemente precisas para guiar decisiones de ruteo de manera efectiva.

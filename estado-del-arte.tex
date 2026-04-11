@@ -1,0 +1,99 @@
+\chapter{Estado del arte}
+
+En este capítulo se presentan los principales enfoques de ruteo utilizados en redes tolerantes a retardos (DTN), con foco en aquellos aplicables a entornos satelitales. En particular, se describen en detalle los protocolos CGR y ANTop, los cuales representan dos paradigmas conceptualmente diferentes para la toma de decisiones de reenvío. El análisis de ambos protocolos permite identificar sus supuestos, ventajas y limitaciones, sentando las bases para las decisiones de diseño adoptadas en los capítulos siguientes.
+
+\section{Contact Graph Routing}
+Contact Graph Routing \cite{burleigh-dtnrg-cgr-01} \cite{fraire2021routing} es un procedimiento de decisión dinámica diseñado para redes tolerantes a retardos (DTN), específicamente orientado a entornos donde la conectividad entre los nodos es episódica pero predecible, como ocurre en las comunicaciones espaciales. A diferencia de los protocolos de Internet tradicionales que asumen una topología estable, CGR aprovecha el carácter determinista de las órbitas y los planes operativos para tomar decisiones de reenvío informadas. El pilar fundamental de este sistema es el Plan de Contactos (\textit{Contact Plan}), una estructura que detalla las futuras oportunidades de comunicación o ``contactos''. Cada contacto se define por un intervalo de tiempo (\textit{start} y \textit{end}), una tasa de transmisión de datos y la distancia o retardo de propagación (\textit{One-Way Light Time} u OWLT) entre el nodo emisor y el receptor.
+
+A partir de este plan, CGR construye una estructura de datos denominada Grafo de Contactos (\textit{Contact Graph}), un grafo acíclico dirigido donde los vértices representan los episodios de contacto y las aristas representan periodos de almacenamiento de datos (\textit{store-carry-and-forward}) en los nodos mientras esperan la siguiente oportunidad de transmisión. Para identificar la mejor ruta hacia un destino, el protocolo utiliza una adaptación del algoritmo de Dijkstra que busca minimizar el tiempo de entrega (\textit{Best Delivery Time} o BDT). En variantes más avanzadas de CGR, se incorporan mecanismos adicionales que permiten considerar múltiples rutas candidatas o modificar las estrategias de exploración del grafo, con el objetivo de mejorar el comportamiento ante congestión, tolerar fallos en los enlaces o reducir el costo computacional del proceso de selección de rutas. \cite{FRAIRE201831}
+
+En la fase de reenvío (\textit{forwarding}), CGR evalúa las rutas candidatas basándose en las condiciones locales en tiempo real, tales como la prioridad del paquete (\textit{bundle}), su tamaño y el estado actual de las colas de salida (\textit{backlog}). Estas variables permiten calcular la oportunidad de transmisión más temprana  y el tiempo de llegada proyectado. Si un paquete se marca como ``crítico'', el protocolo puede enviar copias a través de todas las rutas plausibles para maximizar las probabilidades de éxito. Finalmente, CGR gestiona el consumo de volumen de los contactos para evitar la congestión, actualizando el límite de volumen efectivo de cada ruta a medida que se asignan nuevos datos.
+
+\section{ANTop}
+\subsection{Introducción al protocolo original}
+En redes Delay/Disruption Tolerant Networks (DTN), los mecanismos clásicos de ruteo basados en conectividad permanente resultan inadecuados debido a la naturaleza intermitente de los enlaces, las largas latencias y la movilidad de los nodos. En este contexto, resulta necesario emplear protocolos capaces de tomar decisiones de ruteo sin depender de una topología estática ni de información global consistente.
+
+El protocolo ANTop (Adjacent Network Topologies) \cite{marcu2007antop} \cite{torrado2018fragmentacion} \cite{campolo2012estudio}, a diferencia de otros enfoques basados en el intercambio continuo de información de estado o en la replicación probabilística de mensajes, codifica la topología de la red directamente en las direcciones de los nodos. Esto permite que cada nodo tome decisiones de ruteo utilizando únicamente información local, sin necesidad de mantener tablas globales o conocimiento completo de la red. Está diseñado para redes ad-hoc descentralizadas en donde todos los nodos tienen la misma jerarquía. Dado que las direcciones cambian dinámicamente, los nodos cuentan además con identificadores universales que permiten su identificación persistente.
+
+Para lograr este comportamiento, ANTop impone una estructura lógica sobre la red. La idea central del protocolo es modelar la topología como una proyección sobre un hipercubo \cite{alvarezhamelin_dht_hypercubes}. En este modelo, cada nodo posee una dirección representada como una secuencia de bits, la cual refleja su posición relativa dentro de dicha estructura.
+
+Aplicado a redes, el caso ideal sería aquel en el que cada nodo (por ejemplo, un satélite) se corresponde con un vértice del hipercubo. Sin embargo, esto no es factible en escenarios reales, por lo que se trabaja con hipercubos incompletos, donde no todos los vértices tienen un nodo asignado. Cuando un nuevo nodo desea incorporarse a la red, emite una solicitud en modo broadcast dirigida a los nodos dentro de su radio de cobertura. Cada nodo existente, además de su dirección relativa, mantiene asociada una máscara que define el subconjunto del espacio de direcciones que administra. A partir de este conjunto, el nodo puede ceder una dirección disponible al nuevo nodo, permitiendo así su incorporación al hipercubo \cite{marcu2007antop}.
+
+La distancia topológica entre dos nodos, expresada en términos del número de saltos (hops), se calcula mediante la operación XOR entre sus direcciones. Esta operación no solo permite cuantificar la distancia, sino también identificar en qué posiciones difieren ambas direcciones. En un hipercubo completo, esto habilita un esquema de enrutamiento greedy, donde en cada salto se selecciona un vecino cuya dirección reduzca dicha diferencia, garantizando así un camino de longitud mínima hacia el destino.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.4\textwidth]{secciones/image/hipercubo.png}
+    \caption{Hipercubo de dimensión $n=4$.}
+    \label{fig:myimage}
+\end{figure}
+
+No obstante, en el caso de hipercubos incompletos, no siempre existe un vecino que permita reducir la distancia en cada paso y, como consecuencia, no es posible garantizar la existencia de caminos óptimos. Aun así, el protocolo intenta aproximarse progresivamente al destino siguiendo este criterio.
+
+\subsection{Ruteo reactivo}
+
+El ruteo o enrutamiento es el proceso mediante el cual se selecciona una secuencia de nodos intermedios para transportar un paquete desde un origen hasta un destino. En términos generales, los algoritmos de ruteo pueden clasificarse en dos grandes categorías: proactivos y reactivos.
+
+En los esquemas proactivos, las rutas hacia todos los destinos se calculan y mantienen actualizadas de manera continua. Este enfoque permite disponer de caminos óptimos en todo momento, pero requiere la propagación constante de información de estado ante cualquier cambio en la topología de la red. En entornos altamente dinámicos como lo son las redes satelitales, este mantenimiento puede implicar un costo significativo en términos de señalización y consistencia.
+
+Por el contrario, los esquemas reactivos calculan las rutas únicamente cuando son necesarias. Las decisiones se toman en base al estado local disponible al momento de rutear, sin requerir conocimiento global completo ni tablas previamente calculadas. Si bien esto puede conducir ocasionalmente a caminos subóptimos, reduce la necesidad de sincronización global y resulta particularmente adecuado para redes con cambios frecuentes de conectividad.
+
+En el contexto de redes satelitales LEO, donde la topología varía continuamente debido al movimiento orbital y no siempre se dispone de un hipercubo completo de conectividad, mantener rutas proactivamente actualizadas resulta costoso y potencialmente ineficiente.
+
+\subsection{Tabla de ruteo}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Destination & Next Hop & Distance & Neighbors & visited bitmap \\
+        \hline
+        J & H & - & H,G,F,D & 1000 \\
+        \hline
+        B & D & 3 & D,G,F,H & 0000 \\
+        \hline
+    \end{tabular}
+    \caption{Tabla de ruteo luego de que un nodo haya recibido y enviado un paquete de origen $B$ y destino $J$.}
+    \label{tab:routing-table}
+\end{table}
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Source & Destination & Distance \\
+        \hline
+        B & H & 3 \\
+        \hline
+        H & B & \\
+        \hline
+    \end{tabular}
+    \caption{Tabla por pares origen-destino luego que un nodo haya recibido un paquete de origen $H$ y destino $B$, que pasó por tres nodos anteriores.}
+    \label{tab:pair-table}
+\end{table}
+
+Cada nodo debe mantener un estado local mínimo que le permita seleccionar dinámicamente el próximo salto hacia un destino determinado. Debido a que ANTop opera bajo un esquema de ruteo reactivo, las entradas de la tabla no son precomputadas globalmente, sino que se construyen dinámicamente a partir de las decisiones de ruteo tomadas durante la operación del sistema.
+
+Cada nodo mantiene un estado local de ruteo que almacena la información necesaria para tomar decisiones de reenvío de paquetes. Este estado permite reutilizar el conocimiento derivado de decisiones de ruteo previas, evitando recomputaciones innecesarias durante la operación del protocolo. En base a esto, el estado de ruteo del nodo está compuesto por dos estructuras principales:
+
+\begin{enumerate}
+    \item Tabla de ruteo
+
+    Dado un destino, permite acceder a información acerca del próximo salto (\textit{next hop}), la distancia hacia el destino o aquellos vecinos que han sido explorados durante un proceso de búsqueda anterior. Indexada por identificador de destino, la misma almacena:
+    \begin{itemize}
+        \item Next hop: vecino actualmente seleccionado para rutear hacia el destino.
+        \item Distance: distancia estimada hacia el destino.
+        \item Neighbors: conjunto de vecinos, ordenados de forma ascendente según distancia al destino.
+        \item Visited bitmap: estructura de bits que registra qué vecinos ya han sido explorados con anterioridad. A medida que nuevos vecinos son explorados, sus correspondientes bits son marcados como visitados.
+    \end{itemize}
+
+    \item Tabla por pares origen-destino
+
+    Indexada por el par origen-destino, almacena información utilizada para la detección y corrección de bucles en el algoritmo.
+
+    \begin{itemize}
+        \item Distance: menor número de hops con el que el nodo recibió un paquete de origen $source$ y destino $destination$. Permite identificar bucles sin guardar información específica sobre cada paquete recibido.
+    \end{itemize}
+\end{enumerate}
+
+Ejemplos de la tabla de ruteo y de la tabla por pares origen-destino pueden ser observados en la Tabla \ref{tab:routing-table} y la Tabla \ref{tab:pair-table}, respectivamente.

@@ -1,0 +1,250 @@
+\chapter{Herramientas de Simulación}
+
+\section{DTNSim}
+
+DTNSim es un simulador orientado al estudio de distintos aspectos de las redes tolerantes a demoras/interrupciones (Delay/Disruption Tolerant Networks, DTN), tales como el enrutamiento, el reenvío, la planificación, o la programación, entre otros. El simulador está implementado sobre el framework OMNeT++ versión 6.x y puede utilizarse de manera conveniente mediante el entorno Qtenv, así como modificarse o extenderse utilizando el IDE basado en Eclipse que provee OMNeT++.
+
+DTNSim modela la dinámica de la red a través de planes de contacto (contact plans), los cuales describen explícitamente las oportunidades de comunicación entre nodos en intervalos de tiempo determinados. De este modo, la movilidad de los nodos no se representa mediante desplazamientos continuos en el espacio, sino mediante la disponibilidad temporal de enlaces, lo cual resulta especialmente adecuado para redes satelitales, interplanetarias o altamente dinámicas.
+
+A su vez, permite ejecutar escenarios configurables mediante archivos $ini$, recolectando estadísticas tanto escalares como vectoriales, que luego pueden ser utilizadas para el análisis de desempeño de los protocolos evaluados. Entre los protocolos soportados se incluye CGR.
+
+\subsection{Arquitectura}
+DTNSim se organiza en una arquitectura modular que modela explícitamente los distintos componentes funcionales de una red de tipo DTN. La estructura general del simulador se define mediante archivos NED, que describen tanto los módulos como sus interconexiones y parámetros.
+
+\subsubsection{Nivel superior}
+
+En el nivel más alto de abstracción, el simulador modela una red DTN completa, denominada \textit{Dtnsim}, compuesta por un conjunto de nodos autónomos y un módulo central de soporte. Esta estructura permite separar claramente la lógica distribuida de la red de aquellas funcionalidades transversales a toda la simulación. Dicha red incluye:
+
+\begin{itemize}
+\item Un módulo \textit{Central}, que actúa como entidad de coordinación global.
+\item Un conjunto de módulos \textit{Node}, donde cada instancia representa un nodo DTN independiente.
+\end{itemize}
+
+El módulo \textit{Central} cumple funciones auxiliares al modelo, tales como la recolección de métricas globales, la supervisión del estado de la simulación, la gestión de eventos especiales o la inyección de fallos. Su interacción con los nodos es de naturaleza lógica y no representa enlaces de comunicación físicos dentro de la red DTN simulada.
+
+Esta separación permite que el comportamiento de la red emerja principalmente de la interacción entre los nodos, mientras que el módulo central actúa como un observador y coordinador externo, sin introducir dependencias artificiales en el funcionamiento distribuido del sistema.
+
+\subsubsection{Módulo Node}
+
+Cada nodo de la red DTN se modela mediante el módulo compuesto \textit{Node}, el cual representa una pila funcional completa de un nodo participante en una red tolerante a retardos. Internamente, el nodo se organiza en submódulos que reflejan una separación por responsabilidades, alineada con la arquitectura lógica del simulador más que con capas OSI tradicionales.
+
+Los principales submódulos que componen un nodo son:
+
+\begin{itemize}
+\item \textbf{App}: módulo de aplicación, responsable de generar y consumir datos a nivel de bundle. Representa el origen y destino lógico del tráfico en la red DTN.
+
+\item \textbf{Dtn}: núcleo del nodo, encargado de la lógica propia de las redes DTN. Este módulo gestiona el almacenamiento temporal de bundles, la toma de decisiones de enrutamiento y el reenvío de datos en función del estado de la red y de la información disponible.
+
+\item \textbf{Com}: módulo de comunicación, que abstrae el proceso de transmisión entre nodos mediante una capa de contacto lógica. Este módulo modela la disponibilidad temporal de enlaces y su capacidad de transmisión, incorporando retardos y restricciones de tasa, sin representar explícitamente detalles físicos ni de enlace tradicionales.
+
+\item \textbf{Graphics}: módulo opcional destinado a la visualización del estado interno del nodo durante la simulación.
+
+\item \textbf{Fault}: módulo opcional utilizado para la simulación de fallos en el nodo.
+\end{itemize}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.4\textwidth]{secciones/image/modulos.png}
+    \caption{Arquitectura de módulos original de DTNsim.}
+    \label{fig:myimage}
+\end{figure}
+
+Desde el punto de vista del flujo de información, los bundles generados por el módulo \textit{App} son entregados al módulo \textit{Dtn}, que decide su almacenamiento, encaminamiento o reenvío. Cuando un bundle debe ser transmitido a otro nodo, el módulo \textit{Dtn} delega dicha operación en el módulo \textit{Com}, el cual se encarga de modelar la transmisión respetando las restricciones temporales y de capacidad del contacto.
+
+Esta organización permite desacoplar claramente la lógica de enrutamiento y toma de decisiones del modelado de la transmisión, facilitando la experimentación con distintos algoritmos de routing sin modificar los mecanismos de comunicación subyacentes.
+
+\subsection{Modelo de tolerancia a fallas}
+
+Con el objetivo de evaluar la robustez del sistema frente a desconexiones de nodos, se implementó un modelo de tolerancia a fallas de tipo estocástico, en el cual cada nodo de la red alterna entre estados operativos y estados de falla. Este enfoque permite representar de manera realista el comportamiento intermitente de nodos en redes satelitales, donde las fallas pueden producirse de forma impredecible y recuperarse automáticamente tras cierto período de tiempo.
+
+En el contexto de las simulaciones con ANTop, esta propiedad es fundamental para asegurar que la mayor cantidad posible de celdas H3 se encuentren ocupadas por al menos un nodo. Una ocupación más uniforme del espacio discretizado contribuye a mejorar la conectividad de la topología resultante y a reducir los casos en los que el algoritmo de ruteo se ve limitado por la ausencia de nodos en determinadas regiones.
+
+Como se observa en la Figura~\ref{fig:walker-orbits}, la introducción de un phase offset distinto de cero produce una distribución más uniforme de los satélites a lo largo de los planos orbitales. Este efecto se refleja directamente en la ocupación de celdas H3, donde la Figura~\ref{fig:h3-coverage} evidencia una cobertura global más homogénea, principalmente alrededor de la línea del ecuador.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.48\textwidth]{secciones/image/phase0h3.png}
+    \includegraphics[width=0.48\textwidth]{secciones/image/phase7h3.png}
+    \caption{Cobertura de celdas H3 correspondiente a la constelación Walker:
+    (izquierda) sin phase offset,
+    (derecha) con phase offset distinto de cero.}
+    \label{fig:h3-coverage}
+\end{figure}
+
+
+\subsubsection{Modelo de estados}
+
+Cada nodo puede encontrarse en uno de los siguientes estados:
+
+\begin{itemize}
+    \item \textbf{Estado operativo}: el nodo funciona normalmente y puede transmitir, recibir y reenviar bundles.
+    \item \textbf{Estado de falla}: el nodo se considera inoperativo y sus funcionalidades de comunicación se encuentran deshabilitadas.
+\end{itemize}
+
+Las transiciones entre estos estados se modelan mediante dos variables aleatorias:
+
+\begin{itemize}
+    \item \textbf{Tiempo hasta la falla} (Time To Failure, TTF).
+    \item \textbf{Tiempo de reparación} (Time To Repair, TTR).
+\end{itemize}
+
+Ambas variables se modelan mediante distribuciones exponenciales, caracterizadas por sus valores medios:
+
+\begin{align}
+    \mathbb{E}[TTF] &= \text{MTTF} \\
+    \mathbb{E}[TTR] &= \text{MTTR}
+\end{align}
+
+La elección de la distribución exponencial se debe a su propiedad de falta de memoria, lo cual implica que la probabilidad de que ocurra una falla es independiente del tiempo transcurrido desde la última transición.
+
+\subsubsection{Modelo matemático}
+
+Sean las variables aleatorias $T_{f}$ y $T_{r}$ correspondientes al tiempo hasta la falla y al tiempo de reparación, respectivamente. Estas se definen como:
+
+\begin{align}
+    T_{f} &\sim \text{Exponencial}(\lambda_f) \\
+    T_{r} &\sim \text{Exponencial}(\lambda_r)
+\end{align}
+
+donde los parámetros de las distribuciones están dados por:
+
+\begin{align}
+    \lambda_f &= \frac{1}{\text{MTTF}} \\
+    \lambda_r &= \frac{1}{\text{MTTR}}
+\end{align}
+
+De esta forma, las funciones de densidad de probabilidad quedan definidas como:
+
+\begin{align}
+    f_{T_f}(t) &= \lambda_f e^{-\lambda_f t}, \quad t \geq 0 \\
+    f_{T_r}(t) &= \lambda_r e^{-\lambda_r t}, \quad t \geq 0
+\end{align}
+
+\subsubsection{Porcentaje esperado de tiempo en falla}
+
+En régimen estacionario, el porcentaje esperado de tiempo que un nodo permanece en estado de falla se obtiene a partir de la relación entre los tiempos medios de operación y reparación. Dado un ciclo completo compuesto por un período operativo seguido de un período de falla, la fracción de tiempo en falla $P_{f}$ está dada por:
+
+\begin{equation}
+    P_{f} = \frac{\text{MTTR}}{\text{MTTF} + \text{MTTR}}
+\end{equation}
+
+Esta expresión permite configurar el sistema para simular distintos niveles de fallas promedio, ajustando adecuadamente los valores de MTTF y MTTR.
+
+
+\subsubsection{Implementación basada en eventos}
+
+La implementación se realizó utilizando mensajes (\textit{self-messages}) provistos por el simulador OMNeT++. Cada nodo crea un único mensaje de control de fallas durante su fase de inicialización, el cual se agenda para provocar la primera transición al estado de falla luego de un tiempo aleatorio generado según una distribución exponencial con media MTTF.
+
+Cuando dicho mensaje es recibido, el nodo transiciona al estado de falla y el mismo mensaje es reutilizado para programar el evento de recuperación, cuyo tiempo se obtiene a partir de una distribución exponencial con media MTTR. Finalizado el período de reparación, el mensaje vuelve a reprogramarse para la siguiente falla.
+
+Este mecanismo genera una secuencia alternante de eventos de falla y recuperación, manteniendo un único mensaje activo por nodo y evitando sobrecarga innecesaria en la simulación.
+
+\subsubsection{Independencia y escalabilidad}
+
+El modelo de fallas se aplica de forma independiente a cada nodo de la red, lo cual permite capturar escenarios en los que las fallas no se encuentran sincronizadas. Esta característica resulta especialmente relevante en redes satelitales.
+
+\subsection{Contactless DTN}
+
+El módulo $Dtn$ original se encuentra diseñado en torno al concepto de \textit{contact plans}, los cuales describen de forma explícita los intervalos temporales durante los cuales existen oportunidades de comunicación entre pares de nodos. Este enfoque resulta adecuado para escenarios donde la conectividad es conocida de antemano o puede ser precomputada, como ocurre típicamente en redes DTN estáticas o con movilidad determinista.
+
+Sin embargo, el funcionamiento del protocolo ANTop presenta requerimientos distintos, ya que se basa en la utilización del sistema H3, el cual depende directamente de posiciones geográficas reales para determinar la vecindad entre nodos. En este contexto, la conectividad entre nodos no se encuentra definida de manera explícita mediante planes de contacto, sino que emerge dinámicamente como consecuencia del movimiento de los satélites y de su proximidad espacial.
+
+Con el objetivo de superar estas limitaciones, se desarrolló un nuevo módulo denominado \textit{ContactlessDtn}. Este módulo desacopla el funcionamiento del módulo $Dtn$ de los \textit{contact plans} tradicionales y permite que la conectividad entre nodos sea determinada dinámicamente a partir de sus posiciones geográficas.
+
+De esta manera, cada nodo mantiene una representación explícita de su ubicación en el espacio, la cual puede variar a lo largo del tiempo siguiendo modelos de movilidad predefinidos, y es a partir de estas posiciones que se evalúa de forma continua la conectividad entre nodos.
+
+\subsection{Movilidad}
+
+Dado que el protocolo ANTop depende directamente de la ubicación geográfica de los satélites para determinar la ocupación de celdas H3 y la conectividad entre nodos, la elección de un modelo de movilidad resulta un aspecto central del diseño del simulador.
+
+El modelo de movilidad adoptado es el de SGP4 (\textit{Simplified General Perturbations 4}) \cite{SGP4}, el cual es ampliamente utilizado para la propagación de órbitas satelitales en escenarios de baja órbita terrestre (LEO). SGP4 permite calcular la posición y velocidad de un satélite como función del tiempo a partir de un conjunto reducido de parámetros orbitales, ofreciendo una representación suficientemente precisa del movimiento orbital para aplicaciones de simulación.
+
+\section{OS\textsuperscript{3}}
+
+OS\textsuperscript{3} (\textit{The Open Source Satellite Simulator}) \cite{os3} es un simulador orientado a redes satelitales que extiende las capacidades de OMNeT++ mediante la integración de modelos de movilidad orbital y componentes de comunicación.
+
+Dentro de OS\textsuperscript{3}, los modelos de movilidad se implementan como módulos independientes que actualizan la posición de los nodos en función del tiempo de simulación. Estos módulos se basan en distintos modelos dinámicos, entre ellos SGP4, y se integran de manera transparente con el resto del simulador, permitiendo que los protocolos de red accedan a la información de posición sin acoplarse directamente al modelo orbital subyacente.
+
+Los modelos de movilidad de OS\textsuperscript{3} requieren ser configurados a partir de archivos \textit{Two-Line Element} (TLE), los cuales constituyen el formato estándar para describir órbitas satelitales reales, y permiten reproducir constelaciones existentes con alto grado de fidelidad.
+
+No obstante, la utilización de archivos TLE introduce una limitación desde el punto de vista de la flexibilidad experimental ya que restringe la simulación a configuraciones orbitales previamente definidas y dificulta la generación de escenarios ficticios y parametrizables, necesarios para evaluar de forma sistemática el impacto de distintos parámetros de densidad, cobertura y distribución espacial sobre el comportamiento del protocolo ANTop.
+
+Es en función de estas consideraciones que se decidió adoptar una alternativa que permitiera definir constelaciones satelitales de manera completamente parametrizable, sin depender de archivos TLE.
+
+\section{Atlas}
+
+Con el objetivo de superar las restricciones mencionadas, se optó por utilizar, en conjunto con DTNSim, \textit{Atlas} \cite{atlas}, un simulador desarrollado sobre OS\textsuperscript{3} que permite definir constelaciones satelitales de manera completamente paramétrica. Este entorno introduce un módulo específico, denominado \textit{NORAD}, que actúa como generador de órbitas sintéticas y permite instanciar constelaciones completas a partir de un conjunto reducido de parámetros.
+
+Entre los parámetros soportados se incluyen el intervalo de actualización (\textit{updateInterval}), la cantidad total de satélites (\textit{numOfSats}), el número de planos orbitales (\textit{planes}), la cantidad de satélites por plano (\textit{satPerPlane}), la altitud orbital (\textit{altitude}) y la inclinación respecto al Ecuador (\textit{inclination}). Este enfoque elimina la necesidad de utilizar archivos TLE y permite construir escenarios altamente configurables, facilitando la exploración de distintas topologías y densidades de nodos.
+
+\subsection{Phase Offset}
+
+El \textit{phase offset} es un parámetro que define el desfase temporal entre satélites pertenecientes a planos orbitales consecutivos. En particular, indica el instante relativo en el que los satélites de distintos planos cruzan el ecuador, y toma valores normalizados entre cero y uno \cite{walker_phase_offset}.
+
+Un valor de \textit{phase offset} igual a cero implica que el satélite $n$ de un plano orbital cruza el ecuador simultáneamente con el satélite $n$ del plano siguiente. En el extremo opuesto, un valor igual a uno indica que el satélite $n$ de un plano cruza el ecuador al mismo tiempo que el satélite $n+1$ del plano adyacente. Valores intermedios permiten distribuir los satélites de manera progresiva a lo largo de la órbita, mejorando la uniformidad espacial de la constelación.
+
+La implementación original de \textit{Atlas} no incluye soporte para \textit{phase offset}, el cual es necesario para modelar correctamente constelaciones del tipo Walker. Por esta razón, se extendió la implementación existente para incorporar dicho parámetro, permitiendo la generación de constelaciones Walker completas y realistas.
+
+En el contexto de las simulaciones con ANTop, esta propiedad es fundamental para asegurar que la mayor cantidad posible de celdas H3 se encuentren ocupadas por al menos un nodo durante la simulación. Una ocupación más uniforme del espacio contribuye a mejorar la conectividad de la topología resultante y a reducir los casos en los que el algoritmo de ruteo se ve limitado por la ausencia de nodos en determinadas regiones.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/phase0.png}
+    \includegraphics[width=0.49\textwidth]{secciones/image/phase7.png}
+    \caption{Posicionamiento inicial de los satélites en una constelación Walker:
+    (izquierda) sin phase offset,
+    (derecha) con phase offset distinto de cero.}
+    \label{fig:walker-orbits}
+\end{figure}
+
+\section{Scripts auxiliares}
+
+Con el fin de automatizar el proceso de compilación, generación de escenarios experimentales y análisis de resultados, se desarrolló un conjunto de scripts que acompañan la implementación del simulador.
+
+\subsection{Generación de escenarios de simulación}
+
+El script \texttt{generate-antop.py} se encarga de generar automáticamente los archivos de configuración (\texttt{.ini}) utilizados por OMNeT++. A partir de parámetros ingresados por el usuario —como la cantidad de planos orbitales, el número de satélites por plano y el desfase entre planos— el script construye una constelación satelital completa.
+
+Asimismo, permite habilitar la funcionalidad de fallas en los nodos de la red, configurando distintos porcentajes mediante la parametrización de los tiempos medios entre fallas (MTTF) y de recuperación (MTTR). De este modo, es posible evaluar el comportamiento de los algoritmos de ruteo bajo distintos niveles de degradación de la red.
+
+Además, se genera tráfico aleatorio entre los nodos de la constelación, definiendo para cada origen múltiples flujos de bundles con destinos, tiempos de inicio y tamaños aleatorios, manteniendo constante la cantidad total de bundles enviados por nodo.
+
+Finalmente, el script configura la ruta de salida donde se almacenarán las métricas recolectadas durante la simulación en formato JSON, facilitando su posterior análisis.
+
+\section{Contact plans a partir de Atlas}
+
+Para poder evaluar experimentalmente el desempeño de ANTop y CGR bajo condiciones comparables, resulta necesario ejecutar ambos protocolos sobre escenarios de simulación equivalentes. Sin embargo, cada uno de estos protocolos modela la conectividad de manera diferente: mientras que CGR utiliza \emph{contact plans}, que describen explícitamente los intervalos de tiempo durante los cuales dos nodos pueden comunicarse, ANTop depende de la posición geoespacial de los satélites para determinar dinámicamente la existencia de enlaces.
+
+Debido a esta diferencia en la representación de la conectividad, fue necesario establecer un mecanismo que permitiera traducir el movimiento orbital de los satélites en un conjunto de \emph{contact plans} equivalentes. Para ello, se desarrolló un escenario de simulación independiente cuyo objetivo es generar planes de contacto a partir del mismo modelo de movimiento satelital utilizado en las simulaciones de ANTop. De esta forma, los \emph{contact plans} obtenidos reflejan exactamente las mismas condiciones de conectividad que surgen de la simulación basada en posiciones, permitiendo que los experimentos con CGR y ANTop se ejecuten sobre escenarios estrictamente equivalentes.
+
+En este contexto, se desarrolló la red \texttt{csm}, la cual se ejecuta como una simulación independiente del simulador DTN principal, durante un horizonte temporal configurable y con una cantidad parametrizable de nodos satelitales. La red \texttt{csm} contiene un conjunto de nodos del tipo \texttt{ContactMobilityNode} los cuales representan un satélite, y encapsulan los componentes necesarios para modelar el movimiento orbital de los mismos.
+
+\subsection{Extensión del modelo de movilidad satelital}
+
+Cada nodo \texttt{ContactMobilityNode} está compuesto por un módulo \texttt{ContactSatelliteMobility}, el cual es una extensión del módulo \texttt{SatelliteMobility} original, encargado de computar el movimiento orbital de un satélite a lo largo de una simulación. La implementación de dicha extensión agrega la lógica necesaria para convertir dicho movimiento orbital en contactos de un \emph{contact plan}. En cada actualización de movilidad, el módulo \texttt{ContactSatelliteMobility}:
+
+\begin{enumerate}
+    \item Obtiene la posición geográfica actual del satélite (latitud y longitud).
+    \item Mapea dicha posición a su correspondiente celda H3.
+    \item Calcula el conjunto de celdas vecinas.
+    \item Almacena en forma de contacto a aquellos satélites que se encuentran en alguna de estas celdas vecinas. Este criterio es consistente con el modelo de conectividad utilizado por ANTop, en el cual los enlaces se establecen entre satélites ubicados en celdas H3 adyacentes.
+\end{enumerate}
+
+Dos satélites se consideran en contacto si, durante un intervalo de tiempo, ambos se encuentran en celdas H3 vecinas.
+
+\subsection{Construcción del plan de contactos}
+
+Para cada par de satélites detectado en contacto, el módulo registra intervalos temporales discretos \([\textit{from}, \textit{to}]\) durante los cuales la vecindad se mantiene.
+
+Al finalizar la simulación, cada nodo contribuye a la construcción de un archivo de plan de contactos. Este archivo contiene, para cada par de nodos, dos entradas simétricas (una por cada dirección), indicando:
+\begin{itemize}
+    \item Tiempo de inicio del contacto.
+    \item Tiempo de finalización del contacto.
+    \item Nodo origen.
+    \item Nodo destino.
+    \item Tasa de transmisión asociada al contacto.
+\end{itemize}
+
+El formato generado es compatible con los planes de contacto utilizados por los algoritmos de ruteo CGR.
+
+De esta forma, la simulación \texttt{csm} actúa como una etapa previa de preprocesamiento, generando planes de contacto que pueden ser utilizados por el simulador DTN para evaluar distintos algoritmos de ruteo bajo condiciones comparables.

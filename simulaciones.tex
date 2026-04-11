@@ -1,0 +1,185 @@
+\chapter{Simulaciones}
+
+\section{Métricas de desempeño}
+
+Para la evaluación de los algoritmos de enrutamiento considerados en este trabajo se definió un marco experimental estructurado en torno a cuatro dimensiones principales de análisis. Estas dimensiones permiten organizar las simulaciones realizadas, así como la presentación y discusión de los resultados obtenidos.
+
+La primera dimensión del análisis corresponde a las métricas utilizadas para evaluar el comportamiento de los algoritmos bajo estudio. En particular, se consideraron las siguientes medidas de desempeño, las cuales serán utilizadas de forma consistente a lo largo del análisis y presentadas mediante representaciones gráficas:
+
+\begin{itemize}
+    \item \textbf{Tiempo de procesamiento} (\textit{elapsed time}), que mide el tiempo total de cómputo requerido por los nodos de la red para procesar y tomar decisiones de enrutamiento sobre un paquete a lo largo de su recorrido.
+    \item \textbf{Número de saltos} (\textit{number of hops}), que representa la cantidad de nodos intermedios atravesados por un paquete durante su recorrido por la red.
+    \item \textbf{Tiempo de arribo} (\textit{arrival time}), que mide el tiempo de simulación transcurrido desde la generación de un paquete hasta su llegada al nodo destino.
+    \item \textbf{Tasa de entrega} (\textit{arrival time}), que mide el porcentaje de paquetes que llegan a su destino final a lo largo de la simulación.
+\end{itemize}
+
+Estas métricas permiten caracterizar tanto la eficiencia temporal como el costo de enrutamiento de cada algoritmo, proporcionando una base para la comparación entre distintas configuraciones.
+
+\section{Algoritmos de enrutamiento}
+
+La segunda dimensión de análisis está dada por los algoritmos de enrutamiento evaluados. En este trabajo se comparan CGR y ANTop, tal como se mencionó previamente a lo largo del informe.
+
+El simulador DTNSim cuenta con varias implementaciones del algoritmo CGR, incluyendo versiones que incorporan distintas optimizaciones destinadas a reducir el costo computacional del cálculo de rutas. En una primera instancia se intentó utilizar una implementación de CGR estándar; sin embargo, debido al elevado costo computacional asociado al cálculo de rutas sobre planes de contacto extensos, los tiempos de simulación resultaron prohibitivamente altos para los escenarios considerados en este trabajo.
+
+Por este motivo se optó por utilizar la versión optimizada denominada \textit{CGR Rev17}, la cual introduce diversas mejoras orientadas a reducir la complejidad del algoritmo sin modificar su comportamiento funcional. Siguiendo lo descrito en \cite{FRAIRE201831}, se evaluaron dos configuraciones diferentes:
+
+\begin{itemize}
+    \item routeListType: oneBestPath, volumeAware: off, extensionBlock: off, contactPlan: local
+    \item routeListType: perNeighborBestPath, volumeAware: off, extensionBlock: off, contactPlan: local
+\end{itemize}
+
+En la configuración \textit{oneBestPath}, se calcula un único mejor camino para cada destino. La entrada correspondiente en la tabla de ruteo se actualiza cuando finaliza o se agota alguno de los contactos que componen la ruta.
+
+Por otro lado, en la configuración \textit{perNeighborBestPath} se calcula un mejor camino por vecino para cada destino. En este caso, la entrada en la tabla de ruteo se actualiza cuando finaliza o se agota alguno de los contactos pertenecientes a las rutas calculadas.
+
+Los demás parámetros se seleccionaron bajo los siguientes criterios técnicos:
+
+\begin{itemize}
+    \item \textbf{volumeAware (off):}
+    Este parámetro desactiva el seguimiento del consumo de volumen en todos los contactos de la ruta.
+    \begin{itemize}
+        \item En redes satelitales DTN, es prácticamente imposible sincronizar la visión local de un nodo sobre la ocupación de volumen de toda la red debido a las altas latencias y la conectividad intermitente.
+        \item Modelar el consumo de volumen de forma completa suele basarse en supuestos simplistas que no reflejan la utilización real en contactos largos o continuos, lo que puede degradar el rendimiento si los datos están desincronizados.
+    \end{itemize}
+
+    \item \textbf{extensionBlock (off):}
+    Se refiere a la desactivación de las extensiones de \textit{source routing}.
+    \begin{itemize}
+        \item Aunque estas extensiones pueden minimizar el esfuerzo de cálculo en redes continuamente conectadas, en redes altamente interrumpidas como las simuladas, solo ofrecen mejoras marginales y no contribuyen necesariamente a una mejor entrega de datos.
+    \end{itemize}
+
+    \item \textbf{contactPlan (local):}
+    Este parámetro asegura que cada satélite tome decisiones de ruteo de forma distribuida basándose en su propia versión local del plan de contactos.
+    \begin{itemize}
+        \item Esto es fundamental para que la comparación sea justa frente a ANTop, permitiendo que la conectividad y las decisiones emerjan de la interacción entre los nodos en lugar de un controlador centralizado.
+    \end{itemize}
+\end{itemize}
+
+En resumen, estos ajustes permiten reducir la complejidad algorítmica y los tiempos de simulación sin modificar el comportamiento funcional básico del protocolo.
+
+La comparación entre los algoritmos se realiza utilizando las mismas métricas, escenarios y configuraciones de red, con el objetivo de garantizar condiciones experimentales equivalentes.
+
+\section{Escenarios}
+
+\subsection{Escenarios con y sin fallas}
+
+La tercera dimensión corresponde a los escenarios de simulación considerados. Se definieron tanto escenarios ideales como escenarios con fallas, con el fin de analizar la robustez de los algoritmos frente a condiciones adversas. En particular, se simularon los siguientes casos:
+
+\begin{itemize}
+    \item \textbf{Escenario sin fallas}, que representa un entorno ideal de operación en el cual todos los nodos de la red se mantienen disponibles durante la simulación.
+    \item \textbf{Escenarios con fallas}, en los cuales algunos nodos dejan temporalmente de estar disponibles, simulando fallas o interrupciones operativas. En este trabajo se consideraron tasas de falla del \textbf{5\%, 10\% y 20\%}.
+\end{itemize}
+
+De esta manera, es posible estudiar cómo se degradan las métricas de desempeño a medida que aumenta la proporción de fallas, y comparar la capacidad de adaptación de cada algoritmo.
+
+\subsection{Constelaciones}
+
+La cuarta dimensión de análisis está asociada a la topología de la red satelital. Se utilizaron constelaciones del tipo \textbf{Walker}, variando progresivamente el tamaño de la red mediante el número total de satélites, lo cual permite evaluar el comportamiento y la escalabilidad de los algoritmos de enrutamiento a medida que aumenta la dimensión de la red.
+
+Las constelaciones se describen mediante la notación \textbf{Walker $i: t/p/f$}, donde:
+
+\begin{itemize}
+    \item $i$ es la inclinación orbital, fijada en $53^\circ$, un valor ampliamente utilizado en constelaciones de órbita baja ya que permite cubrir la mayor parte de las regiones de la Tierra con mayor densidad poblacional.
+    \item $t$ es el número total de satélites, con valores $120$, $180$, $240$ y $360$.
+    \item $p$ es el número de planos orbitales igualmente espaciados, tomando los valores $12$ y $20$.
+    \item $f$ es el espaciamiento relativo entre satélites en planos adyacentes.
+\end{itemize}
+
+Para las configuraciones con $p = 12$ se utilizó $f = 7$, mientras que para aquellas con $p = 20$ se adoptó $f = 11$. Asimismo, para las constelaciones con $t \geq 240$ satélites, se incrementó el número de planos a $20$. Estos valores se seleccionaron de manera de distribuir los satélites de forma uniforme entre los distintos planos orbitales y evitar alineamientos repetitivos entre satélites de planos adyacentes.
+
+Combinando las distintas dimensiones de análisis —métricas de desempeño, algoritmos de enrutamiento, escenarios de fallas y configuraciones de constelación— se definió un conjunto total de \textbf{16 simulaciones}. En todos los casos se utilizó una carga de tráfico constante de \textbf{100 paquetes} por nodo generados a lo largo de la simulación.
+
+\section{Resultados}
+Los gráficos presentados en las siguientes secciones utilizan escalas logarítmicas, ya que las métricas analizadas presentan diferencias de varios órdenes de magnitud entre los algoritmos evaluados, lo que dificulta su visualización en una misma escala lineal.
+
+En todos los casos, cada algoritmo fue evaluado bajo cuatro configuraciones de fallas en la red: sin fallas, con un 5\%, un 10\% y un 20\% de fallas. Para cada escenario se comparan las métricas obtenidas por ambas configuraciones de CGR y por ANTop.
+
+Cabe destacar que no se reportan resultados correspondientes a la configuración de CGR \textit{perNeighborBestPath} en los escenarios con 360 satélites, debido a que el tiempo de ejecución requerido por estas simulaciones resulta prohibitivamente alto bajo los recursos de cómputo disponibles.
+
+Por otro lado, todas las simulaciones de ANTop fueron realizadas utilizando celdas H3 de resolución 0. Esta decisión se tomó debido a que los escenarios considerados no poseen una cantidad suficiente de satélites para garantizar una distribución adecuada sobre las más de 800 celdas existentes en las demás resoluciones, lo que podría generar una fragmentación excesiva del espacio y afectar la conectividad entre nodos.
+
+\subsection{Arrival Time}
+
+En la Figura \ref{fig:arrival} se presenta la comparativa del tiempo de llegada (\textit{arrival time}) en milisegundos ($ms$) para los algoritmos evaluados. Esto es, el tiempo total que le lleva a un paquete llegar a su destino final desde que fue creado en su origen.
+
+En todos los escenarios analizados, ANTop presenta las menores medianas de tiempo de llegada, seguido por CGR \textit{per-neighbor}, mientras que CGR \textit{one-best} exhibe consistentemente los valores más elevados. Esta relación se mantiene para todos los tamaños de constelación y niveles de fallas considerados.
+
+En particular, ANTop no solo presenta mejores medianas, sino también una distribución global más favorable: en varios escenarios, el percentil 75 de ANTop se mantiene por debajo del percentil 25 de los algoritmos CGR. Esto indica una mejora consistente en el tiempo de entrega de paquetes.
+
+Un aspecto especialmente relevante es el comportamiento frente al aumento del tamaño de la red. Mientras que el tiempo de llegada de los algoritmos CGR tiende a incrementarse a medida que crece la cantidad de satélites, ANTop muestra la tendencia opuesta, reduciendo sus tiempos de entrega en redes más grandes. Este comportamiento puede atribuirse al paralelismo inherente al proceso de descubrimiento de rutas de ANTop, que permite aprovechar la mayor conectividad disponible en constelaciones más densas.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_arrivalTime_0-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_arrivalTime_5-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_arrivalTime_10-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_arrivalTime_20-faults.pdf}
+    \caption{Comparación de Arrival Time para distintos porcentajes de fallas en ANTop y CGR.}
+    \label{fig:arrival}
+\end{figure}
+
+Por otro lado, al aumentar el porcentaje de fallas se observa un incremento en la dispersión de los tiempos de llegada para ANTop, evidenciado por la expansión de los boxplots. Esto indica una mayor variabilidad en los tiempos de entrega, donde algunos paquetes logran entregarse rápidamente mientras que otros experimentan retrasos mayores. Sin embargo, incluso en el escenario con 20\% de fallas, las medianas de ANTop continúan siendo significativamente menores que las observadas en los algoritmos CGR.
+
+Finalmente, la diferencia entre las variantes de CGR también resulta consistente con su diseño interno. La configuración \textit{per-neighbor} logra mejorar los tiempos de entrega respecto a \textit{one-best}, lo cual sugiere que considerar múltiples rutas permite encontrar alternativas más eficientes.
+
+\subsection{Elapsed Time}
+
+En la Figura \ref{fig:elapsed} se presenta la comparación del tiempo de procesamiento (\textit{elapsed time}) por paquete, medido en milisegundos ($ms$) bajo una escala logarítmica. Esta métrica permite evaluar el costo computacional asociado al proceso de decisión de ruteo en cada nodo, ya que representa el tiempo de cómputo total que requirió un paquete para ser procesado a lo largo de todos los saltos.
+
+En términos generales, ANTop y CGR \textit{one-best} presentan los menores tiempos de procesamiento, mientras que CGR \textit{per-neighbor} exhibe consistentemente el mayor costo computacional. Esta diferencia se vuelve más pronunciada a medida que aumenta el tamaño de la constelación.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_elapsedTime_0-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_elapsedTime_5-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_elapsedTime_10-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_elapsedTime_20-faults.pdf}
+    \caption{Comparación de Elapsed Time para distintos porcentajes de fallas en ANTop y CGR.}
+    \label{fig:elapsed}
+\end{figure}
+
+Por su parte, CGR \textit{one-best} presenta en muchos escenarios las menores medianas de tiempo de procesamiento, especialmente en configuraciones de red más simples. Sin embargo, su distribución muestra una dispersión considerablemente mayor que la observada en ANTop, con una gran cantidad de valores atípicos que alcanzan hasta $100$ ms. Esto indica que, si bien el costo promedio del algoritmo puede ser bajo, el proceso de cálculo de rutas puede generar episodios de cómputo significativamente más costosos.
+
+Finalmente, ANTop exhibe un tiempo de procesamiento estable y predecible en todos los escenarios considerados. Sus medianas se sitúan consistentemente entre $0.01$ y $0.1$ ms, con una variabilidad muy reducida. A diferencia de las variantes de CGR, la distribución de sus valores se mantiene compacta, con una presencia limitada de outliers. Asimismo, el costo computacional de ANTop se mantiene prácticamente constante a medida que aumenta el tamaño de la red, llegando incluso a presentar medianas ligeramente inferiores a las de CGR \textit{one-best} en los escenarios con mayor cantidad de satélites.
+
+\subsection{Number of Hops}
+
+En la Figura \ref{fig:hops} se presenta la comparación del número de saltos (\textit{number of hops}) recorridos por los paquetes para alcanzar su destino final.
+
+En términos generales, ANTop presenta el menor número de saltos en la mayoría de los escenarios considerados. Sus medianas se mantienen típicamente entre $1$ y $10$, con una dispersión relativamente reducida y una baja presencia de outliers. Este comportamiento se mantiene incluso a medida que aumenta el tamaño de la constelación o el nivel de fallas en la red, lo que sugiere que el algoritmo logra mantener rutas relativamente cortas y estables.
+
+Por su parte, la variante CGR \textit{per-neighbor} presenta un desempeño intermedio. En términos de la mediana, los resultados son comparables a los observados en ANTop en varios escenarios. Sin embargo, la distribución muestra una mayor dispersión y una presencia más significativa de outliers.
+
+Finalmente, CGR \textit{one-best} exhibe sistemáticamente los valores más elevados de número de saltos. Si bien las medianas no difieren de manera extrema respecto a las otras variantes, este algoritmo presenta una mayor cantidad de valores atípicos y una dispersión considerablemente mayor. En algunos escenarios se observan casos extremos que superan los $10000$ saltos, un valor significativamente superior al tamaño de las constelaciones simuladas. Este comportamiento podría estar asociado a decisiones de reencaminamiento sucesivas sobre el plan de contactos, que generan trayectorias particularmente largas antes de que el paquete alcance su destino final.
+
+Si bien las escalas son logarítimicas en las ordenadas, el número de saltos permanece de magnitudes similares en todos los casos. A diferencia de las demás métricas, donde las diferencias son muy notorias, acá se mantienen bastante similares aunque ANTop sigue siendo mejor.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_numberOfHops_0-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_numberOfHops_5-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_numberOfHops_10-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/boxplot_numberOfHops_20-faults.pdf}
+    \caption{Comparación de Number of Hops para distintos porcentajes de fallas en ANTop y CGR.}
+    \label{fig:hops}
+\end{figure}
+
+\subsection{Delivery ratio}
+
+En la Figura \ref{fig:delivery} se presenta la comparación de la tasa de entrega de paquetes (\textit{Delivery Ratio}) para los distintos algoritmos evaluados bajo diferentes niveles de fallas.
+
+ANTop mantiene un desempeño constante del $100\%$ en todos los escenarios y niveles de falla considerados ($0\%, 5\%, 10\%$ y $20\%$). Este comportamiento indica que el algoritmo logra encontrar rutas válidas hacia el destino incluso bajo condiciones adversas de la red, manteniendo una alta robustez frente a la degradación de enlaces.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/delivery_ratio_0-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/delivery_ratio_5-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/delivery_ratio_10-faults.pdf}
+    \includegraphics[width=0.49\textwidth]{secciones/image/results/delivery_ratio_20-faults.pdf}
+    \caption{Comparación de Delivery Ratio para distintos porcentajes de fallas en ANTop y CGR.}
+    \label{fig:delivery}
+\end{figure}
+
+Por su parte, CGR \textit{per-neighbor} presenta un comportamiento muy similar al de ANTop, manteniendo una tasa de entrega del $100\%$ en prácticamente todos los escenarios evaluados. Solo se observa una leve fluctuación en el escenario de $240$ satélites sin fallas, aunque la diferencia respecto al valor ideal es mínima.
+
+En contraste, CGR \textit{one-best} es el algoritmo que presenta la mayor variabilidad en esta métrica. A diferencia de las otras variantes, no alcanza el $100\%$ de entrega en ninguno de los escenarios evaluados. Su desempeño tampoco sigue una tendencia estrictamente monótona con respecto al tamaño de la constelación. En particular, los valores más bajos de tasa de entrega se observan en los escenarios de $180$ satélites para configuraciones con $5\%$, $10\%$ y $20\%$ de fallas, mientras que los resultados mejoran nuevamente en las simulaciones con $360$ satélites. Un comportamiento similar se observa en el escenario sin fallas, donde el punto más bajo se presenta en la configuración de $240$ satélites. En los casos más desfavorables, la tasa de entrega desciende hasta valores cercanos al $93\%$.

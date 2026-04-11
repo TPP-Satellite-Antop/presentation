@@ -1,0 +1,264 @@
+\chapter{ANTop Satelital}
+
+El protocolo ANTop, en su propuesta original, fue concebido para redes ad-hoc generales, donde la topología puede ser dinámica pero no necesariamente presenta los niveles de intermitencia y variación continua característicos de las constelaciones satelitales LEO. En este tipo de entornos, la conectividad entre nodos cambia de forma predecible pero frecuente, dando lugar a escenarios de conectividad parcial y a la aparición de fenómenos como bucles temporales durante el ruteo.
+
+A su vez, la aplicación de ANTop en este dominio requiere definir un mecanismo de representación espacial que permita mapear posiciones geográficas a direcciones dentro del esquema del protocolo, preservando las relaciones de vecindad entre regiones de cobertura. Este problema es independiente del algoritmo de ruteo en sí, pero resulta necesario para su aplicación en redes satelitales.
+
+En este contexto, este capítulo aborda ambas dimensiones de manera complementaria. Por un lado, se introducen modificaciones en el mecanismo de ruteo de ANTop orientadas a mejorar la detección y resolución de bucles en escenarios dinámicos. Por otro lado, se presenta una estrategia de discretización de la superficie terrestre basada en H3, utilizada como soporte para la asignación de direcciones geográficas dentro del protocolo.
+
+
+\section{Detección de bucles}
+\label{sec:loop-handling}
+
+Se considera que un paquete entró en un bucle cuando este se encuentra en un ciclo repetitivo de nodos del cual no puede salir a menos que se dé un cambio de topología. En esquemas reactivos basados en decisiones locales, la posibilidad de ciclos temporales es inherente, particularmente en redes de poca conectividad entre nodos.
+
+En la implementación original de ANTop, la detección de un loop se resuelve devolviendo el paquete al nodo emisor inmediato \cite{marcu2007antop}. Este mecanismo garantiza la ruptura inmediata del ciclo, pero no fuerza una reexploración local de alternativas, delegando esta decisión en el nodo previo. Si bien esta estrategia asegura progresión, introduce una limitación exploratoria: el nodo que detecta el loop no reconsidera su conjunto de vecinos para el destino en cuestión, lo que puede impedir el descubrimiento de caminos alternativos válidos.
+
+En consecuencia, en la implementación propuesta, cuando un nodo detecta un loop, en lugar de retornar automáticamente el paquete al $sender$ (nodo del cual se recibe dicho paquete), inicia un proceso de búsqueda de un nuevo vecino candidato. Dicho proceso de búsqueda se puede resumir en:
+
+\begin{enumerate}
+    \item Obtener el conjunto de vecinos (neighbors) ordenados ascendentemente según distancia al destino. Este conjunto puede ser obtenido de la tabla indexada por destino en caso de que un paquete ya haya sido enviado con anterioridad al mencionado destino.
+    \item Excluir aquellos vecinos ya explorados utilizando el visited bitmap.
+    \item Evitar, en primera instancia, seleccionar nuevamente al sender. Esto se realiza con el objetivo de explorar todas las rutas posibles antes de retornar el paquete.
+    \item Seleccionar el vecino no explorado cuya distancia al destino sea la más baja entre todos los vecinos.
+\end{enumerate}
+
+Si bien este mecanismo de explorar nuevos vecinos al momento de detectar bucles permite descubrir nuevas rutas que la implementación original ignoraría, el mismo introduce un fenómeno a mitigar en paquetes con mismo par origen-destino enviados en un plazo de tiempo acotado. A modo de ejemplo, un mensaje, en caso de tener un peso considerable, podría ser fragmentado en varios paquetes los cuales son enviados desde un mismo origen y hacia un mismo destino en una ventana de tiempo extremadamente acotada. Si se llegase a generar un bucle para dichos paquetes, será un mismo nodo el cual detecte dicho bucle para todos esos paquetes. El primer bucle detectado provocaría una nueva búsqueda de una ruta, lo cual es válido. Sin embargo, debido a que se detectaría un bucle para todos los paquetes siguientes debido a que todos comparten origen y destino, cada uno de ellos dispararía una búsqueda independiente, lo cual provocaría que todos los paquetes sean ruteados a través de un vecino distinto, hasta que no haya vecinos disponibles.
+
+Es en este contexto que se introduce un mecanismo de versionado denominado loop epoch. Cada par origen-destino mantiene un contador entero que representa la versión actual del proceso de resolución de bucles, mientras que cada paquete transporta su propio valor de epoch. Ante la detección de un bucle, el nodo compara el epoch del paquete con el almacenado localmente. Si el epoch local es mayor, esto quiere decir que el bucle ya fue resuelto con anterioridad y el paquete es ruteado con la decisión vigente. Si el epoch local es menor o coincide con el del paquete, se dispara un nuevo proceso de exploración.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Source & Destination & Distance & Loop epoch \\
+        \hline
+        B & H & 3 & 0 \\
+        \hline
+        H & B & & \\
+        \hline
+    \end{tabular}
+    \caption{Tabla por pares origen-destino con el nuevo campo loop epoch.}
+    \label{tab:pair-table-new}
+\end{table}
+
+El mecanismo de loop epoch no actúa únicamente como un contador local de reexploraciones, sino como un esquema de versionado distribuido asociado al par origen-destino. Cada resolución de bucle incrementa monotonamente la versión local, la cual es propagada implícitamente a través de los paquetes. La comparación entre el loop epoch de un paquete y el almacenado localmente en un nodo implementa una política de convergencia basada en el máximo valor observado, garantizando consistencia eventual sin requerir sincronización explícita entre nodos.
+
+Si se vuelve a considerar el ejemplo anterior en donde un mensaje se fragmente en varios paquetes, se tendría, en un inicio, variables como las de la Tabla \ref{tab:loop-epoch-1}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Nodo $X$ & Paquete 1 & Paquete 2 \\
+        \hline
+        Distancia al origen & ? & 5 & 5 \\
+        \hline
+        Loop epoch & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Estados de la tabla de pares del nodo $X$ y de los paquetes antes de ser procesados.}
+    \label{tab:loop-epoch-1}
+\end{table}
+
+Debido a que el Nodo $X$ no tiene información acerca de su distancia al origen de los paquetes, actualiza su tabla con la información de la cantidad de saltos que les llevó a los paquetes llegar desde el origen hasta el Nodo $X$. De esta forma, queda la Tabla \ref{tab:loop-epoch-2}. Cabe destacar que una vez que los paquetes son ruteados por el Nodo $X$, la distancia al origen de los mismos aumenta en uno debido a que dicho ruteo debe involucrar un nuevo salto.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Nodo $X$ & Paquete 1 & Paquete 2 \\
+        \hline
+        Distancia al origen & 5 & 6 & 6 \\
+        \hline
+        Loop epoch & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Estado del nodo $X$ luego de procesar y rutear ambos paquetes.}
+    \label{tab:loop-epoch-2}
+\end{table}
+
+Si ahora los paquetes entrasen en un bucle de tres nodos, los mismos volverían al Nodo $X$ con una distancia al origen (número de hops) de 8, tal como se puede apreciar en la Tabla \ref{tab:loop-epoch-3}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Nodo $X$ & Paquete 1 & Paquete 2 \\
+        \hline
+        Distancia al origen & 5 & 8 & 8 \\
+        \hline
+        Loop epoch & 0 & 0 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Estado del nodo $X$ y de los paquetes antes de ser nuevamente procesados.}
+    \label{tab:loop-epoch-3}
+\end{table}
+
+Debido a que el número de hops de los paquetes es mayor a la distancia del Nodo $X$ al origen, se detecta que los paquetes entraron en un bucle. Asumiendo que el primer paquete en llegar es el paquete 1, se dispararía el proceso de resolución de bucles y, debido a que el loop epoch del nodo y el del paquete son iguales (0), el Nodo $X$ realizaría una reexploración de rutas. Como resultado, los loop epoch del nodo y del paquete aumentarían en uno, como se puede apreciar en la Tabla \ref{tab:loop-epoch-4}, mientras que la distancia al origen del paquete 1 es corregida por el valor original.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Nodo $X$ & Paquete 1 & Paquete 2 \\
+        \hline
+        Distancia al origen & 5 & 6 & 8 \\
+        \hline
+        Loop epoch & 1 & 1 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Estados del nodo $X$ y de los paquetes luego de que el primero de estos sea nuevamente procesado y ruteado.}
+    \label{tab:loop-epoch-4}
+\end{table}
+
+Al igual que con el paquete 1, el Nodo $X$ también detectaría en un bucle al paquete 2 debido a que su número de hops es mayor a la distancia del Nodo $X$ al origen. Sin embargo, el loop epoch del nodo es mayor al del paquete, por lo que se presume que dicho bucle ya fue resuelto con anterioridad y, en vez de realizar una reexploración, simplemente se utiliza el next hop actualmente vigente, no sin antes actualizar el loop epoch del paquete 2. De esta forma, las variables quedarían tal como en la Tabla \ref{tab:loop-epoch-5}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        & Nodo $X$ & Paquete 1 & Paquete 2 \\
+        \hline
+        Distancia al origen & 5 & 6 & 6 \\
+        \hline
+        Loop epoch & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+    \caption{Estados del nodo $X$ y de los paquetes luego de que sean nuevamente procesados y ruteados.}
+    \label{tab:loop-epoch-5}
+\end{table}
+
+Si ambos paquetes ingresaran posteriormente en un nuevo bucle detectado por un nodo distinto Y, dicho nodo ejecutaría el mismo procedimiento de comparación de versiones. En caso de observar un loop epoch transportado por el paquete mayor al almacenado localmente, el nodo actualizaría su estado adoptando dicha versión, aun cuando no haya participado en la resolución original del bucle. De esta forma, la información sobre la resolución no permanece confinada al nodo que la generó, sino que se propaga implícitamente a través del tráfico de datos, garantizando que los distintos nodos converjan progresivamente hacia la versión más reciente observada para el par origen-destino.
+
+Es de esta forma que el sistema implementa una política de convergencia, sin necesidad de implementar mecanismos explícitos de sincronización o coordinación global. Mientras que el algoritmo asegura una única reexploración por versión de epoch, todas las detecciones de bucle posteriores convergen hacia la misma decisión. De esta forma, el mecanismo de loop epoch actúa como un esquema ligero de coherencia distribuida proporcionando consistencia eventual en decisiones de reexploración.
+
+
+\section{Algoritmos}
+
+Con el objetivo de facilitar la reproducibilidad del mecanismo propuesto y permitir su implementación independiente, a continuación se presenta el pseudocódigo correspondiente a los algoritmos principales involucrados en el ruteo reactivo de ANTop.
+
+\begin{algorithm}
+\caption{\texttt{findNewNeighbor}}
+\label{alg:find-new-neighbor}
+\begin{algorithmic}[1]
+\Require \texttt{pkt}, \texttt{sender}, \texttt{dst}
+
+\If{\texttt{ttlExpired()}}
+    \State \texttt{clearTables()}
+\EndIf
+
+\State \texttt{nextHop} $\gets$ \texttt{findNextCandidate(dst, sender)}
+\If{\texttt{nextHop} = \texttt{None}}
+    \State \texttt{nextHop} $\gets$ \texttt{self}
+\EndIf
+
+\State \texttt{routingTable[dst].nextHop} $\gets$ \texttt{nextHop}
+
+\State \Return \texttt{nextHop}
+
+\end{algorithmic}
+\end{algorithm}
+
+El Algoritmo \ref{alg:find-new-neighbor} implementa la función \texttt{findNewNeighbor}, que devuelve el mejor vecino para rutear al paquete \texttt{pkt} con destino \texttt{dst}, en función del estado actual de las tablas del nodo. Los pasos 1 a 3 limpian las tablas del nodo cuando se ha excedido el TTL de las mismas. Los pasos 4 a 7 se encargan de la búsqueda del mejor próximo salto para rutear al paquete \texttt{pkt} hacia \texttt{dst}. En caso de que todos los vecinos ya hayan sido explorados, se devuelve el propio nodo. Por último, el paso 8 actualiza el estado de la tabla de pares para el destino \texttt{dst} con la nueva información de ruteo.
+
+\begin{algorithm}
+\caption{\texttt{findNextCandidate}}
+\label{alg:find-next-candidate}
+\begin{algorithmic}[1]
+\Require \texttt{dst}, \texttt{sender}
+
+\For{\texttt{neighbor} $\in$ \texttt{neighbors}}
+    \If{\texttt{routingTable[dst].visitedBitmap[neighbor]} = \texttt{false} $\land$ \texttt{neighbor} $\neq$ \texttt{sender}}
+        \State \texttt{routingTable[dst].visitedBitmap[neighbor]} = true
+        \State \Return \texttt{neighbor}
+    \EndIf
+\EndFor
+
+\If{\texttt{routingTable[dst].visitedBitmap[sender]} = \texttt{false}}
+    \State \texttt{routingTable[dst].visitedBitmap[sender]} = true
+    \State \Return \texttt{sender}
+\EndIf
+
+\State \Return \texttt{None}
+
+\end{algorithmic}
+\end{algorithm}
+
+La segunda función, \texttt{findNextCandidate}, es implementada en el Algoritmo \ref{alg:find-next-candidate}. Esta devuelve el próximo mejor vecino para rutear un paquete hacia su destino. Los pasos 1 a 6 eligen el primer vecino no visitado ya que estos se encuentran ordenados de forma ascendente según distancia al destino. Cabe destacar que se decide ignorar al sender, independientemente de su distancia al destino, con el objetivo de evitar devolver el paquete por donde llegó y fomentando la exploración de nuevas rutas de forma local. Por su lado, los pasos 7 a 11 actúan como alternativas en caso de no existir vecino disponible, priorizando devolver al paquete por donde llegó, o devolviendo \texttt{None} en caso de que todos los vecinos ya hayan sido explorados.
+
+\begin{algorithm}
+\caption{\texttt{findNextHop}}
+\label{alg:find-next-hop}
+\begin{algorithmic}[1]
+\Require \texttt{pkt}, \texttt{src}, \texttt{sender}, \texttt{dst}
+
+\If{\texttt{ttlExpired()}}
+    \State \texttt{clearTables()}
+\EndIf
+
+\If{(\texttt{src}, \texttt{dst}) $\in$ \texttt{pairTable} $\land$ \texttt{pairTable[(src,dst)].distance} $<$ \texttt{pkt.hopCount}}
+    \State \Return \texttt{handleLoop(pkt,src,sender,dst)}
+\EndIf
+
+\State \texttt{pairTable[(src,dst)].distance} $\gets$ \texttt{pkt.hopCount}
+
+\If{\texttt{dst} $\notin$ \texttt{routingTable} $\lor$ \texttt{routingTable[src].distance} $>$ \texttt{pkt.hopCount}}
+    \State \texttt{routingTable[src].nextHop} $\gets$ \texttt{sender}
+    \State \texttt{routingTable[src].distance} $\gets$ \texttt{pkt.hopCount}
+    \State \texttt{routingTable[src].visitedBitmap[sender]} = true
+\EndIf
+
+\If{\texttt{dst} $\in$ \texttt{routingTable}}
+    \State \Return \texttt{routingTable[dst].nextHop}
+\EndIf
+\State \Return \texttt{findNewNeighbor(pkt, sender, dst)}
+\end{algorithmic}
+\end{algorithm}
+
+El algoritmo \ref{alg:find-next-hop} implementa la función \texttt{findNextHop}, la cual, al igual que \texttt{findNewNeighbor}, devuelve el próximo mejor salto para acerca al paquete \texttt{pkt} hacia su destino \texttt{dst}. La diferencia entre ambas funciones radica en que \texttt{findNewNeighbor} fuerza la exploración de un nuevo vecino, mientras que \texttt{findNextHop} hace uso de las entradas de la tabla de ruteo y la tabla de pares para evaluar si un camino actualmente vigente sigue siendo válido; en caso de serlo, se sigue apostando por dicho camino en vez de forzar una posible exploración innecesaria.
+
+Al igual que \texttt{findNewNeighbor}, los pasos 1 a 3 limpian las tablas del nodo cuando se ha excedido el TTL de las mismas. Los pasos 4 a 6 son los encargados de detectar y corregir bucles. Para ello, se busca si anteriormente ha pasado un paquete con mismo origen y destino pero con una distancia al origen menor, en cuyo caso se procede a validar y/o corregir dicho bucle. El paso 7 actualiza la información de distancia en la tabla de pares para el par origen-destino. En los pasos 8 a 12 se agrega la entrada inversa si no existe o si es peor que la actualmente utilizada. Es decir, se almacena la ruta para ir hacia el nodo origen \texttt{src}. Finalmente, los pasos 13 a 16 devuelven el próximo salto para el destino \texttt{dst}, en caso de existir dicha entrada en la tabla de ruteo, o bien se invoca a \texttt{findNewNeighbor} para explorar un vecino.
+
+Cabe destacar que el sistema de detección de bucles mediante la comparación de distancias al origen de paquetes anteriores puede provocar falsos positivos en escenarios donde un cambio de topología o una falla de un nodo haya provocado una ligera desviación en la ruta originalmente utilizada. Es por esta razón que se introdujo un margen de error de forma tal de que aquellos paquetes cuya distancia al origen sea mayor a la de la tabla de pares, pero que no superen el umbral establecido, no sean detectados como en bucle. En caso de que verdaderamente sea un bucle de pocos nodos, este eventualmente sería capturado luego de algunas iteraciones extra. Sin embargo, en las simulaciones realizadas se notó que la necesidad de que algunos paquetes permanezcan más tiempo en bucle antes de que este sea corregido no fue suficientemente contrarrestada por la reducción en falsos positivos. Por lo tanto, se decidió mantener el método de detección de bucles original sin umbral de detección.
+
+\begin{algorithm}
+\caption{\texttt{handleLoop}}
+\label{alg:handle-loop}
+\begin{algorithmic}[1]
+\Require \texttt{pkt}, Source \texttt{src}, \texttt{sender}, \texttt{dst}
+
+\If{\texttt{pkt.loopEpoch} $<$ \texttt{pairTable[(src,dst)].loopEpoch}}
+    \State \texttt{pkt.loopEpoch} $\gets$ \texttt{pairTable[(src,dst)].loopEpoch}
+    \State \Return \texttt{routingTable[dst].nextHop}
+\EndIf
+
+\State \texttt{pkt.loopEpoch} $\gets$ \texttt{pkt.loopEpoch} + 1
+\State \texttt{pairTable[(src,dst)].loopEpoch} $\gets$ \texttt{pairTable[(src,dst)].loopEpoch} + 1
+
+\If{\texttt{pkt.loopEpoch} $>$ \texttt{pairTable[(src,dst)].loopEpoch}}
+    \State \texttt{pairTable[(src,dst)].loopEpoch} $\gets$ \texttt{pkt.loopEpoch}
+\EndIf
+
+\State \Return \texttt{findNewNeighbor(pkt, sender, dst)}
+\end{algorithmic}
+\end{algorithm}
+
+Por último, se puede apreciar la implementación de la función \texttt{handleLoop} en el Algoritmo \ref{alg:handle-loop}. Los pasos 1 a 4 detectan y corrigen un bucle que ya fue solucionado anteriormente para otro paquete, actualizando el loop epoch del paquete actual, y devolviendo el vigente próximo salto. A su vez, los pasos 5 a 10 se encargan de corregir un bucle nuevo, incrementando el loop epoch del paquete en uno con el fin de señalizar una nueva versión en el control de bucles, y actualizando el loop epoch del nodo para el par origen-destino. Esta última actualización se realiza en función de cuál es el loop epoch más grande: si el actual del nodo, o el del paquete a rutear. Una explicación más en detalle del algoritmo puede ser estudiada en la sección \ref{sec:loop-handling}.
+
+
+
+\section{Desafíos en constelaciones de Satélites}
+\subsection{Representacion terrestre}
+
+Para aplicar ANTop en constelaciones satelitales es necesario definir cómo se representan las posiciones geográficas dentro del esquema de direccionamiento del protocolo. Para ello, resulta indispensable contar con una representación adecuada de la superficie terrestre sobre la cual se distribuyen los satélites y se definen las regiones de cobertura.
+
+En trabajos anteriores que no fueron publicados, la superficie de la Tierra ha sido modelada mediante una grilla de celdas cuadradas, utilizada como mecanismo de mapeo espacial. Si bien este enfoque simplifica la implementación y el análisis, presenta limitaciones inherentes debido a que la Tierra es, en primera aproximación, una superficie esférica y no plana.
+
+La utilización de una grilla de celdas cuadradas introduce deformaciones geométricas que afectan tanto la representación de distancias como las relaciones de vecindad entre regiones. Estas distorsiones se vuelven particularmente significativas a medida que aumenta la extensión del área considerada, lo que puede impactar negativamente en la precisión del modelo y, en consecuencia, en el desempeño del algoritmo de ruteo.
+
+\subsection{Solución propuesta}
+
+Con el objetivo de mitigar las ya mencionadas limitaciones, se opta por utilizar una discretización basada en celdas hexagonales en lugar de cuadradas. En este contexto, se emplea la biblioteca H3 \cite{h3geo_docs}, la cual provee un mapeo jerárquico de la superficie terrestre en celdas hexagonales.
+
+El desafío que se plantea consiste en generar, a partir de una celda origen en H3, un conjunto de direcciones en formato ANTop que cubran la superficie discretizada, de manera tal que se conserven las relaciones topológicas de vecindad entre los hexágonos. Esto implica traducir la estructura geométrica provista por H3 a un esquema de direccionamiento compatible con el modelo de hipercubo de ANTop, sin perder consistencia en las distancias ni en las conexiones entre celdas adyacentes.

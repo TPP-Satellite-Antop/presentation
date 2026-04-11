@@ -1,0 +1,2743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANTop Satelital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:       #060b18;
+  --blue:     #38bdf8;
+  --blue-mid: #0ea5e9;
+  --purple:   #818cf8;
+  --white:    #f1f5f9;
+  --muted:    #94a3b8;
+  --dim:      #3f4f67;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* ── SLIDES ─────────────────────────────────────────────────── */
+#presentation {
+  width: 100%; height: 100%;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+#nav-dots {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 200;
+}
+
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.dot.active {
+  background: var(--blue);
+  transform: scale(1.4);
+}
+
+#slide-counter {
+  position: fixed;
+  bottom: 22px; right: 36px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: var(--dim);
+  z-index: 200;
+  letter-spacing: 0.1em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SLIDE 1 — APERTURA
+═══════════════════════════════════════════════════════════════ */
+#slide-1 { display: flex; align-items: flex-end; justify-content: center; }
+
+#canvas-1 {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+}
+
+/* Gradient so text reads over animation */
+.s1-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(6,11,24,0.92) 0%,
+    rgba(6,11,24,0.5)  28%,
+    rgba(6,11,24,0)    55%
+  );
+  z-index: 5;
+}
+
+.s1-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 72px;
+  gap: 10px;
+}
+
+.s1-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(52px, 7.5vw, 110px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--white);
+  text-shadow:
+    0 0 80px rgba(56, 189, 248, 0.35),
+    0 2px 4px rgba(0,0,0,0.6);
+}
+
+.s1-subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(14px, 1.8vw, 22px);
+  font-weight: 400;
+  color: var(--blue);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.s1-authors {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: max-content;
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: var(--muted);
+  margin-top: 14px;
+  letter-spacing: 0.04em;
+}
+
+.s1-authors .author-name {
+  white-space: nowrap;
+}
+
+.s1-authors .author-name:first-child {
+  text-align: right;
+  padding-right: 14px;
+}
+
+.s1-authors .author-name:last-child {
+  text-align: left;
+  padding-left: 14px;
+}
+
+.s1-authors .author-sep {
+  opacity: 0.4;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SLIDE 2 — EL PROBLEMA
+═══════════════════════════════════════════════════════════════ */
+#slide-2 {
+  display: flex;
+  align-items: center;
+  padding: 48px 6vw;
+  gap: 4vw;
+}
+
+.s2-visual {
+  flex: 0 0 52%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#canvas-2 {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+.s2-caption {
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.s2-text { flex: 1; }
+
+.slide-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(26px, 3.2vw, 46px);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: 36px;
+}
+
+.slide-title em {
+  font-style: normal;
+  color: var(--blue);
+}
+
+.key-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.key-points li {
+  font-size: clamp(13px, 1.4vw, 18px);
+  color: var(--muted);
+  line-height: 1.55;
+  padding-left: 18px;
+  border-left: 2px solid var(--dim);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.key-points li:hover {
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.key-points li strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SLIDE 3 — LA SOLUCIÓN
+═══════════════════════════════════════════════════════════════ */
+#slide-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 7vw;
+  gap: 52px;
+}
+
+.s3-diagram {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.block {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: clamp(16px, 2vw, 28px) clamp(16px, 2vw, 28px);
+  text-align: center;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.block:hover {
+  background: rgba(56, 189, 248, 0.06);
+  border-color: rgba(56, 189, 248, 0.2);
+}
+
+.block-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(10px, 0.9vw, 12px);
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.block-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(18px, 2.2vw, 30px);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.block-desc {
+  font-size: clamp(11px, 1.1vw, 15px);
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* Connector arrows */
+.connector {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(32px, 3.5vw, 56px);
+}
+
+.connector svg {
+  width: 100%;
+  opacity: 0.35;
+}
+
+/* Highlighted block (ANTop) */
+.block-highlight {
+  background: rgba(56, 189, 248, 0.07);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 32px rgba(56, 189, 248, 0.08);
+}
+
+.block-highlight .block-name { color: var(--blue); }
+.block-highlight .block-tag  { color: var(--blue-mid); opacity: 0.7; }
+
+/* VS badge */
+.vs-badge {
+  flex: 0 0 auto;
+  width: clamp(28px, 2.5vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-badge span {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(11px, 1.2vw, 14px);
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 0.05em;
+}
+
+.s3-footnote {
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: var(--muted);
+  text-align: center;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.s3-footnote strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECCIÓN 2 — ESTADO DEL ARTE (slides 4–10)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Shared two-column layout ─── */
+.slide-2col {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 44px 6vw;
+  gap: 4vw;
+}
+
+.col-visual {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.col-text { flex: 1; min-width: 0; }
+
+/* Slide 4 */
+#slide-4 .col-visual { flex: 0 0 48%; }
+#canvas-4 { width: 100%; height: 300px; display: block; border-radius: 14px; }
+
+/* Slide 7 — static hypercube */
+#canvas-7  { width: 100%; aspect-ratio: 400 / 340; display: block; border-radius: 14px; }
+
+/* Slide 14 — incomplete hypercube (same proportions as slide 7) */
+#canvas-14 { width: 100%; aspect-ratio: 400 / 340; display: block; border-radius: 14px; }
+
+/* Slides 8–11 — greedy routing overlays (title + distance rendered in HTML) */
+.greedy-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.greedy-title {
+  margin-top: 5vh;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(16px, 1.6vw, 24px);
+  font-weight: 600;
+  color: var(--white);
+}
+.greedy-dist {
+  margin-top: 1vh;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(13px, 1.2vw, 17px);
+  font-weight: 400;
+  color: var(--muted);
+}
+.greedy-dist.arrived { color: var(--blue); }
+
+.section-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+/* ── Slide 6: Limitaciones CGR ─── */
+#slide-6 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 6vw;
+  gap: 24px;
+}
+
+.s6-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  width: 100%;
+}
+
+.s6-panel {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s6-panel.panel-good { border-color: rgba(56,189,248,0.22);  background: rgba(56,189,248,0.03); }
+.s6-panel.panel-bad  { border-color: rgba(239,68,68,0.25);   background: rgba(239,68,68,0.03);  }
+
+.panel-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.panel-label-good { color: var(--blue); }
+.panel-label-bad  { color: #f87171; }
+
+.panel-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.panel-items li {
+  font-size: clamp(12px, 1.1vw, 14px);
+  color: var(--muted);
+  padding-left: 14px;
+  border-left: 2px solid var(--dim);
+  line-height: 1.4;
+}
+
+.panel-items li strong { color: var(--white); font-weight: 500; }
+
+/* ── Slide 9: Comparativa ─── */
+#slide-12 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 44px 6vw;
+  gap: 28px;
+}
+
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(12px, 1.2vw, 15px);
+}
+
+.comp-table th {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--dim);
+}
+
+.comp-table th.th-dim   { color: var(--dim);   font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; }
+.comp-table th.th-cgr   { color: var(--muted); font-size: clamp(14px,1.35vw,18px); }
+.comp-table th.th-antop { color: var(--blue);  font-size: clamp(14px,1.35vw,18px); }
+
+.comp-table td {
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(63,79,103,0.35);
+  color: var(--muted);
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .td-dim   { color: var(--dim); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Space Grotesk', sans-serif; white-space: nowrap; }
+.comp-table .td-antop { color: var(--white); }
+
+.badge-good {
+  display: inline-block;
+  background: rgba(56,189,248,0.1);
+  color: var(--blue);
+  border-radius: 4px;
+  padding: 1px 9px;
+  font-size: 0.88em;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.badge-bad {
+  display: inline-block;
+  background: rgba(239,68,68,0.1);
+  color: #f87171;
+  border-radius: 4px;
+  padding: 1px 9px;
+  font-size: 0.88em;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* ── Slide 13: Tablas ANTop ─── */
+#slide-13 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding: 0;
+}
+
+.s13-left {
+  width: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(63,79,103,0.25);
+}
+
+.s13-left canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.s13-left .s2-caption {
+  position: absolute;
+  bottom: 32px;
+  left: 0; right: 0;
+  text-align: center;
+}
+
+.s13-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 44px 4vw;
+  gap: 20px;
+}
+
+.s10-tables {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.s10-table-wrap {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.s10-table-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  padding: 12px 18px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.rt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rt-table th {
+  padding: 7px 16px;
+  text-align: left;
+  color: var(--dim);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(63,79,103,0.5);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.rt-table td {
+  padding: 8px 16px;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(63,79,103,0.18);
+  font-family: 'ui-monospace', 'Cascadia Mono', 'Consolas', monospace;
+  font-size: clamp(11px, 1vw, 13px);
+}
+
+.rt-table tr:last-child td { border-bottom: none; }
+.rt-table td.hl { color: var(--blue); }
+
+/* ═══════════════ SECCIÓN 3: ANTOP SATELITAL ═══════════════ */
+
+/* Slide 15 — comparativa bucles */
+#slide-15,
+#slide-lp1, #slide-lp2, #slide-lp3, #slide-lp4, #slide-lp5,
+#slide-pp0, #slide-pp1, #slide-pp2, #slide-pp3, #slide-pp4, #slide-pp5 {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 36px 6vw; gap: 20px;
+}
+.lp-canvas { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 8px; margin-top: 6px; }
+.lp-step { font-size: clamp(11px, 0.9vw, 13px); color: var(--muted); text-align: center; font-family: 'Space Grotesk', sans-serif; margin-top: 2px; opacity: 0.75; }
+.s15-comp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+.s15-panel {
+  background: rgba(255,255,255,0.025); border-radius: 14px;
+  padding: 20px 22px; display: flex; flex-direction: column; gap: 12px;
+}
+.s15-panel-bad  { border: 1px solid rgba(248,113,113,0.20); }
+.s15-panel-good { border: 1px solid rgba(56,189,248,0.20); }
+.s15-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.s15-label-bad  { color: #f87171; }
+.s15-label-good { color: var(--blue); }
+.s15-panel h3 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(14px,1.3vw,18px); font-weight: 600; color: var(--white); margin: 0; }
+.s15-desc { font-size: clamp(12px,1.05vw,14px); color: var(--muted); line-height: 1.5; }
+.s15-steps { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 0; }
+.s15-steps li { display: flex; gap: 10px; align-items: flex-start; font-size: clamp(12px,1.0vw,14px); color: var(--muted); line-height: 1.4; }
+.step-n { width: 18px; height: 18px; border-radius: 50%; background: rgba(56,189,248,0.12); color: var(--blue); font-size: 10px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+/* Slide 16 — paquetes del mismo flujo */
+#slide-16 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 5vw; gap: 20px; }
+.s16-comp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+.s16-panel { background: rgba(255,255,255,0.02); border-radius: 14px; overflow: hidden; }
+.s16-panel-bad  { border: 1px solid rgba(248,113,113,0.20); }
+.s16-panel-good { border: 1px solid rgba(56,189,248,0.20); }
+.s16-title { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 16px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.s16-panel-bad  .s16-title { color: #f87171; }
+.s16-panel-good .s16-title { color: var(--blue); }
+
+/* Slide 17 — loop epoch */
+#slide-17 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 5vw; gap: 20px; }
+.epoch-states { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; width: 100%; }
+.epoch-state { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden; }
+.epoch-state-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); padding: 8px 14px 6px; border-bottom: 1px solid rgba(63,79,103,0.3); }
+.epoch-table { width: 100%; border-collapse: collapse; }
+.epoch-table th { padding: 6px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(63,79,103,0.4); text-align: center; }
+.epoch-table th.th-row { text-align: left; color: var(--dim); }
+.epoch-table th.th-x   { color: var(--muted); }
+.epoch-table th.th-p1  { color: var(--blue); }
+.epoch-table th.th-p2  { color: var(--purple); }
+.epoch-table td { padding: 7px 10px; text-align: center; font-family: 'ui-monospace', monospace; font-size: clamp(11px,0.95vw,13px); border-bottom: 1px solid rgba(63,79,103,0.15); color: var(--muted); }
+.epoch-table td.td-row { text-align: left; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.epoch-table tr:last-child td { border-bottom: none; }
+.epoch-table td.e-blue   { color: var(--blue); }
+.epoch-table td.e-purple { color: var(--purple); }
+.epoch-table td.e-white  { color: var(--white); }
+
+/* Slide 18 — falsos positivos */
+#slide-18 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 44px 6vw; gap: 26px; }
+
+/* Slide 19 — transición H3 */
+#slide-19 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 6vw; gap: 20px; }
+.s19-comp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+.s19-panel { background: rgba(255,255,255,0.02); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+.s19-panel-bad  { border: 1px solid rgba(248,113,113,0.20); }
+.s19-panel-good { border: 1px solid rgba(56,189,248,0.20); }
+.s19-panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 16px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); width: 100%; text-align: center; }
+.s19-panel-bad  .s19-panel-title { color: #f87171; }
+.s19-panel-good .s19-panel-title { color: var(--blue); }
+.s19-caption { font-size: clamp(11px,0.95vw,13px); padding: 6px 14px 10px; text-align: center; }
+.s19-panel-bad  .s19-caption { color: #f87171; opacity: 0.8; }
+.s19-panel-good .s19-caption { color: var(--blue); opacity: 0.85; }
+</style>
+</head>
+<body>
+<div id="presentation">
+
+  <!-- ─────────────────────── SLIDE 1 ─────────────────────── -->
+  <div class="slide active" id="slide-1">
+    <canvas id="canvas-1"></canvas>
+    <div class="s1-fade"></div>
+    <div class="s1-content">
+      <h1 class="s1-title">ANTop Satelital</h1>
+      <p class="s1-subtitle">Ruteo descentralizado en constelaciones LEO</p>
+      <p class="s1-authors">
+        <span class="author-name">Gastón Frenkel</span>
+        <span class="author-sep">·</span>
+        <span class="author-name">Valentina Adelsflügel</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ─────────────────────── SLIDE 2 ─────────────────────── -->
+  <div class="slide" id="slide-2">
+    <div class="s2-visual">
+      <canvas id="canvas-2" width="500" height="420"></canvas>
+      <p class="s2-caption">Enlace intersatelital</p>
+    </div>
+    <div class="s2-text">
+      <h2 class="slide-title">El problema:<br><em>redes LEO</em></h2>
+      <ul class="key-points">
+        <li>Los satélites en órbita baja <strong>se mueven continuamente</strong> por lo que la topología de la red cambia en tiempo real.</li>
+        <li>Los enlaces entre satélites son <strong>intermitentes</strong>: dos satélites se "ven" solo durante ventanas de tiempo limitadas.</li>
+        <li>Las latencias de propagación <strong>varían dinámicamente</strong>.</li>
+        <li>Los protocolos tradicionales (TCP/IP) asumen conectividad estable por lo cual <strong>no funcionan</strong> en este entorno.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─────────────────────── SLIDE 3 ─────────────────────── -->
+  <div class="slide" id="slide-3">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      La solución: <em>DTN con ANTop</em>
+    </h2>
+    <div class="s3-diagram">
+      <!-- Block: Red LEO -->
+      <div class="block">
+        <div class="block-tag">Entorno</div>
+        <div class="block-name">Red LEO</div>
+        <div class="block-desc">Constelación de satélites con topología dinámica e intermitente</div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="connector">
+        <svg viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 H32 M26 2 L34 8 L26 14" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Block: DTN -->
+      <div class="block">
+        <div class="block-tag">Arquitectura</div>
+        <div class="block-name">DTN</div>
+        <div class="block-desc">Redes tolerantes a demoras e interrupciones, diseñadas para este entorno</div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="connector">
+        <svg viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 H32 M26 2 L34 8 L26 14" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Block: CGR -->
+      <div class="block">
+        <div class="block-tag">Ruteo estándar</div>
+        <div class="block-name">CGR</div>
+        <div class="block-desc">Requiere conocimiento global de la topología → limitaciones de escalabilidad</div>
+      </div>
+
+      <!-- VS -->
+      <div class="vs-badge"><span>vs</span></div>
+
+      <!-- Block: ANTop -->
+      <div class="block block-highlight">
+        <div class="block-tag">Este trabajo</div>
+        <div class="block-name">ANTop</div>
+        <div class="block-desc">Ruteo descentralizado: cada satélite decide usando solo información local</div>
+      </div>
+    </div>
+
+    <p class="s3-footnote">
+      Este trabajo propone, implementa y evalúa <strong>ANTop</strong> como alternativa
+      escalable a CGR en constelaciones LEO, integrando el sistema geoespacial <strong>H3</strong>.
+    </p>
+  </div>
+
+
+  <!-- ═══════════════════ SECCIÓN 2: ESTADO DEL ARTE ═══════════════════ -->
+
+  <!-- ─────────────────────── SLIDE 4 — DTN ─────────────────────────── -->
+  <div class="slide" id="slide-4">
+    <div class="slide-2col">
+      <div class="col-visual">
+        <canvas id="canvas-4"></canvas>
+        <p class="s2-caption">Store-carry-and-forward</p>
+      </div>
+      <div class="col-text">
+        <p class="section-tag">Estado del arte</p>
+        <h2 class="slide-title">DTN: redes<br><em>tolerantes a demoras</em></h2>
+        <ul class="key-points">
+          <li>Arquitectura diseñada para redes donde la conectividad extremo a extremo <strong>no está garantizada</strong>.</li>
+          <li><strong>Bundle Protocol</strong>: los datos se encapsulan en bundles que se almacenan en nodos intermedios y se reenvían cuando hay conectividad.</li>
+          <li>Permite comunicación con largas latencias, interrupciones frecuentes y <strong>sin ruta simultánea de extremo a extremo</strong>.</li>
+          <li>Estándar en comunicaciones espaciales: NASA, ESA, redes interplanetarias.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────── SLIDE 5 — CGR ─────────────────────────── -->
+  <div class="slide" id="slide-5">
+    <div class="slide-2col">
+      <div class="col-text">
+        <p class="section-tag">Estado del arte</p>
+        <h2 class="slide-title">CGR: <em>Contact Graph Routing</em></h2>
+        <ul class="key-points">
+          <li><strong>Contact Plan</strong>: tabla con todas las oportunidades de comunicación futuras entre nodos: inicio, fin, tasa, latencia.</li>
+          <li>Construye un <strong>Contact Graph</strong>: grafo acíclico donde los vértices son episodios de contacto.</li>
+          <li>Usa <strong>Dijkstra</strong> para encontrar la ruta que minimiza el tiempo de entrega (<em>Best Delivery Time</em>).</li>
+          <li>Evalúa condiciones locales al reenviar: prioridad, tamaño del bundle, estado de colas.</li>
+        </ul>
+      </div>
+      <div class="col-visual">
+        <svg viewBox="0 0 400 300" width="100%" xmlns="http://www.w3.org/2000/svg"
+             style="border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);">
+          <!-- Non-path edges -->
+          <line x1="72"  y1="150" x2="200" y2="240" stroke="#3f4f67" stroke-width="1.2"/>
+          <line x1="200" y1="240" x2="328" y2="150" stroke="#3f4f67" stroke-width="1.2"/>
+          <!-- Path edges (highlighted) -->
+          <line x1="72"  y1="150" x2="200" y2="68"  stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
+          <line x1="200" y1="68"  x2="328" y2="150" stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
+          <!-- Time window labels — non-path -->
+          <text x="118" y="212" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[0, 40]</text>
+          <text x="278" y="215" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[50, 90]</text>
+          <!-- Time window labels — path -->
+          <text x="122" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[10, 35]</text>
+          <text x="278" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[38, 70]</text>
+          <!-- Node A (source) -->
+          <circle cx="72"  cy="150" r="22" fill="#071426" stroke="#38bdf8" stroke-width="2"/>
+          <text   x="72"   y="155" fill="#38bdf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">A</text>
+          <text   x="72"   y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-1</text>
+          <!-- Node B (relay, on path) -->
+          <circle cx="200" cy="68"  r="18" fill="#071426" stroke="rgba(56,189,248,0.5)" stroke-width="1.5"/>
+          <text   x="200"  y="73"  fill="#94a3b8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">B</text>
+          <text   x="200"  y="97"  fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-2</text>
+          <!-- Node C (relay, off path) -->
+          <circle cx="200" cy="240" r="18" fill="#071426" stroke="#3f4f67" stroke-width="1.2"/>
+          <text   x="200"  y="245" fill="#3f4f67" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">C</text>
+          <text   x="200"  y="268" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-3</text>
+          <!-- Node D (destination) -->
+          <circle cx="328" cy="150" r="22" fill="#071426" stroke="#818cf8" stroke-width="2"/>
+          <text   x="328"  y="155" fill="#818cf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">D</text>
+          <text   x="328"  y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-4</text>
+          <!-- Legend -->
+          <text x="200" y="28" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" opacity="0.7" letter-spacing="1.5">RUTA ÓPTIMA — BDT MÍNIMO</text>
+        </svg>
+        <p class="s2-caption">Contact Graph — ventanas de tiempo y ruta óptima</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── SLIDE 6 — LIMITACIONES CGR ──────────────── -->
+  <div class="slide" id="slide-6">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Limitaciones de <em>CGR</em>
+    </h2>
+    <div class="s6-panels">
+      <div class="s6-panel panel-good">
+        <p class="panel-label panel-label-good">Constelación pequeña</p>
+        <ul class="panel-items">
+          <li>Contact Plan <strong>manejable</strong>: pocas entradas, fácil de mantener actualizado.</li>
+          <li>Señalización limitada para sincronizar el plan entre nodos.</li>
+          <li>Dijkstra converge rápido sobre grafos pequeños.</li>
+        </ul>
+        <svg viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;">
+          <line x1="28" y1="38" x2="72" y2="18"  stroke="#38bdf8" stroke-width="1" opacity="0.4"/>
+          <line x1="72" y1="18" x2="120" y2="50" stroke="#38bdf8" stroke-width="1" opacity="0.4"/>
+          <line x1="120" y1="50" x2="168" y2="28" stroke="#38bdf8" stroke-width="1" opacity="0.4"/>
+          <line x1="28" y1="38" x2="120" y2="50" stroke="#38bdf8" stroke-width="1" opacity="0.2"/>
+          <line x1="72" y1="18" x2="168" y2="28" stroke="#38bdf8" stroke-width="1" opacity="0.15"/>
+          <circle cx="28"  cy="38" r="7" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="72"  cy="18" r="7" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="120" cy="50" r="7" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="168" cy="28" r="7" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="s6-panel panel-bad">
+        <p class="panel-label panel-label-bad">Constelación grande</p>
+        <ul class="panel-items">
+          <li>Contact Plan <strong>difícil de mantener</strong></li>
+          <li><strong>Ruteo lento:</strong> la complejidad crece <strong>exponencialmente</strong> con el número de nodos.</li>
+          <li>Una falla no prevista <strong>invalida el plan completo</strong> → decisiones de ruteo incorrectas.</li>
+        </ul>
+        <svg id="dense-const-svg" viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────── SLIDE 7 — ANTop ──────────────────────── -->
+  <div class="slide" id="slide-7">
+    <div class="slide-2col">
+      <div class="col-text">
+        <p class="section-tag">Estado del arte</p>
+        <h2 class="slide-title">ANTop: <em>topología codificada<br>en las direcciones</em></h2>
+        <ul class="key-points">
+          <li>Cada nodo tiene una dirección en forma de <strong>secuencia de bits</strong> que refleja su posición en una estructura lógica: el <strong>hipercubo</strong>.</li>
+          <li>Las decisiones de ruteo se toman usando <strong>solo información local</strong> (no hay Contact Plan global).</li>
+          <li>La distancia entre dos nodos es la <strong>distancia Hamming</strong> de sus direcciones: cuántos bits difieren.</li>
+          <li>Diseñado para redes <strong>ad-hoc descentralizadas</strong> donde todos los nodos tienen igual jerarquía.</li>
+        </ul>
+      </div>
+      <div class="col-visual">
+        <canvas id="canvas-7"></canvas>
+        <p class="s2-caption">Hipercubo de 4 dimensiones</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── SLIDE 8 — RUTEO GREEDY: INICIO ─────────────── -->
+  <div class="slide" id="slide-8">
+    <canvas id="canvas-8" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+    <div class="greedy-overlay">
+      <p class="greedy-title">Ruteo greedy — Inicio</p>
+      <p class="greedy-dist">d(0000, 1011) = 3</p>
+    </div>
+  </div>
+
+  <!-- ──────────────── SLIDE 9 — RUTEO GREEDY: PASO 1 ────────────── -->
+  <div class="slide" id="slide-9">
+    <canvas id="canvas-9" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+    <div class="greedy-overlay">
+      <p class="greedy-title">Ruteo greedy — Paso 1 / 3</p>
+      <p class="greedy-dist">d(1000, 1011) = 2</p>
+    </div>
+  </div>
+
+  <!-- ──────────────── SLIDE 10 — RUTEO GREEDY: PASO 2 ───────────── -->
+  <div class="slide" id="slide-10">
+    <canvas id="canvas-10" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+    <div class="greedy-overlay">
+      <p class="greedy-title">Ruteo greedy — Paso 2 / 3</p>
+      <p class="greedy-dist">d(1010, 1011) = 1</p>
+    </div>
+  </div>
+
+  <!-- ──────────────── SLIDE 11 — RUTEO GREEDY: PASO 3 ───────────── -->
+  <div class="slide" id="slide-11">
+    <canvas id="canvas-11" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+    <div class="greedy-overlay">
+      <p class="greedy-title">Ruteo greedy — Paso 3 / 3</p>
+      <p class="greedy-dist arrived">d(1011, 1011) = 0</p>
+    </div>
+  </div>
+
+  <!-- ──────────────────── SLIDE 12 — REACTIVO VS PROACTIVO ────────── -->
+  <div class="slide" id="slide-12">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Proactivo vs. <em>reactivo</em>
+    </h2>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th class="th-dim">Dimensión</th>
+          <th class="th-cgr">CGR (proactivo)</th>
+          <th class="th-antop">ANTop (reactivo)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-dim">Conocimiento requerido</td>
+          <td>Global — todos los contactos futuros de toda la red</td>
+          <td class="td-antop">Local — solo el estado de los vecinos inmediatos</td>
+        </tr>
+        <tr>
+          <td class="td-dim">Cálculo de rutas</td>
+          <td>Precomputado y mantenido continuamente</td>
+          <td class="td-antop">Al momento de rutear (on-demand)</td>
+        </tr>
+        <tr>
+          <td class="td-dim">Ante fallas</td>
+          <td>Contact Plan queda desactualizado → rutas incorrectas</td>
+          <td class="td-antop">Adapta en base al estado local disponible</td>
+        </tr>
+        <tr>
+          <td class="td-dim">Complejidad</td>
+          <td><span class="badge-bad">Exponencial</span></td>
+          <td><span class="badge-good">Lineal</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ──────────────────── SLIDE 13 — TABLAS ANTop ─────────────────── -->
+  <div class="slide" id="slide-13">
+    <div class="s13-left">
+      <canvas id="canvas-13"></canvas>
+      <p class="s2-caption">Ruteo greedy — 0000 → 1011</p>
+    </div>
+    <div class="s13-right">
+      <h2 class="slide-title" style="margin-bottom:0;">
+        Estado local en <em>ANTop</em>
+      </h2>
+      <div class="s10-tables">
+        <div class="s10-table-wrap">
+          <div class="s10-table-title">Tabla de ruteo</div>
+          <table class="rt-table">
+            <thead>
+              <tr><th>Destino</th><th>Next hop</th><th>Distancia</th><th>Visited Bitmap</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="hl">1011</td><td>1011</td><td>1</td><td>[1,0,0,0]</td></tr>
+              <tr><td>0000</td><td>1000</td><td>2</td><td>[0,1,0,0]</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="s10-table-wrap">
+          <div class="s10-table-title">Tabla de pares origen-destino</div>
+          <table class="rt-table">
+            <thead>
+              <tr><th>Origen</th><th>Destino</th><th>Distancia mín.</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>0000</td><td class="hl">1011</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="s3-footnote">
+        Tablas locales del nodo <strong>1010</strong>. Se construyen <strong>dinámicamente</strong> al recibir cada paquete — no son precomputadas.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════ SECCIÓN 3: ANTOP SATELITAL ═══════════════════ -->
+
+  <!-- ─────────────────── SLIDE 14 — EL DESAFÍO ──────────────────────── -->
+  <div class="slide" id="slide-14">
+    <div class="slide-2col">
+      <div class="col-text">
+        <p class="section-tag">ANTop Satelital</p>
+        <h2 class="slide-title">El desafío:<br><em>ANTop en LEO</em></h2>
+        <ul class="key-points">
+          <li>En LEO la topología cambia de forma <strong>predecible pero continua</strong> — el hipercubo nunca está completo y los vecinos disponibles varían constantemente.</li>
+          <li>Baja conectividad → <strong>bucles temporales más frecuentes</strong> e inevitables durante el ruteo.</li>
+          <li>Las direcciones del hipercubo deben reflejar <strong>posiciones geográficas</strong>: dos satélites cercanos deben tener direcciones de Hamming cercanas.</li>
+        </ul>
+      </div>
+      <div class="col-visual">
+        <canvas id="canvas-14"></canvas>
+        <p class="s2-caption">Hipercubo con conectividad intermitente</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────── SLIDE 15 — DETECCIÓN DE BUCLES ──────────────── -->
+  <div class="slide" id="slide-15">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Detección de bucles: <em>mecanismo mejorado</em>
+    </h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp0" class="lp-canvas"></canvas>
+        <p class="lp-step">Paquete en A · destino E</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDES LP1–LP5 — Bucle en ANTop original (pasos 1–5) ──────── -->
+  <div class="slide" id="slide-lp1">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp1" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 1 / 4 — A envía a B</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-lp2">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp2" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 2 / 4 — B envía a D</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-lp3">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp3" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 3 / 4 — D devuelve a B (sin camino a E)</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-lp4">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp4" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 4 / 4 — B detecta bucle · devuelve a D sin explorar alternativas</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-lp5">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas id="canvas-lp5" class="lp-canvas"></canvas>
+        <p class="lp-step">D almacena el paquete · sin vecinos sin explorar</p>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDES PP0–PP5 — Propuesta: ruteo alternativo ─────── -->
+  <div class="slide" id="slide-pp0">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp0" class="lp-canvas"></canvas>
+        <p class="lp-step">Paquete en A · destino E</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-pp1">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp1" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 1 / 4 — A envía a B</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-pp2">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp2" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 2 / 4 — B envía a D</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-pp3">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp3" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 3 / 4 — D devuelve a B (sin camino a E)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-pp4">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp4" class="lp-canvas"></canvas>
+        <p class="lp-step">Paso 4 / 4 — B detecta bucle · rutea a C</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" id="slide-pp5">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">Detección de bucles: <em>mecanismo mejorado</em></h2>
+    <div class="s15-comp">
+      <div class="s15-panel s15-panel-bad">
+        <p class="s15-label s15-label-bad">ANTop original</p>
+        <h3>Bucle → devolver al sender</h3>
+        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
+        <canvas class="lp-canvas lp-orig-canvas"></canvas>
+      </div>
+      <div class="s15-panel s15-panel-good">
+        <p class="s15-label s15-label-good">Propuesta</p>
+        <h3>Bucle → explorar alternativas</h3>
+        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
+        <canvas id="canvas-pp5" class="lp-canvas"></canvas>
+        <p class="lp-step">¡Paquete entregado! — C rutea a E</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── SLIDE 16 — PAQUETES DEL MISMO FLUJO ────────────── -->
+  <div class="slide" id="slide-16">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      El problema con <em>múltiples paquetes del mismo flujo</em>
+    </h2>
+    <div class="s16-comp">
+      <div class="s16-panel s16-panel-bad">
+        <p class="s16-title">Sin loop epoch</p>
+        <svg viewBox="0 0 320 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="padding:12px 8px;">
+          <defs>
+            <marker id="arr-bad" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="rgba(248,113,113,0.8)"/>
+            </marker>
+          </defs>
+          <!-- Node X center -->
+          <circle cx="160" cy="100" r="22" fill="#0d1826" stroke="rgba(248,113,113,0.7)" stroke-width="2"/>
+          <text x="160" y="104" text-anchor="middle" fill="#f87171" font-size="13" font-weight="600" font-family="Space Grotesk,sans-serif">X</text>
+          <!-- Packets arriving from left -->
+          <text x="24" y="64"  fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P1</text>
+          <text x="24" y="102" fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P2</text>
+          <text x="24" y="140" fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P3</text>
+          <line x1="46" y1="62"  x2="135" y2="88"  stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-bad)"/>
+          <line x1="46" y1="100" x2="135" y2="100" stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-bad)"/>
+          <line x1="46" y1="138" x2="135" y2="112" stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-bad)"/>
+          <!-- 3 different neighbors -->
+          <circle cx="276" cy="50"  r="14" fill="#0d1826" stroke="rgba(63,79,103,0.5)" stroke-width="1.2"/>
+          <circle cx="276" cy="100" r="14" fill="#0d1826" stroke="rgba(63,79,103,0.5)" stroke-width="1.2"/>
+          <circle cx="276" cy="150" r="14" fill="#0d1826" stroke="rgba(63,79,103,0.5)" stroke-width="1.2"/>
+          <text x="276" y="54"  text-anchor="middle" fill="#3f4f67" font-size="10" font-family="Space Grotesk,sans-serif">N1</text>
+          <text x="276" y="104" text-anchor="middle" fill="#3f4f67" font-size="10" font-family="Space Grotesk,sans-serif">N2</text>
+          <text x="276" y="154" text-anchor="middle" fill="#3f4f67" font-size="10" font-family="Space Grotesk,sans-serif">N3</text>
+          <!-- P1→N1, P2→N2, P3→N3 -->
+          <line x1="182" y1="88"  x2="260" y2="55"  stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr-bad)" opacity="0.7"/>
+          <line x1="182" y1="100" x2="260" y2="100" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr-bad)" opacity="0.7"/>
+          <line x1="182" y1="112" x2="260" y2="145" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr-bad)" opacity="0.7"/>
+          <text x="230" y="62"  fill="#f87171" font-size="9" font-family="ui-monospace,monospace" opacity="0.85">P1</text>
+          <text x="230" y="96"  fill="#f87171" font-size="9" font-family="ui-monospace,monospace" opacity="0.85">P2</text>
+          <text x="230" y="124" fill="#f87171" font-size="9" font-family="ui-monospace,monospace" opacity="0.85">P3</text>
+          <text x="160" y="180" text-anchor="middle" fill="#f87171" font-size="10" font-family="Space Grotesk,sans-serif" opacity="0.8">3 reexploraciones → fragmentación</text>
+        </svg>
+      </div>
+      <div class="s16-panel s16-panel-good">
+        <p class="s16-title">Con loop epoch</p>
+        <svg viewBox="0 0 320 200" width="100%" xmlns="http://www.w3.org/2000/svg" style="padding:12px 8px;">
+          <defs>
+            <marker id="arr-good" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="rgba(56,189,248,0.8)"/>
+            </marker>
+          </defs>
+          <!-- Node X center -->
+          <circle cx="160" cy="100" r="22" fill="#0d1826" stroke="rgba(56,189,248,0.7)" stroke-width="2"/>
+          <text x="160" y="104" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="600" font-family="Space Grotesk,sans-serif">X</text>
+          <!-- Packets arriving from left -->
+          <text x="24" y="64"  fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P1</text>
+          <text x="24" y="102" fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P2</text>
+          <text x="24" y="140" fill="#94a3b8" font-size="11" font-family="ui-monospace,monospace">P3</text>
+          <line x1="46" y1="62"  x2="135" y2="88"  stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-good)"/>
+          <line x1="46" y1="100" x2="135" y2="100" stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-good)"/>
+          <line x1="46" y1="138" x2="135" y2="112" stroke="rgba(148,163,184,0.4)" stroke-width="1" marker-end="url(#arr-good)"/>
+          <!-- Only 1 neighbor used -->
+          <circle cx="276" cy="100" r="14" fill="#0d1826" stroke="rgba(56,189,248,0.7)" stroke-width="1.8"/>
+          <text x="276" y="104" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif">N1</text>
+          <!-- All packets → N1 -->
+          <line x1="178" y1="88"  x2="260" y2="100"  stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arr-good)" opacity="0.8"/>
+          <line x1="182" y1="100" x2="260" y2="100" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arr-good)" opacity="0.8"/>
+          <line x1="178" y1="112" x2="260" y2="100" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arr-good)" opacity="0.8"/>
+          <text x="160" y="180" text-anchor="middle" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif" opacity="0.85">1 reexploración → ruteo consistente</text>
+          <!-- Epoch label on P1 -->
+          <text x="76" y="90" fill="#38bdf8" font-size="9" font-family="ui-monospace,monospace" opacity="0.7">epoch+1</text>
+          <text x="76" y="110" fill="#3f4f67" font-size="9" font-family="ui-monospace,monospace">reusa</text>
+          <text x="76" y="136" fill="#3f4f67" font-size="9" font-family="ui-monospace,monospace">reusa</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────── SLIDE 17 — LOOP EPOCH: MECANISMO ──────────────── -->
+  <div class="slide" id="slide-17">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Loop epoch: <em>versionado distribuido</em>
+    </h2>
+    <div class="epoch-states">
+      <!-- Estado A: bucle detectado, ambos paquetes llegan con dist=8 -->
+      <div class="epoch-state">
+        <p class="epoch-state-label">Bucle detectado</p>
+        <table class="epoch-table">
+          <thead>
+            <tr><th class="th-row"></th><th class="th-x">Nodo X</th><th class="th-p1">P1</th><th class="th-p2">P2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-row">dist. origen</td><td>5</td><td class="e-white">8</td><td class="e-white">8</td></tr>
+            <tr><td class="td-row">loop epoch</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:10px; color:var(--muted); padding:8px 10px; line-height:1.4;">dist paquete &gt; dist nodo → bucle detectado para P1 y P2</p>
+      </div>
+      <!-- Estado B: P1 procesado → reexploración, epoch→1 -->
+      <div class="epoch-state" style="border-color:rgba(56,189,248,0.2);">
+        <p class="epoch-state-label" style="color:var(--blue);">P1 procesado</p>
+        <table class="epoch-table">
+          <thead>
+            <tr><th class="th-row"></th><th class="th-x">Nodo X</th><th class="th-p1">P1</th><th class="th-p2">P2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-row">dist. origen</td><td>5</td><td class="e-blue">6</td><td>8</td></tr>
+            <tr><td class="td-row">loop epoch</td><td class="e-blue">1</td><td class="e-blue">1</td><td>0</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:10px; color:var(--blue); padding:8px 10px; line-height:1.4; opacity:0.85;">epoch local = epoch P1 → reexploración, epoch incrementado</p>
+      </div>
+      <!-- Estado C: P2 procesado → usa decisión vigente, no reexplora -->
+      <div class="epoch-state" style="border-color:rgba(129,140,248,0.2);">
+        <p class="epoch-state-label" style="color:var(--purple);">P2 procesado</p>
+        <table class="epoch-table">
+          <thead>
+            <tr><th class="th-row"></th><th class="th-x">Nodo X</th><th class="th-p1">P1</th><th class="th-p2">P2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-row">dist. origen</td><td>5</td><td class="e-blue">6</td><td class="e-purple">6</td></tr>
+            <tr><td class="td-row">loop epoch</td><td>1</td><td class="e-blue">1</td><td class="e-purple">1</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:10px; color:var(--purple); padding:8px 10px; line-height:1.4; opacity:0.85;">epoch local &gt; epoch P2 → bucle ya resuelto, usa next hop vigente</p>
+      </div>
+    </div>
+    <p class="s3-footnote" style="text-align:center;">
+      El epoch se propaga implícitamente a través de los paquetes → <strong>convergencia eventual sin sincronización explícita</strong>.
+    </p>
+  </div>
+
+  <!-- ──────────────── SLIDE 18 — FALSOS POSITIVOS ───────────────────── -->
+  <div class="slide" id="slide-18">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Falsos positivos: <em>decisión de diseño</em>
+    </h2>
+    <svg viewBox="0 0 720 240" width="88%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr-n" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="rgba(56,189,248,0.7)"/>
+        </marker>
+        <marker id="arr-fp" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="rgba(248,113,113,0.7)"/>
+        </marker>
+        <marker id="arr-ok" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="rgba(56,189,248,0.5)"/>
+        </marker>
+      </defs>
+
+      <!-- Label: ruta normal -->
+      <text x="178" y="18" text-anchor="middle" fill="var(--dim)" font-size="10" font-family="Space Grotesk,sans-serif" letter-spacing="1.2" text-transform="uppercase">RUTA ORIGINAL  (3 saltos)</text>
+      <!-- Normal path: A(40,80)→B(160,80)→C(280,80)→D(400,80) -->
+      <line x1="58"  y1="80" x2="142" y2="80" stroke="rgba(56,189,248,0.55)" stroke-width="1.8" marker-end="url(#arr-n)"/>
+      <line x1="178" y1="80" x2="262" y2="80" stroke="rgba(56,189,248,0.55)" stroke-width="1.8" marker-end="url(#arr-n)"/>
+      <line x1="298" y1="80" x2="382" y2="80" stroke="rgba(56,189,248,0.55)" stroke-width="1.8" marker-end="url(#arr-n)"/>
+      <circle cx="40"  cy="80" r="16" fill="#070d1a" stroke="rgba(56,189,248,0.6)" stroke-width="1.5"/>
+      <circle cx="160" cy="80" r="16" fill="#070d1a" stroke="rgba(56,189,248,0.6)" stroke-width="1.5"/>
+      <circle cx="280" cy="80" r="16" fill="#070d1a" stroke="rgba(56,189,248,0.6)" stroke-width="1.5"/>
+      <circle cx="400" cy="80" r="16" fill="#070d1a" stroke="rgba(129,140,248,0.7)" stroke-width="1.5"/>
+      <text x="40"  y="84" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="160" y="84" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <text x="280" y="84" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">C</text>
+      <text x="400" y="84" text-anchor="middle" fill="#818cf8" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">D</text>
+
+      <!-- Falla de enlace B-C -->
+      <line x1="178" y1="145" x2="262" y2="145" stroke="rgba(248,113,113,0.3)" stroke-width="1.5" stroke-dasharray="4,4"/>
+      <text x="220" y="136" text-anchor="middle" fill="#f87171" font-size="10" font-family="Space Grotesk,sans-serif" opacity="0.85">enlace caído</text>
+      <text x="214" y="149" text-anchor="middle" fill="#f87171" font-size="16" opacity="0.7">✕</text>
+
+      <!-- Label: desvío legítimo -->
+      <text x="370" y="200" text-anchor="middle" fill="var(--dim)" font-size="10" font-family="Space Grotesk,sans-serif" letter-spacing="1.2">DESVÍO LEGÍTIMO  (4 saltos)</text>
+      <!-- Detour path: A→B→E→C→D (A at 160, B at 280, E at 220 bottom, C at 340, D at 460 approx) -->
+      <!-- Reuse same nodes, new path: A(40)→B(160)→E(220,165)→C(280)→D(400) -->
+      <line x1="40"  y1="96"  x2="152" y2="127" stroke="rgba(56,189,248,0.4)" stroke-width="1.5" marker-end="url(#arr-ok)"/>
+      <line x1="164" y1="133" x2="210" y2="158" stroke="rgba(56,189,248,0.4)" stroke-width="1.5" marker-end="url(#arr-ok)"/>
+      <line x1="232" y1="158" x2="270" y2="140" stroke="rgba(56,189,248,0.4)" stroke-width="1.5" marker-end="url(#arr-ok)"/>
+      <line x1="280" y1="124" x2="384" y2="96"  stroke="rgba(56,189,248,0.4)" stroke-width="1.5" marker-end="url(#arr-ok)"/>
+      <!-- Node E -->
+      <circle cx="220" cy="165" r="14" fill="#070d1a" stroke="rgba(56,189,248,0.45)" stroke-width="1.3"/>
+      <text x="220" y="169" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">E</text>
+      <!-- Hop count annotation -->
+      <text x="220" y="216" text-anchor="middle" fill="#f87171" font-size="11" font-family="ui-monospace,monospace" opacity="0.85">hopCount = 4  &gt;  dist almacenada = 3</text>
+      <text x="220" y="232" text-anchor="middle" fill="#f87171" font-size="10" font-family="Space Grotesk,sans-serif" opacity="0.75">→ detectado como bucle, pero es un desvío legítimo</text>
+
+      <!-- Divider -->
+      <line x1="470" y1="20" x2="470" y2="220" stroke="rgba(63,79,103,0.3)" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <!-- Decision box -->
+      <rect x="496" y="60" width="210" height="120" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(56,189,248,0.2)" stroke-width="1"/>
+      <text x="601" y="88" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Space Grotesk,sans-serif" letter-spacing="1.2">DECISIÓN DE DISEÑO</text>
+      <text x="601" y="110" text-anchor="middle" fill="var(--white)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Sin umbral de tolerancia</text>
+      <text x="601" y="132" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Inter,sans-serif">El costo de mantener paquetes</text>
+      <text x="601" y="147" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Inter,sans-serif">más tiempo en bucle superó</text>
+      <text x="601" y="162" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="Inter,sans-serif">la reducción en falsos positivos.</text>
+    </svg>
+  </div>
+
+  <!-- ──────────────────── SLIDE 19 — TRANSICIÓN H3 ──────────────────── -->
+  <div class="slide" id="slide-19">
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      De la topología al <em>espacio geográfico</em>
+    </h2>
+    <div class="s19-comp">
+      <div class="s19-panel s19-panel-bad">
+        <p class="s19-panel-title">Grilla cuadrada</p>
+        <svg id="s19-squares" viewBox="0 0 300 210" width="92%" xmlns="http://www.w3.org/2000/svg" style="padding:10px 0;"></svg>
+        <p class="s19-caption">Distorsión geométrica significativa — especialmente en los polos</p>
+      </div>
+      <div class="s19-panel s19-panel-good">
+        <p class="s19-panel-title">Celdas hexagonales (H3)</p>
+        <svg id="s19-hexes" viewBox="0 0 300 210" width="92%" xmlns="http://www.w3.org/2000/svg" style="padding:10px 0;"></svg>
+        <p class="s19-caption">Relaciones de vecindad uniformes — sin distorsión a escala global</p>
+      </div>
+    </div>
+    <p class="s3-footnote" style="text-align:center;">
+      La siguiente sección explica cómo H3 construye las <strong>direcciones ANTop</strong> a partir de esta discretización hexagonal.
+    </p>
+  </div>
+
+</div><!-- /presentation -->
+
+<!-- Navigation -->
+<div id="nav-dots">
+  <div class="dot active" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+  <div class="dot" onclick="goTo(5)"></div>
+  <div class="dot" onclick="goTo(6)"></div>
+  <div class="dot" onclick="goTo(7)"></div>
+  <div class="dot" onclick="goTo(8)"></div>
+  <div class="dot" onclick="goTo(9)"></div>
+  <div class="dot" onclick="goTo(10)"></div>
+  <div class="dot" onclick="goTo(11)"></div>
+  <div class="dot" onclick="goTo(12)"></div>
+  <div class="dot" onclick="goTo(13)"></div>
+  <div class="dot" onclick="goTo(14)"></div>
+  <div class="dot" onclick="goTo(15)"></div>
+  <div class="dot" onclick="goTo(16)"></div>
+  <div class="dot" onclick="goTo(17)"></div>
+  <div class="dot" onclick="goTo(18)"></div>
+  <div class="dot" onclick="goTo(19)"></div>
+  <div class="dot" onclick="goTo(20)"></div>
+  <div class="dot" onclick="goTo(21)"></div>
+  <div class="dot" onclick="goTo(22)"></div>
+  <div class="dot" onclick="goTo(23)"></div>
+  <div class="dot" onclick="goTo(24)"></div>
+  <div class="dot" onclick="goTo(25)"></div>
+  <div class="dot" onclick="goTo(26)"></div>
+  <div class="dot" onclick="goTo(27)"></div>
+  <div class="dot" onclick="goTo(28)"></div>
+  <div class="dot" onclick="goTo(29)"></div>
+</div>
+<div id="slide-counter">1 / 30</div>
+
+<script>
+'use strict';
+
+// ── NAVIGATION ────────────────────────────────────────────────
+const slides = Array.from(document.querySelectorAll('.slide'));
+const dots   = Array.from(document.querySelectorAll('.dot'));
+const counter = document.getElementById('slide-counter');
+let current = 0;
+
+function goTo(n) {
+  if (n === current) return;
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, slides.length - 1));
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  counter.textContent = `${current + 1} / ${slides.length}`;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown'  || e.key === 'PageDown') goTo(current + 1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp'    || e.key === 'PageUp')   goTo(current - 1);
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End')  goTo(slides.length - 1);
+});
+
+// ── 3D ORBITAL MATH ───────────────────────────────────────────
+// Circular orbit: radius rx, inclination incR (rad), ascending node lanR (rad).
+// Returns screen offset from center {sx, sy} and depth z.
+// z > 0  →  near side (satellite in front of Earth, draw after planet).
+// z < 0  →  far side  (satellite behind Earth,      draw before planet).
+//
+// Derivation:
+//   In-plane position: u = rx·cos(θ), v = rx·sin(θ)
+//   After inclination rotation (around X):  y₃ = v·cos(i),  z₃ = v·sin(i)
+//   After LAN rotation (around Z):         sx = u·cos(Ω) - y₃·sin(Ω)
+//                                          sy = u·sin(Ω) + y₃·cos(Ω)
+function orbitPoint(rx, incR, lanR, theta) {
+  const cI = Math.cos(incR), sI = Math.sin(incR);
+  const cL = Math.cos(lanR), sL = Math.sin(lanR);
+  const u  = rx * Math.cos(theta);
+  const v  = rx * Math.sin(theta);
+  return {
+    sx: u * cL - v * cI * sL,
+    sy: u * sL + v * cI * cL,
+    z:  v * sI,
+  };
+}
+
+// Draw one half of an orbit ring (80 segments).
+// Front half (isFront=true):  θ ∈ [0, π]  → drawn after  Earth.
+// Back  half (isFront=false): θ ∈ [π, 2π] → drawn before Earth.
+// Both halves use the same solid style — Earth's disk naturally occludes the back arc.
+function drawOrbitArc(ctx, CX, CY, rx, incR, lanR, isFront) {
+  const t0 = isFront ? 0 : Math.PI;
+  const N  = 80;
+  ctx.beginPath();
+  for (let i = 0; i <= N; i++) {
+    const p = orbitPoint(rx, incR, lanR, t0 + Math.PI * i / N);
+    if (i === 0) ctx.moveTo(CX + p.sx, CY + p.sy);
+    else         ctx.lineTo(CX + p.sx, CY + p.sy);
+  }
+  ctx.strokeStyle = 'rgba(56,189,248,0.18)';
+  ctx.lineWidth   = 1;
+  ctx.stroke();
+}
+
+function hexToRgba(hex, a) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${a.toFixed(3)})`;
+}
+
+function drawSatDot(ctx, x, y, color, alpha) {
+  const sg = ctx.createRadialGradient(x, y, 0, x, y, 10);
+  sg.addColorStop(0,   hexToRgba(color, alpha * 0.75));
+  sg.addColorStop(0.5, hexToRgba(color, alpha * 0.25));
+  sg.addColorStop(1,   hexToRgba(color, 0));
+  ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2);
+  ctx.fillStyle = sg; ctx.fill();
+  ctx.beginPath(); ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`; ctx.fill();
+}
+
+function drawEarth(ctx, CX, CY, ER) {
+  // Atmosphere glow
+  const atm = ctx.createRadialGradient(CX, CY, ER * 0.85, CX, CY, ER * 1.7);
+  atm.addColorStop(0,   'rgba(56,189,248,0.13)');
+  atm.addColorStop(0.5, 'rgba(56,189,248,0.04)');
+  atm.addColorStop(1,   'rgba(56,189,248,0)');
+  ctx.beginPath(); ctx.arc(CX, CY, ER * 1.7, 0, Math.PI * 2);
+  ctx.fillStyle = atm; ctx.fill();
+  // Surface
+  const eg = ctx.createRadialGradient(CX - ER*0.28, CY - ER*0.28, ER*0.05, CX, CY, ER);
+  eg.addColorStop(0,    '#2078b8');
+  eg.addColorStop(0.55, '#0d4070');
+  eg.addColorStop(1,    '#040f1e');
+  ctx.beginPath(); ctx.arc(CX, CY, ER, 0, Math.PI * 2);
+  ctx.fillStyle = eg; ctx.fill();
+  // Limb highlight
+  const rim = ctx.createLinearGradient(CX - ER, CY - ER, CX + ER*0.3, CY + ER*0.3);
+  rim.addColorStop(0, 'rgba(56,189,248,0.22)');
+  rim.addColorStop(1, 'rgba(56,189,248,0)');
+  ctx.beginPath(); ctx.arc(CX, CY, ER, 0, Math.PI * 2);
+  ctx.strokeStyle = rim; ctx.lineWidth = 1.5; ctx.stroke();
+}
+
+// ── SLIDE 1 — STARFIELD + ORBITAL SCENE ──────────────────────
+// HiDPI fix: buffer = viewport × devicePixelRatio; context is pre-scaled so
+// all drawing functions use CSS pixel coordinates (window.innerWidth/Height).
+const c1   = document.getElementById('canvas-1');
+const ctx1 = c1.getContext('2d');
+function resizeC1() {
+  const dpr = window.devicePixelRatio || 1;
+  c1.width  = Math.round(window.innerWidth  * dpr);
+  c1.height = Math.round(window.innerHeight * dpr);
+  ctx1.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeC1();
+window.addEventListener('resize', resizeC1);
+
+const stars1 = Array.from({ length: 240 }, () => ({
+  nx: Math.random(), ny: Math.random(),
+  r:     Math.random() * 1.4 + 0.25,
+  base:  Math.random() * 0.55 + 0.2,
+  phase: Math.random() * Math.PI * 2,
+  freq:  Math.random() * 0.0008 + 0.0003,
+}));
+
+// Three orbital planes: rxF = fraction of min(W,H), inc/lan in degrees.
+// inc controls how tilted the ellipse looks; lan rotates its orientation.
+// Condition for back arc to pass behind Earth disk: rxF * cos(inc) < ER_frac (0.115)
+//   Orbit 1: 0.235 * cos(70°) = 0.080  ✓
+//   Orbit 2: 0.280 * cos(72°) = 0.087  ✓
+//   Orbit 3: 0.330 * cos(74°) = 0.091  ✓
+// 5 evenly-spaced satellites per plane (phases 0, 0.2, 0.4, 0.6, 0.8).
+// Each plane is offset slightly so the sats don't align across planes.
+const N_SATS = 5;
+function evenPhases(offset = 0) {
+  return Array.from({ length: N_SATS }, (_, i) => (i / N_SATS + offset) % 1);
+}
+const ORBITS1 = [
+  { rxF: 0.235, inc: 70, lan:   0, phases: evenPhases(0.00), speed: 0.000075, color: '#38bdf8' },
+  { rxF: 0.280, inc: 72, lan:  60, phases: evenPhases(0.10), speed: 0.000058, color: '#818cf8' },
+  { rxF: 0.330, inc: 74, lan: 120, phases: evenPhases(0.05), speed: 0.000045, color: '#38bdf8' },
+];
+
+function drawScene1(t) {
+  const W = window.innerWidth, H = window.innerHeight;
+  const CX = W * 0.5, CY = H * 0.40;
+  const D  = Math.min(W, H);
+  const ER = D * 0.115;
+
+  ctx1.fillStyle = '#060b18';
+  ctx1.fillRect(0, 0, W, H);
+
+  // Stars
+  for (const s of stars1) {
+    const a = s.base * (0.65 + 0.35 * Math.sin(t * s.freq + s.phase));
+    ctx1.beginPath();
+    ctx1.arc(s.nx * W, s.ny * H, s.r, 0, Math.PI * 2);
+    ctx1.fillStyle = `rgba(241,245,249,${a.toFixed(3)})`;
+    ctx1.fill();
+  }
+
+  const orbs = ORBITS1.map(o => ({
+    ...o, rx: o.rxF * D,
+    incR: o.inc * Math.PI / 180,
+    lanR: o.lan * Math.PI / 180,
+  }));
+
+  // Continuous depth-based alpha: 0.15 (far back) → 0.575 (equatorial) → 1.0 (closest)
+  // Formula: alpha = 0.15 + 0.85 * (z/rx + 1) / 2
+  function satAlpha(z, rx) { return 0.15 + 0.85 * (z / rx + 1) / 2; }
+
+  // 1. Back arcs — drawn first so Earth covers the portion that goes behind it
+  for (const o of orbs) drawOrbitArc(ctx1, CX, CY, o.rx, o.incR, o.lanR, false);
+
+  // 2. Far-side satellites — drawn before Earth; disk occludes them if within radius
+  for (const o of orbs) {
+    for (const phase of o.phases) {
+      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
+      if (p.z < 0) drawSatDot(ctx1, CX + p.sx, CY + p.sy, o.color, satAlpha(p.z, o.rx));
+    }
+  }
+
+  // 3. Earth — occludes everything drawn so far within its disk
+  drawEarth(ctx1, CX, CY, ER);
+
+  // 4. Front arcs — drawn on top of Earth
+  for (const o of orbs) drawOrbitArc(ctx1, CX, CY, o.rx, o.incR, o.lanR, true);
+
+  // 5. Near-side satellites — drawn on top of everything
+  for (const o of orbs) {
+    for (const phase of o.phases) {
+      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
+      if (p.z >= 0) drawSatDot(ctx1, CX + p.sx, CY + p.sy, o.color, satAlpha(p.z, o.rx));
+    }
+  }
+}
+
+// ── SLIDE 2 — INTERMITTENT ISL ANIMATION ─────────────────────
+// HiDPI fix: buffer = logical size (500×420) × DPR; CSS layout unchanged because
+// height:auto preserves the aspect ratio regardless of the buffer size.
+const c2   = document.getElementById('canvas-2');
+const ctx2 = c2.getContext('2d');
+const W2 = 500, H2 = 420;   // logical (CSS-pixel) drawing dimensions
+const CX2 = W2 * 0.5, CY2 = H2 * 0.5;
+const ER2 = 58;
+(function() {
+  const dpr = window.devicePixelRatio || 1;
+  c2.width  = Math.round(W2 * dpr);
+  c2.height = Math.round(H2 * dpr);
+  ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+})();
+
+// Two satellites. Condition to pass behind Earth disk: rx * cos(inc) < ER2 (58)
+//   SAT_A: 133 * cos(68°) = 49.9  ✓
+//   SAT_B: 121 * cos(65°) = 51.1  ✓
+const S2_SATS = [
+  { rx: 133, inc: 68, lan: 10, phase: 0, speed: 0.00018, color: '#38bdf8' },
+  { rx: 121, inc: 65, lan: 72, phase: 0, speed: 0.00013, color: '#a78bfa' },
+];
+const LINK_THRESHOLD = 165;
+
+// Returns true if the 2D segment (x1,y1)→(x2,y2) crosses the circle (cx,cy,r).
+function seg2dCrossesDisk(x1, y1, x2, y2, cx, cy, r) {
+  const dx = x2-x1, dy = y2-y1;
+  const fx = x1-cx, fy = y1-cy;
+  const a  = dx*dx + dy*dy;
+  if (a < 1e-10) return false;
+  const b    = 2*(fx*dx + fy*dy);
+  const c    = fx*fx + fy*fy - r*r;
+  const disc = b*b - 4*a*c;
+  if (disc < 0) return false;
+  const sq = Math.sqrt(disc);
+  const t1 = (-b-sq)/(2*a), t2 = (-b+sq)/(2*a);
+  return (t1>=0&&t1<=1)||(t2>=0&&t2<=1);
+}
+
+// Returns false if the 3D segment A→B passes through the sphere at origin with radius r.
+// Uses actual z-depth so links between two front-side sats are never falsely occluded.
+function segmentClearOf3DSphere(ax, ay, az, bx, by, bz, r) {
+  const dx = bx-ax, dy = by-ay, dz = bz-az;
+  const a  = dx*dx + dy*dy + dz*dz;
+  if (a < 1e-10) return true;
+  const b    = 2*(ax*dx + ay*dy + az*dz);
+  const c    = ax*ax + ay*ay + az*az - r*r;
+  const disc = b*b - 4*a*c;
+  if (disc < 0) return true;
+  const sq = Math.sqrt(disc);
+  const t1 = (-b-sq)/(2*a), t2 = (-b+sq)/(2*a);
+  return !((t1>=0&&t1<=1)||(t2>=0&&t2<=1));
+}
+
+function drawScene2(t) {
+  ctx2.clearRect(0, 0, W2, H2);
+
+  const bg = ctx2.createRadialGradient(CX2, CY2, 0, CX2, CY2, 220);
+  bg.addColorStop(0, 'rgba(14,165,233,0.05)');
+  bg.addColorStop(1, 'rgba(6,11,24,0)');
+  ctx2.fillStyle = bg; ctx2.fillRect(0, 0, W2, H2);
+
+  const sats = S2_SATS.map(s => ({
+    ...s, incR: s.inc * Math.PI / 180, lanR: s.lan * Math.PI / 180,
+  }));
+
+  // 1. Back arcs
+  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, false);
+
+  // 2. Compute satellite positions; draw far-side ones before Earth
+  const positions = sats.map(s => {
+    const p = orbitPoint(s.rx, s.incR, s.lanR, ((t * s.speed + s.phase) % 1) * Math.PI * 2);
+    return { x: CX2 + p.sx, y: CY2 + p.sy, z: p.z, rx: s.rx, color: s.color };
+  });
+  function satAlpha2(p) { return 0.15 + 0.85 * (p.z / p.rx + 1) / 2; }
+  for (const p of positions) {
+    if (p.z < 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+  }
+
+  // ISL link geometry — computed once, drawn at the right z-layer below.
+  const [pA, pB] = positions;
+  const islDist  = Math.hypot(pA.x - pB.x, pA.y - pB.y);
+  const islClear = segmentClearOf3DSphere(
+    pA.x - CX2, pA.y - CY2, pA.z,
+    pB.x - CX2, pB.y - CY2, pB.z,
+    ER2
+  );
+  const bothBehind = pA.z < 0 && pB.z < 0;
+  // Draw behind Earth also when one sat is behind and the projected line crosses the disk.
+  const crossesDisk = seg2dCrossesDisk(pA.x, pA.y, pB.x, pB.y, CX2, CY2, ER2);
+  const drawBehind  = bothBehind || ((pA.z < 0 || pB.z < 0) && crossesDisk);
+
+  const islVisible = islDist < LINK_THRESHOLD && islClear;
+  const islStr     = islVisible ? 1 - islDist / LINK_THRESHOLD : 0;
+
+  function drawISLLine() {
+    if (!islVisible) return;
+    ctx2.save();
+    ctx2.setLineDash([7, 7]);
+    ctx2.lineDashOffset = -(t * 0.06) % 14;
+    ctx2.beginPath();
+    ctx2.moveTo(pA.x, pA.y); ctx2.lineTo(pB.x, pB.y);
+    ctx2.strokeStyle = '#38bdf8';
+    ctx2.lineWidth = 1.5;
+    ctx2.stroke();
+    ctx2.restore();
+  }
+
+  // 2b. Link line behind Earth: both sats behind, OR one behind with line crossing the disk
+  if (drawBehind) drawISLLine();
+
+  // 3. Earth
+  drawEarth(ctx2, CX2, CY2, ER2);
+
+  // 4. Front arcs
+  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, true);
+
+  // 5. Link line in front of Earth (both sats in front, or one behind but line clears the disk)
+  if (!drawBehind) drawISLLine();
+
+  // 6. Near-side satellites — drawn last (on top of Earth and ISL line)
+  for (const p of positions) {
+    if (p.z >= 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+  }
+
+  // 7. Label — always on top, full brightness
+  if (islVisible) {
+    ctx2.font = '500 11px Inter, sans-serif';
+    ctx2.fillStyle = '#38bdf8';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('Enlace activo', (pA.x+pB.x)/2, (pA.y+pB.y)/2 - 12);
+  }
+}
+
+// ── EASE ──────────────────────────────────────────────────────
+function easeInOut(t) { return t < 0.5 ? 2*t*t : -1 + (4-2*t)*t; }
+
+// ── HYPERCUBE GEOMETRY ────────────────────────────────────────
+// 4D hypercube (tesseract): 16 nodes with 4-bit addresses.
+// Rendered as two nested 3-cubes:
+//   bit3=0 → outer cube  (3 bits control x / y / perspective as in a 3D cube)
+//   bit3=1 → inner cube  (same topology, scaled 0.45× toward center)
+// This projection makes the 4th dimension immediately legible.
+function hcPositions(cx, cy, sz) {
+  const p = sz * 0.5;
+  // Outer cube: bit3=0, lower 3 bits map to x/y/perspective axes
+  const base = {
+    '000': [cx - sz,     cy + sz * 0.6          ],
+    '001': [cx + sz,     cy + sz * 0.6          ],
+    '010': [cx - sz,     cy - sz * 0.6          ],
+    '011': [cx + sz,     cy - sz * 0.6          ],
+    '100': [cx - sz + p, cy + sz * 0.6 - p*0.85 ],
+    '101': [cx + sz + p, cy + sz * 0.6 - p*0.85 ],
+    '110': [cx - sz + p, cy - sz * 0.6 - p*0.85 ],
+    '111': [cx + sz + p, cy - sz * 0.6 - p*0.85 ],
+  };
+  const s = 0.45; // inner cube is scaled toward the center
+  const pos = {};
+  for (const [k, [x, y]] of Object.entries(base)) {
+    pos['0' + k] = [x, y];
+    pos['1' + k] = [cx + (x - cx) * s, cy + (y - cy) * s];
+  }
+  return pos;
+}
+
+const HC_EDGES = [
+  // Outer cube (0xxx) — 12 edges
+  ['0000','0001'],['0000','0010'],['0000','0100'],
+  ['0001','0011'],['0001','0101'],
+  ['0010','0011'],['0010','0110'],
+  ['0011','0111'],
+  ['0100','0101'],['0100','0110'],
+  ['0101','0111'],['0110','0111'],
+  // Inner cube (1xxx) — 12 edges
+  ['1000','1001'],['1000','1010'],['1000','1100'],
+  ['1001','1011'],['1001','1101'],
+  ['1010','1011'],['1010','1110'],
+  ['1011','1111'],
+  ['1100','1101'],['1100','1110'],
+  ['1101','1111'],['1110','1111'],
+  // Cross edges connecting outer↔inner (bit3 differs) — 8 edges
+  ['0000','1000'],['0001','1001'],['0010','1010'],['0011','1011'],
+  ['0100','1100'],['0101','1101'],['0110','1110'],['0111','1111'],
+];
+
+function hammingDist(a, b) {
+  let d = 0; for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) d++; return d;
+}
+
+// Generic hypercube draw.
+// opts: { src, dst, pathNodes, current, showAllLabels, labelsBelow }
+//   showAllLabels: render address labels for every node (default false — only src/dst/current)
+//   labelsBelow:  array of node addresses whose label appears below the node
+// Dimming: when `current` is set, nodes that are not src/dst/current or immediate
+//   neighbors of current are rendered dim (grey), visualising local-only knowledge.
+function drawHypercube(ctx, cx, cy, sz, opts = {}) {
+  const pos = hcPositions(cx, cy, sz);
+  const { src = null, dst = null, pathNodes = [], current = null, showAllLabels = false, labelsBelow = [] } = opts;
+  const labelsBelowSet = new Set(labelsBelow);
+
+  const pathSet = new Set(pathNodes);
+  const pathEdgeSet = new Set();
+  for (let i = 0; i < pathNodes.length - 1; i++) {
+    pathEdgeSet.add(pathNodes[i] + '-' + pathNodes[i+1]);
+    pathEdgeSet.add(pathNodes[i+1] + '-' + pathNodes[i]);
+  }
+
+  // Neighbour set of current node — skipped when current has reached dst
+  const neighborsOfCurrent = new Set();
+  if (current !== null && current !== dst) {
+    for (const label of Object.keys(pos)) {
+      if (hammingDist(label, current) === 1) neighborsOfCurrent.add(label);
+    }
+  }
+  // A node is "bright" if it is src, dst, current, or a neighbour of current
+  const isBright = (label) =>
+    label === src || label === dst || label === current ||
+    neighborsOfCurrent.has(label) || pathSet.has(label);
+  const dimming = current !== null;
+
+  // Edges
+  for (const [a, b] of HC_EDGES) {
+    const onPath   = pathEdgeSet.has(a + '-' + b);
+    const isCross  = !onPath && a[0] !== b[0];
+    // Dim edge unless it is on the path or directly connects to the current node
+    // (when current === dst the packet has arrived — no outgoing edges highlighted)
+    const atDst    = current === dst;
+    const edgeDim  = dimming && !onPath && (atDst || (a !== current && b !== current));
+    ctx.beginPath();
+    ctx.moveTo(...pos[a]); ctx.lineTo(...pos[b]);
+    ctx.strokeStyle = onPath   ? 'rgba(56,189,248,0.90)'
+                    : edgeDim  ? 'rgba(63,79,103,0.40)'
+                    : isCross  ? 'rgba(129,140,248,0.70)'
+                    :            'rgba(56,189,248,0.70)';
+    ctx.lineWidth   = onPath ? 2.5 : 1;
+    ctx.stroke();
+  }
+
+  // Pass 1 — draw all node circles (so no circle ever covers a label)
+  for (const [label, [x, y]] of Object.entries(pos)) {
+    const isSrc  = label === src;
+    const isDst  = label === dst;
+    const isCur  = label === current;
+    const onPath = pathSet.has(label);
+    const nodeDim = dimming && !isBright(label);
+
+    const r = (isSrc || isDst || isCur) ? 9 : 5;
+    let fillC   = '#070d1a';
+    let strokeC = nodeDim ? 'rgba(63,79,103,0.50)' : 'rgba(241,245,249,0.85)';
+    let strokeW = nodeDim ? 0.5 : 1;
+
+    if (isCur)       { fillC = '#0d2035'; strokeC = '#f1f5f9'; strokeW = 2.5; }
+    else if (isSrc)  { fillC = '#082840'; strokeC = '#38bdf8'; strokeW = 2; }
+    else if (isDst)  { fillC = '#180d35'; strokeC = '#818cf8'; strokeW = 2; }
+    else if (onPath) { fillC = '#0d2035'; strokeC = 'rgba(56,189,248,0.60)'; strokeW = 1.5; }
+
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = fillC; ctx.strokeStyle = strokeC; ctx.lineWidth = strokeW;
+    ctx.fill(); ctx.stroke();
+  }
+
+  // Pass 2 — draw all labels on top of every node
+  ctx.font = '500 20px ui-monospace, monospace';
+  ctx.textAlign = 'center';
+  for (const [label, [x, y]] of Object.entries(pos)) {
+    const isSrc = label === src;
+    const isDst = label === dst;
+    const isCur = label === current;
+    if (!isSrc && !isDst && !isCur && !showAllLabels) continue;
+
+    const below    = labelsBelowSet.has(label);
+    const nodeDim  = dimming && !isBright(label);
+    ctx.textBaseline = below ? 'top' : 'bottom';
+
+    if (nodeDim) {
+      ctx.fillStyle = 'rgba(63,79,103,0.65)';
+    } else {
+      const textAlpha = (isSrc || isDst || isCur) ? 0.95 : 0.85;
+      ctx.fillStyle = isCur ? `rgba(241,245,249,${textAlpha})`
+                    : isDst  ? `rgba(129,140,248,${textAlpha})`
+                    : isSrc  ? `rgba(56,189,248,${textAlpha})`
+                    :          `rgba(241,245,249,${textAlpha})`;
+    }
+    ctx.fillText(label, x, below ? y + 10 : y - 10);
+  }
+}
+
+// ── SLIDE 4 — DTN STORE-CARRY-FORWARD ────────────────────────
+// ── SLIDE 4 — DTN STORE-CARRY-FORWARD ────────────────────────
+// Canvas dimensions track CSS size × devicePixelRatio to avoid pixelation.
+const c4 = document.getElementById('canvas-4');
+let ctx4 = null;
+
+function resizeC4() {
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = c4.getBoundingClientRect();
+  if (!rect.width) return;
+  c4.width  = Math.round(rect.width  * dpr);
+  c4.height = Math.round(rect.height * dpr);
+  ctx4 = c4.getContext('2d');
+  ctx4.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeC4();
+window.addEventListener('resize', resizeC4);
+
+const DTN_CYCLE = 7200;
+
+function drawScene4(t) {
+  if (!ctx4) { resizeC4(); if (!ctx4) return; }
+  const rect = c4.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  if (!W || !H) return;
+  ctx4.clearRect(0, 0, W, H);
+
+  const nY = H * 0.48;
+  const nA = { x: W*0.13, y: nY, label:'A', name:'Origen'          };
+  const nB = { x: W*0.50, y: nY, label:'B', name:'Nodo intermedio' };
+  const nC = { x: W*0.87, y: nY, label:'C', name:'Destino'         };
+  const nodes = [nA, nB, nC];
+
+  const phase = (t % DTN_CYCLE) / DTN_CYCLE;
+  let bx, by, linkAB = 0, linkBC = 0;
+  let showStore = false, showDelivered = false;
+
+  if (phase < 0.12) {
+    bx = nA.x; by = nA.y; linkAB = phase / 0.12;
+  } else if (phase < 0.28) {
+    const p = (phase - 0.12) / 0.16;
+    bx = nA.x + (nB.x - nA.x) * easeInOut(p); by = nA.y; linkAB = 1;
+  } else if (phase < 0.55) {
+    bx = nB.x; by = nB.y; linkAB = 0.12; showStore = true;
+  } else if (phase < 0.65) {
+    bx = nB.x; by = nB.y; linkBC = (phase - 0.55) / 0.10; showStore = true;
+  } else if (phase < 0.80) {
+    const p = (phase - 0.65) / 0.15;
+    bx = nB.x + (nC.x - nB.x) * easeInOut(p); by = nB.y; linkBC = 1;
+  } else {
+    bx = nC.x; by = nC.y; linkBC = 0.12; showDelivered = true;
+  }
+
+  const R = 28; // node radius
+
+  // Link A-B
+  if (linkAB > 0.02) {
+    ctx4.save();
+    if (linkAB < 0.88) ctx4.setLineDash([7,8]);
+    ctx4.beginPath();
+    ctx4.moveTo(nA.x + R + 2, nA.y); ctx4.lineTo(nB.x - R - 2, nB.y);
+    ctx4.strokeStyle = `rgba(56,189,248,${linkAB})`; ctx4.lineWidth = 2; ctx4.stroke();
+    ctx4.restore();
+  }
+  // Link B-C
+  if (phase >= 0.28 && linkBC < 0.02) {
+    ctx4.save(); ctx4.setLineDash([5,10]);
+    ctx4.beginPath();
+    ctx4.moveTo(nB.x + R + 2, nB.y); ctx4.lineTo(nC.x - R - 2, nC.y);
+    ctx4.strokeStyle = 'rgba(63,79,103,0.35)'; ctx4.lineWidth = 2; ctx4.stroke();
+    ctx4.restore();
+    ctx4.font = '400 13px Space Grotesk, sans-serif';
+    ctx4.fillStyle = 'rgba(248,113,113,0.7)';
+    ctx4.textAlign = 'center'; ctx4.textBaseline = 'bottom';
+    ctx4.fillText('sin enlace', (nB.x + nC.x)/2, nB.y - R - 10);
+  }
+  if (linkBC > 0.02) {
+    ctx4.save();
+    if (linkBC < 0.88) ctx4.setLineDash([7,8]);
+    ctx4.beginPath();
+    ctx4.moveTo(nB.x + R + 2, nB.y); ctx4.lineTo(nC.x - R - 2, nC.y);
+    ctx4.strokeStyle = `rgba(56,189,248,${linkBC})`; ctx4.lineWidth = 2; ctx4.stroke();
+    ctx4.restore();
+  }
+
+  // Nodes
+  for (const n of nodes) {
+    ctx4.beginPath(); ctx4.arc(n.x, n.y, R, 0, Math.PI * 2);
+    ctx4.fillStyle = '#071525'; ctx4.strokeStyle = 'rgba(56,189,248,0.55)'; ctx4.lineWidth = 2;
+    ctx4.fill(); ctx4.stroke();
+    ctx4.font = '600 17px Space Grotesk, sans-serif';
+    ctx4.fillStyle = '#38bdf8'; ctx4.textAlign = 'center'; ctx4.textBaseline = 'middle';
+    ctx4.fillText(n.label, n.x, n.y);
+    ctx4.font = '400 13px Inter, sans-serif';
+    ctx4.fillStyle = '#3f4f67'; ctx4.textBaseline = 'top';
+    ctx4.fillText(n.name, n.x, n.y + R + 9);
+  }
+
+  // Bundle packet (floats above the node)
+  const bw = 56, bh = 28, bOff = -(R + 42);
+  ctx4.fillStyle = 'rgba(14,165,233,0.14)'; ctx4.strokeStyle = 'rgba(14,165,233,0.7)'; ctx4.lineWidth = 1.5;
+  ctx4.beginPath(); ctx4.rect(bx - bw/2, by + bOff - bh/2, bw, bh); ctx4.fill(); ctx4.stroke();
+  ctx4.font = '500 12px Space Grotesk, sans-serif';
+  ctx4.fillStyle = '#38bdf8'; ctx4.textAlign = 'center'; ctx4.textBaseline = 'middle';
+  ctx4.fillText('BUNDLE', bx, by + bOff);
+
+  // State labels: below node name, well separated
+  const stateY = nY + R + 30;
+  if (showStore) {
+    ctx4.font = '500 14px Space Grotesk, sans-serif';
+    ctx4.fillStyle = '#818cf8'; ctx4.textAlign = 'center'; ctx4.textBaseline = 'top';
+    ctx4.fillText('almacenando...', nB.x, stateY);
+  }
+  if (showDelivered) {
+    ctx4.font = '500 14px Space Grotesk, sans-serif';
+    ctx4.fillStyle = '#38bdf8'; ctx4.textAlign = 'center'; ctx4.textBaseline = 'top';
+    ctx4.fillText('entregado', nC.x, stateY);
+  }
+}
+
+// ── SLIDE 6 — DENSE CONSTELLATION (generated once) ───────────
+(function() {
+  const svg = document.getElementById('dense-const-svg');
+  const pts = [
+    [10,14],[24,58],[40,28],[56,62],[70,18],[86,48],[100,8],[115,68],
+    [128,34],[143,58],[155,20],[165,55],[174,32],[184,14],[192,52],[200,36]
+  ];
+  let html = '';
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i+1; j < pts.length; j++) {
+      const dx = pts[i][0]-pts[j][0], dy = pts[i][1]-pts[j][1];
+      if (Math.sqrt(dx*dx+dy*dy) < 58) {
+        html += `<line x1="${pts[i][0]}" y1="${pts[i][1]}" x2="${pts[j][0]}" y2="${pts[j][1]}" stroke="#f87171" stroke-width="0.8" opacity="0.28"/>`;
+      }
+    }
+  }
+  html += pts.map(([x,y]) => `<circle cx="${x}" cy="${y}" r="3.2" fill="none" stroke="#f87171" stroke-width="1.2" opacity="0.65"/>`).join('');
+  svg.innerHTML = html;
+})();
+
+// ── SLIDE 7 — STATIC HYPERCUBE ────────────────────────────────
+// HiDPI fix: dynamic sizing via getBoundingClientRect(), same pattern as canvas-4.
+const c7 = document.getElementById('canvas-7');
+let ctx7 = null;
+
+function resizeC7() {
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = c7.getBoundingClientRect();
+  if (!rect.width) return;
+  c7.width  = Math.round(rect.width  * dpr);
+  c7.height = Math.round(rect.height * dpr);
+  ctx7 = c7.getContext('2d');
+  ctx7.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeC7();
+window.addEventListener('resize', () => { resizeC7(); drawScene7(); });
+
+function drawScene7() {
+  if (!ctx7) { resizeC7(); if (!ctx7) return; }
+  const rect = c7.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  if (!W || !H) return;
+  ctx7.clearRect(0, 0, W, H);
+
+  const cx = W * 0.48, cy = H * 0.57;
+  const sz = Math.min(W, H) * 0.35;  // fills the available space
+
+  drawHypercube(ctx7, cx, cy, sz, {
+    showAllLabels: true,
+    labelsBelow: ['0000','0001','0101','1000','1001','0011'],
+  });
+}
+drawScene7();
+
+// ── SLIDES 8–10 — RUTEO GREEDY (estáticos, un paso por slide) ────────
+const GREEDY_SRC = '0000';
+const GREEDY_DST = '1011';
+const GREEDY_LABELS_BELOW = ['0000','0001','0101','1000','1001','0011'];
+
+// Factory: creates a static greedy-step slide backed by a full-screen canvas.
+// pathNodes: nodes visited so far (including src).  current: node currently at.
+// title: string shown at top-center of the slide.
+function makeGreedySlide(canvasId, pathNodes, current) {
+  const canvas = document.getElementById(canvasId);
+  let ctx = null;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.round(window.innerWidth  * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
+    ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw() {
+    if (!ctx) { resize(); if (!ctx) return; }
+    const W = window.innerWidth, H = window.innerHeight;
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W * 0.5, cy = H * 0.57;
+    const sz = Math.min(W, H) * 0.30;
+
+    drawHypercube(ctx, cx, cy, sz, {
+      src: GREEDY_SRC, dst: GREEDY_DST,
+      pathNodes, current,
+      showAllLabels: true,
+      labelsBelow: GREEDY_LABELS_BELOW,
+    });
+
+    const pos = hcPositions(cx, cy, sz);
+
+    // Role labels — "Origen" above src (address label is below the node),
+    //               "Destino" below dst (address label is above the node)
+    const [sx, sy] = pos[GREEDY_SRC];
+    const [dx, dy] = pos[GREEDY_DST];
+    ctx.font = '600 14px Space Grotesk, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(56,189,248,0.90)';
+    ctx.textBaseline = 'bottom'; ctx.fillText('Origen',  sx, sy - 28);
+    ctx.fillStyle = 'rgba(129,140,248,0.90)';
+    ctx.textBaseline = 'top';   ctx.fillText('Destino', dx, dy + 28);
+
+  }
+
+  resize(); draw();
+  window.addEventListener('resize', () => { resize(); draw(); });
+}
+
+makeGreedySlide('canvas-8',  ['0000'],                         '0000');
+makeGreedySlide('canvas-9',  ['0000', '1000'],                 '1000');
+makeGreedySlide('canvas-10', ['0000', '1000', '1010'],         '1010');
+makeGreedySlide('canvas-11', ['0000', '1000', '1010', '1011'], '1011');
+
+// ── SLIDE 13 — HIPERCUBO DE REFERENCIA ────────────────────────
+// Mismo estado que slide 11 (ruta completa, paquete entregado).
+// Usa getBoundingClientRect() porque el canvas ocupa el panel izquierdo,
+// no la ventana completa.
+(function() {
+  const canvas = document.getElementById('canvas-13');
+  let ctx13 = null;
+
+  function resize13() {
+    const dpr  = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width) return;
+    canvas.width  = Math.round(rect.width  * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx13 = canvas.getContext('2d');
+    ctx13.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw13() {
+    if (!ctx13) { resize13(); if (!ctx13) return; }
+    const rect = canvas.getBoundingClientRect();
+    const W = rect.width, H = rect.height;
+    if (!W || !H) return;
+    ctx13.clearRect(0, 0, W, H);
+
+    const cx = W * 0.50, cy = H * 0.55;
+    const sz = Math.min(W, H) * 0.30;
+
+    drawHypercube(ctx13, cx, cy, sz, {
+      src: GREEDY_SRC, dst: GREEDY_DST,
+      pathNodes: ['0000', '1000', '1010', '1011'],
+      current: '1011',
+      showAllLabels: true,
+      labelsBelow: GREEDY_LABELS_BELOW,
+    });
+
+    const pos = hcPositions(cx, cy, sz);
+    const [sx, sy] = pos[GREEDY_SRC];
+    const [dx, dy] = pos[GREEDY_DST];
+    ctx13.font = '600 13px Space Grotesk, sans-serif';
+    ctx13.textAlign = 'center';
+    ctx13.fillStyle = 'rgba(56,189,248,0.90)';
+    ctx13.textBaseline = 'bottom'; ctx13.fillText('Origen',  sx, sy - 26);
+    ctx13.fillStyle = 'rgba(129,140,248,0.90)';
+    ctx13.textBaseline = 'top';   ctx13.fillText('Destino', dx, dy + 26);
+  }
+
+  resize13(); draw13();
+  window.addEventListener('resize', () => { resize13(); draw13(); });
+})();
+
+// ── SLIDE 14 — HIPERCUBO CON CONECTIVIDAD INTERMITENTE ───────
+// Mismo layout que canvas-4/canvas-7: dimensiones via getBoundingClientRect().
+// Algunas aristas se desvanecen aleatoriamente para simular intermitencia LEO.
+const c14 = document.getElementById('canvas-14');
+let ctx14 = null;
+
+// Por cada arista: decide si es "intermitente" (25%) o siempre activa.
+const EDGE_AVAIL = HC_EDGES.map(() => ({
+  isDown:  Math.random() < 0.28,
+  phase:   Math.random() * Math.PI * 2,
+  freq:    Math.random() * 0.0006 + 0.0002,
+}));
+
+function resizeC14() {
+  const dpr  = window.devicePixelRatio || 1;
+  const rect = c14.getBoundingClientRect();
+  if (!rect.width) return;
+  c14.width  = Math.round(rect.width  * dpr);
+  c14.height = Math.round(rect.height * dpr);
+  ctx14 = c14.getContext('2d');
+  ctx14.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeC14();
+window.addEventListener('resize', resizeC14);
+
+function drawScene14(t) {
+  if (!ctx14) { resizeC14(); if (!ctx14) return; }
+  const rect = c14.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  if (!W || !H) return;
+  ctx14.clearRect(0, 0, W, H);
+
+  const cx = W * 0.48, cy = H * 0.57;
+  const sz = Math.min(W, H) * 0.32;
+  const pos = hcPositions(cx, cy, sz);
+
+  // Edges — intermittent ones fade in/out via a sine wave
+  HC_EDGES.forEach(([a, b], i) => {
+    const av = EDGE_AVAIL[i];
+    let alpha;
+    if (av.isDown) {
+      alpha = Math.max(0, Math.sin(t * av.freq + av.phase)) * 0.65;
+    } else {
+      alpha = 0.50 + 0.20 * Math.sin(t * av.freq + av.phase);
+    }
+    const isCross = a[0] !== b[0];
+    ctx14.beginPath();
+    ctx14.moveTo(...pos[a]);
+    ctx14.lineTo(...pos[b]);
+    if (av.isDown) {
+      ctx14.setLineDash([4, 7]);
+      ctx14.strokeStyle = alpha < 0.06
+        ? 'rgba(63,79,103,0.18)'
+        : (isCross ? `rgba(129,140,248,${alpha.toFixed(3)})` : `rgba(56,189,248,${alpha.toFixed(3)})`);
+    } else {
+      ctx14.setLineDash([]);
+      ctx14.strokeStyle = isCross
+        ? `rgba(129,140,248,${alpha.toFixed(3)})`
+        : `rgba(56,189,248,${alpha.toFixed(3)})`;
+    }
+    ctx14.lineWidth = 1.2;
+    ctx14.stroke();
+  });
+  ctx14.setLineDash([]);
+
+  // Nodes — all solid
+  for (const [, [x, y]] of Object.entries(pos)) {
+    ctx14.beginPath(); ctx14.arc(x, y, 5, 0, Math.PI * 2);
+    ctx14.fillStyle = '#070d1a';
+    ctx14.strokeStyle = 'rgba(56,189,248,0.55)';
+    ctx14.lineWidth = 1;
+    ctx14.fill(); ctx14.stroke();
+  }
+}
+
+// ── LOOP SLIDES (LP0–LP5) — ANTop original loop demo ─────────
+const LP_POS = {
+  A: [0.15, 0.50],
+  B: [0.38, 0.50],
+  C: [0.62, 0.30],
+  D: [0.62, 0.70],
+  E: [0.85, 0.30],
+};
+const LP_EDGES = [['A','B'],['B','C'],['B','D'],['C','E']];
+
+function makeLoopSlide(canvasOrId, opts) {
+  const canvas = typeof canvasOrId === 'string'
+    ? document.getElementById(canvasOrId)
+    : canvasOrId;
+  if (!canvas) return;
+  let ctx = null;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    canvas.width  = Math.round(rect.width  * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function canvasRect() { return canvas.getBoundingClientRect(); }
+
+  function nodePos(name) {
+    const r = canvasRect();
+    const W = r.width, H = r.height;
+    const [fx, fy] = LP_POS[name];
+    return [W * fx, H * fy];
+  }
+
+  function endpoints(from, to, r) {
+    const [x1, y1] = nodePos(from);
+    const [x2, y2] = nodePos(to);
+    const dx = x2 - x1, dy = y2 - y1;
+    const d = Math.sqrt(dx*dx + dy*dy);
+    const ux = dx/d, uy = dy/d;
+    return [x1 + ux*r, y1 + uy*r, x2 - ux*r, y2 - uy*r];
+  }
+
+  function drawArrow(x1, y1, x2, y2, color, dashed, lw) {
+    const { width: W, height: H } = canvasRect();
+    const hl = Math.min(W, H) * 0.055;
+    const ang = Math.atan2(y2 - y1, x2 - x1);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.setLineDash(dashed ? [7, 5] : []);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lw || 2.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - hl * Math.cos(ang - 0.42), y2 - hl * Math.sin(ang - 0.42));
+    ctx.lineTo(x2 - hl * Math.cos(ang + 0.42), y2 - hl * Math.sin(ang + 0.42));
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  function drawNode(name, nr) {
+    const [x, y] = nodePos(name);
+    const isCurrent = name === opts.current;
+    const isOrigin  = name === 'A';
+    const isDest    = name === 'E';
+    const isLoop    = name === opts.loopAt;
+    const isStored  = opts.stored && isCurrent;
+    const isArrived = opts.arrived && isCurrent;
+
+    if (isLoop) {
+      ctx.save();
+      ctx.shadowBlur = nr * 2.2;
+      ctx.shadowColor = '#f87171';
+      ctx.beginPath(); ctx.arc(x, y, nr * 1.5, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(248,113,113,0.35)';
+      ctx.lineWidth = 2; ctx.stroke();
+      ctx.restore();
+    }
+    if (isArrived) {
+      ctx.save();
+      ctx.shadowBlur = nr * 2.5;
+      ctx.shadowColor = '#38bdf8';
+      ctx.beginPath(); ctx.arc(x, y, nr * 1.5, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(56,189,248,0.35)';
+      ctx.lineWidth = 2; ctx.stroke();
+      ctx.restore();
+    }
+
+    ctx.beginPath(); ctx.arc(x, y, nr, 0, Math.PI * 2);
+    ctx.fillStyle = '#070d1a';
+    let strokeColor;
+    if (isArrived)         strokeColor = 'rgba(56,189,248,1)';
+    else if (isStored)     strokeColor = 'rgba(251,191,36,0.9)';
+    else if (isLoop)       strokeColor = 'rgba(248,113,113,0.9)';
+    else if (isCurrent)    strokeColor = isOrigin ? 'rgba(56,189,248,1)' : isDest ? 'rgba(129,140,248,1)' : 'rgba(56,189,248,1)';
+    else if (isOrigin)     strokeColor = 'rgba(56,189,248,0.65)';
+    else if (isDest)       strokeColor = 'rgba(129,140,248,0.65)';
+    else                   strokeColor = 'rgba(63,79,103,0.5)';
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = (isCurrent || isLoop || isArrived) ? 2.5 : 1.5;
+    ctx.fill(); ctx.stroke();
+
+    const fontSize = Math.round(nr * 0.78);
+    ctx.font = `600 ${fontSize}px Space Grotesk, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = isArrived ? 'rgba(56,189,248,0.95)' :
+                    isStored  ? 'rgba(251,191,36,0.95)' :
+                    isLoop    ? 'rgba(248,113,113,0.95)' :
+                    isOrigin  ? 'rgba(56,189,248,0.9)' :
+                    isDest    ? 'rgba(129,140,248,0.9)' :
+                    isCurrent ? 'rgba(56,189,248,0.9)' :
+                                'rgba(63,79,103,0.75)';
+    ctx.fillText(name, x, y);
+  }
+
+  function draw() {
+    if (!ctx) { resize(); if (!ctx) return; }
+    const { width: W, height: H } = canvasRect();
+    if (!W || !H) return;
+    ctx.clearRect(0, 0, W, H);
+    const nr = Math.min(W, H) * 0.09;
+
+    // Background edges (undirected, gray)
+    LP_EDGES.forEach(([a, b]) => {
+      const [x1, y1] = nodePos(a);
+      const [x2, y2] = nodePos(b);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+      ctx.setLineDash([]); ctx.strokeStyle = 'rgba(63,79,103,0.28)';
+      ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    // Path edges traversed so far (orange arrows)
+    (opts.pathEdges || []).forEach(([a, b]) => {
+      const [x1, y1, x2, y2] = endpoints(a, b, nr);
+      drawArrow(x1, y1, x2, y2, 'rgba(251,146,60,0.8)', false, 2.5);
+    });
+
+    // Return edge (dashed red arrow)
+    if (opts.returnEdge) {
+      const [x1, y1, x2, y2] = endpoints(opts.returnEdge[0], opts.returnEdge[1], nr);
+      drawArrow(x1, y1, x2, y2, 'rgba(248,113,113,0.85)', true, 2);
+    }
+
+    // Failed edge attempt (partial dashed line + ✕)
+    if (opts.failedEdge) {
+      const [fa, fb] = opts.failedEdge;
+      const [px1, py1] = nodePos(fa);
+      const [px2, py2] = nodePos(fb);
+      const dx = px2 - px1, dy = py2 - py1;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      const ux = dx/dist, uy = dy/dist;
+      const sx = px1 + ux * nr, sy = py1 + uy * nr;
+      const ex = px1 + ux * (dist * 0.52), ey = py1 + uy * (dist * 0.52);
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey);
+      ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(63,79,103,0.45)';
+      ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
+      const cs = nr * 0.38;
+      ctx.beginPath();
+      ctx.moveTo(ex-cs, ey-cs); ctx.lineTo(ex+cs, ey+cs);
+      ctx.moveTo(ex+cs, ey-cs); ctx.lineTo(ex-cs, ey+cs);
+      ctx.strokeStyle = 'rgba(248,113,113,0.75)'; ctx.lineWidth = 2; ctx.stroke();
+    }
+
+    // Nodes on top
+    Object.keys(LP_POS).forEach(n => drawNode(n, nr));
+
+    // Role labels
+    const labelSize = Math.round(Math.min(W, H) * 0.055);
+    ctx.font = `400 ${labelSize}px Space Grotesk, sans-serif`;
+    ctx.textAlign = 'center';
+    const [ax, ay] = nodePos('A');
+    const [ex2, ey2] = nodePos('E');
+    ctx.fillStyle = 'rgba(56,189,248,0.65)';
+    ctx.textBaseline = 'top';
+    ctx.fillText('origen', ax, ay + nr + 6);
+    ctx.fillStyle = 'rgba(129,140,248,0.65)';
+    ctx.fillText('destino', ex2, ey2 + nr + 6);
+
+    // Reroute arrow (blue — propuesta's new-neighbor decision)
+    if (opts.reroute) {
+      const [x1, y1, x2, y2] = endpoints(opts.reroute[0], opts.reroute[1], nr);
+      drawArrow(x1, y1, x2, y2, 'rgba(56,189,248,0.9)', false, 2.5);
+    }
+
+    // Contextual annotations
+    if (opts.stored) {
+      const [cx2, cy2] = nodePos(opts.current);
+      ctx.font = `500 ${labelSize}px Space Grotesk, sans-serif`;
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = 'rgba(251,191,36,0.85)';
+      ctx.fillText('almacenado', cx2, cy2 - nr - 6);
+    }
+    if (opts.loopAt) {
+      const [lx, ly] = nodePos(opts.loopAt);
+      ctx.font = `600 ${labelSize}px Space Grotesk, sans-serif`;
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = 'rgba(248,113,113,0.9)';
+      ctx.fillText('bucle detectado', lx, ly - nr - 6);
+    }
+    if (opts.arrived) {
+      const [ex2, ey2] = nodePos(opts.current);
+      ctx.font = `600 ${labelSize}px Space Grotesk, sans-serif`;
+      ctx.textBaseline = 'bottom';
+      ctx.fillStyle = 'rgba(56,189,248,0.9)';
+      ctx.fillText('¡entregado!', ex2, ey2 - nr - 6);
+    }
+  }
+
+  resize(); draw();
+  window.addEventListener('resize', () => { resize(); draw(); });
+}
+
+makeLoopSlide('canvas-lp0', {
+  current: 'A',
+  pathEdges: [],
+});
+makeLoopSlide('canvas-lp1', {
+  current: 'B',
+  pathEdges: [['A','B']],
+});
+makeLoopSlide('canvas-lp2', {
+  current: 'D',
+  pathEdges: [['A','B'],['B','D']],
+});
+makeLoopSlide('canvas-lp3', {
+  current: 'B',
+  pathEdges: [['A','B'],['B','D']],
+  returnEdge: ['D','B'],
+  failedEdge: ['D','E'],
+});
+makeLoopSlide('canvas-lp4', {
+  current: 'D',
+  pathEdges: [['A','B'],['B','D'],['D','B']],
+  returnEdge: ['B','D'],
+  loopAt: 'B',
+});
+makeLoopSlide('canvas-lp5', {
+  current: 'D',
+  pathEdges: [['A','B'],['B','D'],['D','B'],['B','D']],
+  stored: true,
+});
+
+makeLoopSlide('canvas-pp0', { current: 'A', pathEdges: [] });
+makeLoopSlide('canvas-pp1', { current: 'B', pathEdges: [['A','B']] });
+makeLoopSlide('canvas-pp2', { current: 'D', pathEdges: [['A','B'],['B','D']] });
+makeLoopSlide('canvas-pp3', {
+  current: 'B',
+  pathEdges: [['A','B'],['B','D']],
+  returnEdge: ['D','B'],
+  failedEdge: ['D','E'],
+});
+makeLoopSlide('canvas-pp4', {
+  current: 'C',
+  pathEdges: [['A','B'],['B','D'],['D','B']],
+  failedEdge: ['D','E'],
+  loopAt: 'B',
+  reroute: ['B','C'],
+});
+makeLoopSlide('canvas-pp5', {
+  current: 'E',
+  pathEdges: [['A','B'],['B','D'],['D','B'],['B','C'],['C','E']],
+  arrived: true,
+});
+
+// Frozen final state of ANTop original shown alongside each propuesta step
+document.querySelectorAll('.lp-orig-canvas').forEach(c => makeLoopSlide(c, {
+  current: 'D',
+  pathEdges: [['A','B'],['B','D'],['D','B'],['B','D']],
+  stored: true,
+}));
+
+// ── SLIDE 19 — GRIDS: SQUARE & HEXAGONAL ─────────────────────
+(function() {
+  // Square grid with distortion near top/bottom (simulating Mercator poles issue)
+  const sqSvg = document.getElementById('s19-squares');
+  let html = '';
+  const cols = 7, rows = 5;
+  const startX = 18, startY = 14;
+  for (let r = 0; r < rows; r++) {
+    // Compress cells near poles (rows 0 and 4)
+    const scaleY = r === 0 || r === rows-1 ? 0.55 : 1.0;
+    const scaleX = r === 0 || r === rows-1 ? 1.30 : 1.0;
+    const cW = 37 * scaleX, cH = 34 * scaleY;
+    const baseY = startY + r * 36;
+    for (let c = 0; c < cols; c++) {
+      const x = startX + c * 38;
+      const col = r === 0 || r === rows-1 ? '#f87171' : '#3f4f67';
+      const opacity = r === 0 || r === rows-1 ? 0.5 : 0.4;
+      html += `<rect x="${x.toFixed(1)}" y="${baseY.toFixed(1)}" width="${(cW-2).toFixed(1)}" height="${(cH-2).toFixed(1)}" fill="none" stroke="${col}" stroke-width="0.9" opacity="${opacity}"/>`;
+    }
+  }
+  // Distortion labels
+  html += `<text x="150" y="194" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter,sans-serif" opacity="0.7">distorsión en los polos</text>`;
+  sqSvg.innerHTML = html;
+
+  // Hexagonal grid (flat-top hexagons, axial coordinates)
+  const hexSvg = document.getElementById('s19-hexes');
+  let hexHtml = '';
+  const S = 22; // hex size
+  const sqrt3 = Math.sqrt(3);
+
+  function hexPoly(cx, cy) {
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI / 180 * (60 * i);
+      pts.push(`${(cx + S * Math.cos(a)).toFixed(1)},${(cy + S * Math.sin(a)).toFixed(1)}`);
+    }
+    return pts.join(' ');
+  }
+
+  // Axial coords (q, r), flat-top layout
+  const hexCoords = [
+    [0,0],[1,0],[2,0],[-1,0],[-2,0],
+    [0,1],[1,1],[-1,1],[-2,1],
+    [0,-1],[1,-1],[-1,-1],[2,-1],
+    [0,2],[1,2],[-1,2],
+    [0,-2],[1,-2],[-1,-2],
+  ];
+  const offX = 150, offY = 108;
+  for (const [q, r] of hexCoords) {
+    const px = offX + S * 1.5 * q;
+    const py = offY + S * sqrt3 * (r + q * 0.5);
+    if (px > 10 && px < 290 && py > 14 && py < 196) {
+      hexHtml += `<polygon points="${hexPoly(px, py)}" fill="none" stroke="rgba(56,189,248,0.5)" stroke-width="0.9"/>`;
+    }
+  }
+  hexSvg.innerHTML = hexHtml;
+})();
+
+// ── MAIN LOOP ─────────────────────────────────────────────────
+function loop(t) {
+  requestAnimationFrame(loop);
+  drawScene1(t);
+  drawScene2(t);
+  drawScene4(t);
+  drawScene14(t);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
