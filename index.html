@@ -16,7 +16,7 @@
   --purple:   #818cf8;
   --white:    #f1f5f9;
   --muted:    #94a3b8;
-  --dim:      #3f4f67;
+  --dim:      #8da9d2;
 }
 
 html, body {
@@ -49,7 +49,7 @@ html, body {
 /* ── NAV ─────────────────────────────────────────────────────── */
 #nav-dots {
   position: fixed;
-  bottom: 28px;
+  bottom: 28px; 
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1583,63 +1583,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-2 — Qué es H3 ──────────────────────────── -->
+  <!-- ─── SLIDE H3-2 — Jerarquía de resoluciones ──────────── -->
   <div class="slide" id="slide-h3-2">
-    <div class="slide-2col" style="height:100%;">
-      <div class="col-visual" style="flex:0 0 48%;">
-        <svg viewBox="0 0 340 300" width="100%" style="border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
-          <!-- Icosahedron unfolded strip (Dymaxion-like) -->
-          <!-- Row 1: 5 upward triangles -->
-          <g opacity="0.75">
-            <polygon points="50,40 90,110 10,110"   fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
-            <polygon points="90,40 130,110 50,110"  fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
-            <polygon points="130,40 170,110 90,110" fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
-            <polygon points="170,40 210,110 130,110" fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
-            <polygon points="210,40 250,110 170,110" fill="none" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
-            <!-- 5 downward triangles between -->
-            <polygon points="10,110 90,110 50,40"   fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
-            <polygon points="50,110 130,110 90,40"  fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
-            <polygon points="90,110 170,110 130,40" fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
-            <polygon points="130,110 210,110 170,40" fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
-            <polygon points="170,110 250,110 210,40" fill="none" stroke="rgba(56,189,248,0.25)" stroke-width="1"/>
-          </g>
-          <!-- Row 2: lower band -->
-          <g opacity="0.55">
-            <polygon points="10,110 90,180 50,180"   fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
-            <polygon points="90,110 130,180 50,180"  fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
-            <polygon points="90,110 170,180 130,180" fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
-            <polygon points="170,110 210,180 130,180" fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
-            <polygon points="170,110 250,180 210,180" fill="none" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
-          </g>
-          <!-- Pentagons highlighted at top vertices -->
-          <circle cx="50"  cy="40"  r="6" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1.2"/>
-          <circle cx="130" cy="40"  r="6" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1.2"/>
-          <circle cx="210" cy="40"  r="6" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1.2"/>
-          <circle cx="10"  cy="110" r="6" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1.2"/>
-          <circle cx="250" cy="110" r="6" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1.2"/>
-          <!-- Label -->
-          <text x="170" y="218" fill="rgba(56,189,248,0.6)" font-size="10" font-family="Space Grotesk,sans-serif" letter-spacing="1.5" text-anchor="middle">PROYECCIÓN DYMAXION — ICOSAEDRO</text>
-          <!-- Pentagon legend -->
-          <circle cx="80" cy="250" r="5" fill="rgba(129,140,248,0.5)" stroke="#818cf8" stroke-width="1"/>
-          <text x="92" y="254" fill="#818cf8" font-size="11" font-family="Inter,sans-serif">pentágono (vértice del icosaedro)</text>
-        </svg>
-        <p class="s2-caption">Icosaedro desplegado — 20 caras triangulares</p>
-      </div>
-      <div class="col-text">
-        <p class="section-tag">H3</p>
-        <h2 class="slide-title">Sistema de indexación<br><em>H3</em></h2>
-        <ul class="key-points">
-          <li>Biblioteca de Uber que discretiza la Tierra en <strong>celdas hexagonales jerárquicas</strong>.</li>
-          <li>Usa un <strong>icosaedro</strong> como estructura intermedia: proyecta hexágonos sobre cada cara y los mapea de vuelta a la esfera.</li>
-          <li>Orientación según la <strong>proyección Dymaxion</strong> (Fuller): minimiza distorsión de áreas.</li>
-          <li>Limitación geométrica: no es posible cubrir una esfera solo con hexágonos → exactamente <strong>12 pentágonos</strong> por resolución, en los vértices del icosaedro.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── SLIDE H3-3 — Jerarquía de resoluciones ──────────── -->
-  <div class="slide" id="slide-h3-3">
     <div class="slide-2col" style="height:100%;">
       <div class="col-text">
         <p class="section-tag">H3</p>
@@ -1675,8 +1620,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-4 — Sistema IJK ─────────────────────────── -->
-  <div class="slide" id="slide-h3-4">
+  <!-- ─── SLIDE H3-3 — Sistema IJK ─────────────────────────── -->
+  <div class="slide" id="slide-h3-3">
     <div class="slide-2col" style="height:100%;">
       <div class="col-text">
         <p class="section-tag">H3</p>
@@ -1695,8 +1640,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-5 — Construcción ANTop: concepto ─────────── -->
-  <div class="slide" id="slide-h3-5">
+  <!-- ─── SLIDE H3-4 — Construcción ANTop: concepto ─────────── -->
+  <div class="slide" id="slide-h3-4">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Construcción de <em>direcciones ANTop</em></h2>
     <div class="h3-grid-area">
@@ -1712,8 +1657,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-6 — Paso 1: descomposición ─────────────── -->
-  <div class="slide" id="slide-h3-6">
+  <!-- ─── SLIDE H3-5 — Paso 1: descomposición ─────────────── -->
+  <div class="slide" id="slide-h3-5">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 1 — <em>descomposición en movimientos</em></h2>
     <div class="h3-grid-area">
@@ -1743,8 +1688,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-7 — Paso 2: codificación en bits ───────── -->
-  <div class="slide" id="slide-h3-7">
+  <!-- ─── SLIDE H3-6 — Paso 2: codificación en bits ───────── -->
+  <div class="slide" id="slide-h3-6">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 2 — <em>codificación en 3 bits</em></h2>
     <div class="h3-grid-area">
@@ -1772,8 +1717,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-8 — Paso 3: compresión en bytes ────────── -->
-  <div class="slide" id="slide-h3-8">
+  <!-- ─── SLIDE H3-7 — Paso 3: compresión en bytes ────────── -->
+  <div class="slide" id="slide-h3-7">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 3 — <em>compresión en bytes</em></h2>
     <div class="h3-grid-area">
@@ -1823,8 +1768,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-9 — Dimensión prima ────────────────────── -->
-  <div class="slide" id="slide-h3-9">
+  <!-- ─── SLIDE H3-8 — Dimensión prima ────────────────────── -->
+  <div class="slide" id="slide-h3-8">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">La <em>dimensión prima</em></h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;flex:1;min-height:0;">
@@ -1844,8 +1789,8 @@ html, body {
     </p>
   </div>
 
-  <!-- ─── SLIDE H3-10 — Origen del hipercubo ──────────────── -->
-  <div class="slide" id="slide-h3-10">
+  <!-- ─── SLIDE H3-9 — Origen del hipercubo ──────────────── -->
+  <div class="slide" id="slide-h3-9">
     <div class="slide-2col" style="height:100%;">
       <div class="col-text">
         <p class="section-tag">H3</p>
@@ -1864,8 +1809,8 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-11 — Medición del error ────────────────── -->
-  <div class="slide" id="slide-h3-11">
+  <!-- ─── SLIDE H3-10 — Medición del error ────────────────── -->
+  <div class="slide" id="slide-h3-10">
     <div class="slide-2col" style="height:100%;">
       <div class="col-visual" style="flex:0 0 54%;">
         <svg id="svg-error" viewBox="0 0 380 280" width="100%" style="display:block;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);"></svg>
@@ -2350,7 +2295,6 @@ function drawHypercube(ctx, cx, cy, sz, opts = {}) {
   // Edges
   for (const [a, b] of HC_EDGES) {
     const onPath   = pathEdgeSet.has(a + '-' + b);
-    const isCross  = !onPath && a[0] !== b[0];
     // Dim edge unless it is on the path or directly connects to the current node
     // (when current === dst the packet has arrived — no outgoing edges highlighted)
     const atDst    = current === dst;
@@ -2359,7 +2303,6 @@ function drawHypercube(ctx, cx, cy, sz, opts = {}) {
     ctx.moveTo(...pos[a]); ctx.lineTo(...pos[b]);
     ctx.strokeStyle = onPath   ? 'rgba(56,189,248,0.90)'
                     : edgeDim  ? 'rgba(63,79,103,0.40)'
-                    : isCross  ? 'rgba(129,140,248,0.70)'
                     :            'rgba(56,189,248,0.70)';
     ctx.lineWidth   = onPath ? 2.5 : 1;
     ctx.stroke();
