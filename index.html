@@ -1793,97 +1793,97 @@ html, body {
   </div>
 
   <div class="slide" id="slide-sim-tools">
-  <p class="section-tag">Simulaciones</p>
+    <p class="section-tag">Simulaciones</p>
 
-  <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
-    Casos de <em>simulación</em>
-  </h2>
+    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+      Casos de <em>simulación</em>
+    </h2>
 
-  <div class="s6-panels">
+    <div class="s6-panels">
 
-    <!-- Panel 1: métricas -->
-    <div class="s6-panel">
-      <p class="panel-label">Métricas</p>
+      <!-- Panel 1: métricas -->
+      <div class="s6-panel">
+        <p class="panel-label">Métricas</p>
 
-      <ul class="panel-items">
-        <li><strong>Tiempo de procesamiento</strong></li>
-        <li><strong>Número de saltos</strong></li>
-        <li><strong>Tiempo de arribo</strong></li>
-        <li><strong>Tasa de entrega</strong></li>
-      </ul>
+        <ul class="panel-items">
+          <li><strong>Tiempo de procesamiento</strong></li>
+          <li><strong>Número de saltos</strong></li>
+          <li><strong>Tiempo de arribo</strong></li>
+          <li><strong>Tasa de entrega</strong></li>
+        </ul>
 
-      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-        <line x1="20" y1="50" x2="60" y2="30" stroke="#38bdf8"/>
-        <line x1="60" y1="30" x2="100" y2="40" stroke="#38bdf8"/>
-        <line x1="100" y1="40" x2="140" y2="20" stroke="#38bdf8"/>
-        <line x1="140" y1="20" x2="180" y2="35" stroke="#38bdf8"/>
-      </svg>
+        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+          <line x1="20" y1="50" x2="60" y2="30" stroke="#38bdf8"/>
+          <line x1="60" y1="30" x2="100" y2="40" stroke="#38bdf8"/>
+          <line x1="100" y1="40" x2="140" y2="20" stroke="#38bdf8"/>
+          <line x1="140" y1="20" x2="180" y2="35" stroke="#38bdf8"/>
+        </svg>
+      </div>
+
+      <!-- Panel 2: algoritmos -->
+      <div class="s6-panel panel-good">
+        <p class="panel-label panel-label-good">Algoritmos</p>
+
+        <ul class="panel-items">
+          <li><strong>ANTop</strong> vs <strong>CGR Rev17</strong></li>
+          <li>oneBestPath / perNeighborBestPath</li>
+          <li>Decisiones <strong>distribuidas</strong></li>
+          <li>contactPlan: <strong>local</strong></li>
+        </ul>
+
+        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+          <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+          <circle cx="105" cy="20" r="6" stroke="#38bdf8" fill="none"/>
+          <circle cx="170" cy="45" r="6" stroke="#38bdf8" fill="none"/>
+          <line x1="40" y1="35" x2="105" y2="20" stroke="#38bdf8" opacity="0.3"/>
+          <line x1="105" y1="20" x2="170" y2="45" stroke="#38bdf8" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <!-- Panel 3: escenarios -->
+      <div class="s6-panel">
+        <p class="panel-label">Escenarios</p>
+
+        <ul class="panel-items">
+          <li>Sin fallas (ideal)</li>
+          <li>Fallas del <strong>5%, 10%, 20%</strong></li>
+          <li>Nodos intermitentes</li>
+          <li>Evaluación de <strong>robustez</strong></li>
+        </ul>
+
+        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+          <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+          <circle cx="90" cy="20" r="6" stroke="#f87171" fill="none"/>
+          <circle cx="140" cy="45" r="6" stroke="#38bdf8" fill="none"/>
+          <line x1="40" y1="35" x2="90" y2="20" stroke="#f87171" opacity="0.3"/>
+          <line x1="90" y1="20" x2="140" y2="45" stroke="#38bdf8" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <!-- Panel 4: topología -->
+      <div class="s6-panel panel-bad">
+        <p class="panel-label panel-label-bad">Constelaciones</p>
+
+        <ul class="panel-items">
+          <li>Walker <strong>53°</strong></li>
+          <li>120 – 360 satélites</li>
+          <li>12 / 20 planos</li>
+          <li>Evaluación de <strong>escalabilidad</strong></li>
+        </ul>
+
+        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+          <circle cx="60" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
+          <circle cx="120" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
+          <circle cx="90" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+        </svg>
+      </div>
+
     </div>
 
-    <!-- Panel 2: algoritmos -->
-    <div class="s6-panel panel-good">
-      <p class="panel-label panel-label-good">Algoritmos</p>
-
-      <ul class="panel-items">
-        <li><strong>ANTop</strong> vs <strong>CGR Rev17</strong></li>
-        <li>oneBestPath / perNeighborBestPath</li>
-        <li>Decisiones <strong>distribuidas</strong></li>
-        <li>contactPlan: <strong>local</strong></li>
-      </ul>
-
-      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-        <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-        <circle cx="105" cy="20" r="6" stroke="#38bdf8" fill="none"/>
-        <circle cx="170" cy="45" r="6" stroke="#38bdf8" fill="none"/>
-        <line x1="40" y1="35" x2="105" y2="20" stroke="#38bdf8" opacity="0.3"/>
-        <line x1="105" y1="20" x2="170" y2="45" stroke="#38bdf8" opacity="0.3"/>
-      </svg>
-    </div>
-
-    <!-- Panel 3: escenarios -->
-    <div class="s6-panel">
-      <p class="panel-label">Escenarios</p>
-
-      <ul class="panel-items">
-        <li>Sin fallas (ideal)</li>
-        <li>Fallas del <strong>5%, 10%, 20%</strong></li>
-        <li>Nodos intermitentes</li>
-        <li>Evaluación de <strong>robustez</strong></li>
-      </ul>
-
-      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-        <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-        <circle cx="90" cy="20" r="6" stroke="#f87171" fill="none"/>
-        <circle cx="140" cy="45" r="6" stroke="#38bdf8" fill="none"/>
-        <line x1="40" y1="35" x2="90" y2="20" stroke="#f87171" opacity="0.3"/>
-        <line x1="90" y1="20" x2="140" y2="45" stroke="#38bdf8" opacity="0.3"/>
-      </svg>
-    </div>
-
-    <!-- Panel 4: topología -->
-    <div class="s6-panel panel-bad">
-      <p class="panel-label panel-label-bad">Constelaciones</p>
-
-      <ul class="panel-items">
-        <li>Walker <strong>53°</strong></li>
-        <li>120 – 360 satélites</li>
-        <li>12 / 20 planos</li>
-        <li>Evaluación de <strong>escalabilidad</strong></li>
-      </ul>
-
-      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-        <circle cx="60" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
-        <circle cx="120" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
-        <circle cx="90" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-      </svg>
-    </div>
-
-  </div>
-
-  <p class="s3-footnote" style="text-align:center;">
-    Se definieron <strong>16 simulaciones</strong> combinando métricas, algoritmos, fallas y tamaño de red.
-  </p>
-</div>
+    <p class="s3-footnote" style="text-align:center;">
+      Se definieron <strong>16 simulaciones</strong> combinando métricas, algoritmos, fallas y tamaño de red.
+    </p>
+  </div>  
 
 </div><!-- /presentation -->
 
