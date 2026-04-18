@@ -698,7 +698,7 @@ html, body {
 .s19-panel-good .s19-caption { color: var(--blue); opacity: 0.85; }
 
 /* ═══════════════════ SECCIÓN 4: H3 ═══════════════════ */
-#slide-h3-1,#slide-h3-2,#slide-h3-3,#slide-h3-4,
+#slide-h3-1,#slide-h3-3,#slide-h3-4,
 #slide-h3-5,#slide-h3-6,#slide-h3-7,#slide-h3-8,
 #slide-h3-9,#slide-h3-10,#slide-h3-11 {
   display: flex; flex-direction: column;
@@ -1583,43 +1583,6 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE H3-2 — Jerarquía de resoluciones ──────────── -->
-  <div class="slide" id="slide-h3-2">
-    <div class="slide-2col" style="height:100%;">
-      <div class="col-text">
-        <p class="section-tag">H3</p>
-        <h2 class="slide-title">Jerarquía de<br><em>resoluciones</em></h2>
-        <ul class="key-points">
-          <li>H3 define <strong>16 niveles</strong> de resolución (0 a 15), de menor a mayor granularidad.</li>
-          <li>Cada hexágono se subdivide en <strong>~7 celdas</strong> al pasar al nivel siguiente.</li>
-          <li>Este trabajo usa resoluciones <strong>0, 1 y 2</strong>: granularidad suficiente para mapear posiciones de satélites LEO.</li>
-        </ul>
-      </div>
-      <div class="col-visual" style="flex:0 0 52%;">
-        <div class="h3-res-grid">
-          <div class="h3-res-panel">
-            <p class="h3-res-tag">Resolución 0</p>
-            <svg id="svg-res0" viewBox="0 0 160 130" width="100%" style="display:block;"></svg>
-            <p class="h3-res-num">122</p>
-            <p class="h3-res-sub">celdas globales</p>
-          </div>
-          <div class="h3-res-panel" style="border-color:rgba(56,189,248,0.2);">
-            <p class="h3-res-tag">Resolución 1</p>
-            <svg id="svg-res1" viewBox="0 0 160 130" width="100%" style="display:block;"></svg>
-            <p class="h3-res-num">842</p>
-            <p class="h3-res-sub">celdas globales</p>
-          </div>
-          <div class="h3-res-panel" style="border-color:rgba(56,189,248,0.35);">
-            <p class="h3-res-tag">Resolución 2</p>
-            <svg id="svg-res2" viewBox="0 0 160 130" width="100%" style="display:block;"></svg>
-            <p class="h3-res-num">5 882</p>
-            <p class="h3-res-sub">celdas globales</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ─── SLIDE H3-3 — Sistema IJK ─────────────────────────── -->
   <div class="slide" id="slide-h3-3">
     <div class="slide-2col" style="height:100%;">
@@ -1828,6 +1791,99 @@ html, body {
       </div>
     </div>
   </div>
+
+  <div class="slide" id="slide-sim-tools">
+  <p class="section-tag">Simulaciones</p>
+
+  <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
+    Casos de <em>simulación</em>
+  </h2>
+
+  <div class="s6-panels">
+
+    <!-- Panel 1: métricas -->
+    <div class="s6-panel">
+      <p class="panel-label">Métricas</p>
+
+      <ul class="panel-items">
+        <li><strong>Tiempo de procesamiento</strong></li>
+        <li><strong>Número de saltos</strong></li>
+        <li><strong>Tiempo de arribo</strong></li>
+        <li><strong>Tasa de entrega</strong></li>
+      </ul>
+
+      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+        <line x1="20" y1="50" x2="60" y2="30" stroke="#38bdf8"/>
+        <line x1="60" y1="30" x2="100" y2="40" stroke="#38bdf8"/>
+        <line x1="100" y1="40" x2="140" y2="20" stroke="#38bdf8"/>
+        <line x1="140" y1="20" x2="180" y2="35" stroke="#38bdf8"/>
+      </svg>
+    </div>
+
+    <!-- Panel 2: algoritmos -->
+    <div class="s6-panel panel-good">
+      <p class="panel-label panel-label-good">Algoritmos</p>
+
+      <ul class="panel-items">
+        <li><strong>ANTop</strong> vs <strong>CGR Rev17</strong></li>
+        <li>oneBestPath / perNeighborBestPath</li>
+        <li>Decisiones <strong>distribuidas</strong></li>
+        <li>contactPlan: <strong>local</strong></li>
+      </ul>
+
+      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+        <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+        <circle cx="105" cy="20" r="6" stroke="#38bdf8" fill="none"/>
+        <circle cx="170" cy="45" r="6" stroke="#38bdf8" fill="none"/>
+        <line x1="40" y1="35" x2="105" y2="20" stroke="#38bdf8" opacity="0.3"/>
+        <line x1="105" y1="20" x2="170" y2="45" stroke="#38bdf8" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <!-- Panel 3: escenarios -->
+    <div class="s6-panel">
+      <p class="panel-label">Escenarios</p>
+
+      <ul class="panel-items">
+        <li>Sin fallas (ideal)</li>
+        <li>Fallas del <strong>5%, 10%, 20%</strong></li>
+        <li>Nodos intermitentes</li>
+        <li>Evaluación de <strong>robustez</strong></li>
+      </ul>
+
+      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+        <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+        <circle cx="90" cy="20" r="6" stroke="#f87171" fill="none"/>
+        <circle cx="140" cy="45" r="6" stroke="#38bdf8" fill="none"/>
+        <line x1="40" y1="35" x2="90" y2="20" stroke="#f87171" opacity="0.3"/>
+        <line x1="90" y1="20" x2="140" y2="45" stroke="#38bdf8" opacity="0.3"/>
+      </svg>
+    </div>
+
+    <!-- Panel 4: topología -->
+    <div class="s6-panel panel-bad">
+      <p class="panel-label panel-label-bad">Constelaciones</p>
+
+      <ul class="panel-items">
+        <li>Walker <strong>53°</strong></li>
+        <li>120 – 360 satélites</li>
+        <li>12 / 20 planos</li>
+        <li>Evaluación de <strong>escalabilidad</strong></li>
+      </ul>
+
+      <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
+        <circle cx="60" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
+        <circle cx="120" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
+        <circle cx="90" cy="35" r="6" stroke="#38bdf8" fill="none"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <p class="s3-footnote" style="text-align:center;">
+    Se definieron <strong>16 simulaciones</strong> combinando métricas, algoritmos, fallas y tamaño de red.
+  </p>
+</div>
 
 </div><!-- /presentation -->
 
