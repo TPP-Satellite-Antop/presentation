@@ -28,21 +28,7 @@ Puntos clave:
 
 ---
 
-## Slide 3 — Limitaciones
-
-**Contenido:** Qué no cubre este trabajo y qué debe tenerse en cuenta al interpretar los resultados.
-
-Puntos clave:
-- Las simulaciones se realizaron exclusivamente con **resolución H3 0** (122 celdas): los escenarios probados no tienen suficientes satélites para resoluciones más finas sin fragmentar excesivamente la red.
-- Solo se evaluaron **constelaciones Walker** con inclinación fija (53°): no se estudió el comportamiento en otras geometrías orbitales.
-- El entorno es de **simulación**: los resultados reflejan el comportamiento bajo el modelo de conectividad adoptado, no sobre hardware real ni sobre condiciones atmosféricas reales.
-- CGR *perNeighborBestPath* no pudo completarse para 360 satélites por limitaciones de recursos computacionales.
-
-**Elemento visual sugerido:** Lista concisa. No enfatizar demasiado — son limitaciones conocidas y acotadas, no defectos del trabajo.
-
----
-
-## Slide 4 — Trabajo futuro
+## Slide 2 — Trabajo futuro
 
 **Contenido:** Qué direcciones quedan abiertas a partir de este trabajo.
 

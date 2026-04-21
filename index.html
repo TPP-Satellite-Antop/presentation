@@ -708,6 +708,7 @@ html, body {
 
 /* Triple comparativa */
 #slide-h3-1 { padding-bottom: 62px; }
+#slide-h3-8 { padding-bottom: 72px; }
 .h3-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; width: 100%; flex: 1; min-height: 0; }
 .h3-panel { background: rgba(255,255,255,0.02); border: 1px solid rgba(63,79,103,0.35); border-radius: 14px; display: flex; flex-direction: column; align-items: center; padding: 10px 10px; gap: 6px; }
 .h3-panel-hi { background: rgba(56,189,248,0.04); border-color: rgba(56,189,248,0.28); }
@@ -735,6 +736,106 @@ html, body {
 .h3-res-tag { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); }
 .h3-res-num { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px,2.2vw,32px); font-weight: 700; color: var(--white); line-height: 1; }
 .h3-res-sub { font-size: clamp(10px,0.9vw,13px); color: var(--muted); }
+
+/* ═══════════════════ SECCIÓN 5: DTNSim ═══════════════════ */
+#slide-dtnsim-2 {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 30px 5vw 62px; gap: 16px;
+}
+
+/* ═══════════════════ SECCIÓN 7: Conclusiones ═══════════════════ */
+#slide-close { display: flex; align-items: center; justify-content: center; }
+#canvas-close { position: absolute; inset: 0; width: 100%; height: 100%; }
+.close-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(6,11,24,0.72) 100%);
+  z-index: 5;
+}
+.close-content {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: 16px;
+}
+@keyframes close-pulse {
+  0%, 100% { text-shadow: 0 0 80px rgba(56,189,248,0.4), 0 2px 6px rgba(0,0,0,0.7); }
+  50%       { text-shadow: 0 0 160px rgba(56,189,248,0.75), 0 0 50px rgba(56,189,248,0.3), 0 2px 6px rgba(0,0,0,0.7); }
+}
+.close-question {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(64px, 9vw, 130px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--white);
+  animation: close-pulse 3.2s ease-in-out infinite;
+}
+.close-authors {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: max-content;
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+}
+.close-authors .author-name:first-child { text-align: right; padding-right: 14px; }
+.close-authors .author-name:last-child  { text-align: left;  padding-left:  14px; }
+.close-authors .author-sep { opacity: 0.4; }
+
+/* ═══════════════════ SECCIÓN 6: Simulaciones ═══════════════════ */
+.sim-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 860px;
+}
+.sim-metric-card {
+  background: rgba(56,189,248,0.05);
+  border: 1px solid rgba(56,189,248,0.18);
+  border-radius: 12px;
+  padding: 18px 22px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sim-metric-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(13px,1.1vw,16px);
+  font-weight: 700;
+  color: var(--blue);
+}
+.sim-metric-desc {
+  font-size: clamp(11px,0.85vw,13px);
+  color: var(--muted);
+  line-height: 1.5;
+}
+.sim-plots-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 28px 4vw 56px;
+  gap: 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.sim-plots-header {
+  display: flex; align-items: baseline; gap: 14px;
+  flex-shrink: 0;
+}
+.sim-plots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+.sim-plot-box {
+  border-radius: 10px;
+  border: 1px dashed rgba(63,79,103,0.45);
+  background: rgba(255,255,255,0.015);
+}
 </style>
 </head>
 <body>
@@ -1735,16 +1836,16 @@ html, body {
   <div class="slide" id="slide-h3-8">
     <p class="section-tag">H3</p>
     <h2 class="slide-title" style="text-align:center;margin-bottom:0;">La <em>dimensión prima</em></h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;flex:1;min-height:0;">
-      <div class="h3-panel" style="gap:12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:20px;width:100%;flex:1;min-height:0;">
+      <div class="h3-panel" style="gap:12px;min-height:0;">
         <p class="h3-panel-tag">IJK original</p>
-        <svg id="svg-ijk-orig" viewBox="0 0 240 220" width="100%" style="flex:1;min-height:0;display:block;"></svg>
-        <p class="h3-cap" style="color:var(--muted);">Celda <span style="color:var(--blue);">verde</span>: 1 paso. Celda <span style="color:#f87171;">roja</span>: requiere &gt;1 paso</p>
+        <svg id="svg-ijk-orig" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
+        <p class="h3-cap" style="color:var(--muted);">Celda <span style="color:#34d399;">verde</span>: 1 paso. Celda <span style="color:#f87171;">roja</span>: requiere &gt;1 paso</p>
       </div>
-      <div class="h3-panel h3-panel-hi" style="gap:12px;">
+      <div class="h3-panel h3-panel-hi" style="gap:12px;min-height:0;">
         <p class="h3-panel-tag h3-panel-tag-hi">IJK prima (rotado 60°)</p>
-        <svg id="svg-ijk-prime" viewBox="0 0 240 220" width="100%" style="flex:1;min-height:0;display:block;"></svg>
-        <p class="h3-cap h3-cap-hi">La misma celda <span style="color:var(--blue);">roja</span> es ahora alcanzable en 1 paso</p>
+        <svg id="svg-ijk-prime" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
+        <p class="h3-cap h3-cap-hi">La misma celda <span style="color:#f87171;">roja</span> es ahora alcanzable en <strong>1 paso</strong></p>
       </div>
     </div>
     <p class="s3-footnote" style="text-align:center;">
@@ -1792,98 +1893,348 @@ html, body {
     </div>
   </div>
 
-  <div class="slide" id="slide-sim-tools">
-    <p class="section-tag">Simulaciones</p>
+  <!-- ═══════════════════ SECCIÓN 5: DTNSim ═══════════════════ -->
 
-    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
-      Casos de <em>simulación</em>
-    </h2>
-
-    <div class="s6-panels">
-
-      <!-- Panel 1: métricas -->
-      <div class="s6-panel">
-        <p class="panel-label">Métricas</p>
-
-        <ul class="panel-items">
-          <li><strong>Tiempo de procesamiento</strong></li>
-          <li><strong>Número de saltos</strong></li>
-          <li><strong>Tiempo de arribo</strong></li>
-          <li><strong>Tasa de entrega</strong></li>
+  <!-- ─── SLIDE dtnsim-1 — El simulador base ─────────────────── -->
+  <div class="slide" id="slide-dtnsim-1">
+    <div class="slide-2col" style="height:100%;">
+      <div class="col-text">
+        <p class="section-tag">dtnsim</p>
+        <h2 class="slide-title">El simulador<br><em>DTNSim</em></h2>
+        <ul class="key-points">
+          <li>Simulador de redes DTN para el estudio de protocolos de <strong>enrutamiento y reenvío</strong>.</li>
+          <li>La red se modela mediante <strong>contact plans</strong>: descripciones explícitas de cuándo dos nodos pueden comunicarse.</li>
+          <li>Los bundles <strong>esperan en buffer</strong> hasta que un contacto disponible permite la transmisión.</li>
+          <li>Soporta múltiples algoritmos de ruteo, incluyendo <strong>CGR</strong>.</li>
+          <li>Es el entorno base sobre el que se implementa y evalúa <strong>ANTop</strong>.</li>
         </ul>
-
-        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-          <line x1="20" y1="50" x2="60" y2="30" stroke="#38bdf8"/>
-          <line x1="60" y1="30" x2="100" y2="40" stroke="#38bdf8"/>
-          <line x1="100" y1="40" x2="140" y2="20" stroke="#38bdf8"/>
-          <line x1="140" y1="20" x2="180" y2="35" stroke="#38bdf8"/>
-        </svg>
       </div>
-
-      <!-- Panel 2: algoritmos -->
-      <div class="s6-panel panel-good">
-        <p class="panel-label panel-label-good">Algoritmos</p>
-
-        <ul class="panel-items">
-          <li><strong>ANTop</strong> vs <strong>CGR Rev17</strong></li>
-          <li>oneBestPath / perNeighborBestPath</li>
-          <li>Decisiones <strong>distribuidas</strong></li>
-          <li>contactPlan: <strong>local</strong></li>
-        </ul>
-
-        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-          <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-          <circle cx="105" cy="20" r="6" stroke="#38bdf8" fill="none"/>
-          <circle cx="170" cy="45" r="6" stroke="#38bdf8" fill="none"/>
-          <line x1="40" y1="35" x2="105" y2="20" stroke="#38bdf8" opacity="0.3"/>
-          <line x1="105" y1="20" x2="170" y2="45" stroke="#38bdf8" opacity="0.3"/>
+      <div class="col-visual" style="flex:0 0 46%;">
+        <svg viewBox="0 0 400 300" width="100%" xmlns="http://www.w3.org/2000/svg"
+             style="border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);">
+          <!-- Non-path edges -->
+          <line x1="72"  y1="150" x2="200" y2="240" stroke="#3f4f67" stroke-width="1.2"/>
+          <line x1="200" y1="240" x2="328" y2="150" stroke="#3f4f67" stroke-width="1.2"/>
+          <!-- Path edges -->
+          <line x1="72"  y1="150" x2="200" y2="68"  stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
+          <line x1="200" y1="68"  x2="328" y2="150" stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
+          <!-- Time window labels — non-path -->
+          <text x="118" y="212" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[0, 40]</text>
+          <text x="278" y="215" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[50, 90]</text>
+          <!-- Time window labels — path -->
+          <text x="122" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[10, 35]</text>
+          <text x="278" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[38, 70]</text>
+          <!-- Node A (source) -->
+          <circle cx="72"  cy="150" r="22" fill="#071426" stroke="#38bdf8" stroke-width="2"/>
+          <text   x="72"   y="155" fill="#38bdf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">A</text>
+          <text   x="72"   y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-1</text>
+          <!-- Node B (relay, on path) -->
+          <circle cx="200" cy="68"  r="18" fill="#071426" stroke="rgba(56,189,248,0.5)" stroke-width="1.5"/>
+          <text   x="200"  y="73"  fill="#94a3b8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">B</text>
+          <text   x="200"  y="97"  fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-2</text>
+          <!-- Node C (relay, off path) -->
+          <circle cx="200" cy="240" r="18" fill="#071426" stroke="#3f4f67" stroke-width="1.2"/>
+          <text   x="200"  y="245" fill="#3f4f67" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">C</text>
+          <text   x="200"  y="268" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-3</text>
+          <!-- Node D (destination) -->
+          <circle cx="328" cy="150" r="22" fill="#071426" stroke="#818cf8" stroke-width="2"/>
+          <text   x="328"  y="155" fill="#818cf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">D</text>
+          <text   x="328"  y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-4</text>
+          <!-- Legend -->
+          <text x="200" y="28" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" opacity="0.7" letter-spacing="1.5">CONTACT PLAN — VENTANAS DE TIEMPO</text>
         </svg>
+        <p class="s2-caption">Contact plan — bundles esperan hasta la próxima ventana</p>
       </div>
-
-      <!-- Panel 3: escenarios -->
-      <div class="s6-panel">
-        <p class="panel-label">Escenarios</p>
-
-        <ul class="panel-items">
-          <li>Sin fallas (ideal)</li>
-          <li>Fallas del <strong>5%, 10%, 20%</strong></li>
-          <li>Nodos intermitentes</li>
-          <li>Evaluación de <strong>robustez</strong></li>
-        </ul>
-
-        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-          <circle cx="40" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-          <circle cx="90" cy="20" r="6" stroke="#f87171" fill="none"/>
-          <circle cx="140" cy="45" r="6" stroke="#38bdf8" fill="none"/>
-          <line x1="40" y1="35" x2="90" y2="20" stroke="#f87171" opacity="0.3"/>
-          <line x1="90" y1="20" x2="140" y2="45" stroke="#38bdf8" opacity="0.3"/>
-        </svg>
-      </div>
-
-      <!-- Panel 4: topología -->
-      <div class="s6-panel panel-bad">
-        <p class="panel-label panel-label-bad">Constelaciones</p>
-
-        <ul class="panel-items">
-          <li>Walker <strong>53°</strong></li>
-          <li>120 – 360 satélites</li>
-          <li>12 / 20 planos</li>
-          <li>Evaluación de <strong>escalabilidad</strong></li>
-        </ul>
-
-        <svg viewBox="0 0 210 70" width="100%" style="margin-top:6px; opacity:0.8;">
-          <circle cx="60" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
-          <circle cx="120" cy="35" r="20" stroke="#38bdf8" fill="none" opacity="0.3"/>
-          <circle cx="90" cy="35" r="6" stroke="#38bdf8" fill="none"/>
-        </svg>
-      </div>
-
     </div>
+  </div>
 
-    <p class="s3-footnote" style="text-align:center;">
-      Se definieron <strong>16 simulaciones</strong> combinando métricas, algoritmos, fallas y tamaño de red.
-    </p>
-  </div>  
+  <!-- ─── SLIDE dtnsim-2 — ContactlessDtn ─────────────────────── -->
+  <div class="slide" id="slide-dtnsim-2">
+    <p class="section-tag">dtnsim</p>
+    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Conectividad <em>dinámica</em></h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:20px;width:100%;flex:1;min-height:0;">
+      <div class="h3-panel" style="min-height:0;gap:10px;">
+        <p class="h3-panel-tag">DTN original</p>
+        <svg id="svg-dtnsim-orig" viewBox="0 0 280 190" class="h3-panel-svg"></svg>
+        <p class="h3-cap" style="color:var(--muted);">Conectividad <span style="color:#f87171;">predefinida</span> — contact plan fijo</p>
+      </div>
+      <div class="h3-panel h3-panel-hi" style="min-height:0;gap:10px;">
+        <p class="h3-panel-tag h3-panel-tag-hi">ContactlessDtn</p>
+        <canvas id="canvas-dtnsim-new" class="h3-panel-svg" style="border-radius:14px;"></canvas>
+        <p class="h3-cap h3-cap-hi">Posición simulada → conectividad <span style="color:#34d399;">dinámica</span> → algoritmo de ruteo</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE dtnsim-3 — Atlas ───────────────────────────────── -->
+  <div class="slide" id="slide-dtnsim-3">
+    <div class="slide-2col" style="height:100%;">
+      <div class="col-text">
+        <p class="section-tag">dtnsim</p>
+        <h2 class="slide-title">Constelaciones<br>paramétricas <em>Atlas</em></h2>
+        <ul class="key-points">
+          <li><strong>Atlas</strong> define constelaciones satelitales de forma completamente <strong>paramétrica</strong>.</li>
+          <li>Genera órbitas sintéticas configurando satélites, planos, altitud e inclinación.</li>
+          <li>Permite explorar distintas topologías sin depender de datos orbitales reales.</li>
+          <li><strong>Extensión:</strong> Atlas no soportaba <strong>phase offset</strong> → se extendió para modelar constelaciones <strong>Walker</strong> completas.</li>
+          <li>El phase offset distribuye los satélites uniformemente entre planos → mayor cobertura H3 → mejor conectividad.</li>
+        </ul>
+      </div>
+      <div class="col-visual" style="flex:0 0 46%;">
+        <div style="flex:1;min-height:0;border-radius:14px;background:rgba(255,255,255,0.02);border:1px dashed rgba(63,79,103,0.4);"></div>
+        <p class="s2-caption">Sin phase offset vs. con phase offset — distribución de satélites</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════ SECCIÓN 6: Simulaciones ═══════════════════ -->
+
+  <!-- ─── SLIDE sim-1 — Marco experimental: métricas ────────────── -->
+  <div class="slide" id="slide-sim-1">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:24px;">
+      <div style="text-align:center;">
+        <p class="section-tag">simulaciones</p>
+        <h2 class="slide-title">Métricas de evaluación</h2>
+      </div>
+      <div class="sim-metrics-grid">
+        <div class="sim-metric-card">
+          <div class="sim-metric-name">Delivery Ratio</div>
+          <div class="sim-metric-desc">Porcentaje de paquetes que llegan a destino. Mide la confiabilidad del algoritmo.</div>
+        </div>
+        <div class="sim-metric-card">
+          <div class="sim-metric-name">Arrival Time</div>
+          <div class="sim-metric-desc">Tiempo total desde que se crea un paquete hasta que llega a destino.</div>
+        </div>
+        <div class="sim-metric-card">
+          <div class="sim-metric-name">Elapsed Time</div>
+          <div class="sim-metric-desc">Tiempo de cómputo acumulado en todos los nodos por los que pasó el paquete. Mide el costo computacional del ruteo.</div>
+        </div>
+        <div class="sim-metric-card">
+          <div class="sim-metric-name">Number of Hops</div>
+          <div class="sim-metric-desc">Cantidad de nodos intermedios recorridos. Indica la eficiencia de la ruta encontrada.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-2 — Marco experimental: escenarios ──────────── -->
+  <div class="slide" id="slide-sim-2">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:22px;">
+      <div style="text-align:center;">
+        <p class="section-tag">simulaciones</p>
+        <h2 class="slide-title">Escenarios</h2>
+      </div>
+      <table class="epoch-table" style="max-width:700px;width:100%;">
+        <thead>
+          <tr>
+            <th class="th-row">Constelación</th>
+            <th class="th-p1">ANTop</th>
+            <th class="th-x">CGR one-best</th>
+            <th class="th-p2">CGR per-neighbor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-row">120 satélites</td>
+            <td class="e-blue">✓</td>
+            <td>✓</td>
+            <td class="e-purple">✓</td>
+          </tr>
+          <tr>
+            <td class="td-row">180 satélites</td>
+            <td class="e-blue">✓</td>
+            <td>✓</td>
+            <td class="e-purple">✓</td>
+          </tr>
+          <tr>
+            <td class="td-row">240 satélites</td>
+            <td class="e-blue">✓</td>
+            <td>✓</td>
+            <td class="e-purple">✓</td>
+          </tr>
+          <tr>
+            <td class="td-row">360 satélites</td>
+            <td class="e-blue">✓</td>
+            <td>✓</td>
+            <td style="color:rgba(248,113,113,0.75);font-style:italic;font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">no completó</td>
+          </tr>
+        </tbody>
+      </table>
+      <ul class="key-points" style="max-width:760px;width:100%;">
+        <li>Constelaciones <strong>Walker</strong> con inclinación 53°. Fallas: <strong>0%, 5%, 10%, 20%</strong>.</li>
+        <li><strong>100 paquetes por nodo</strong>. ANTop con resolución H3 <strong>0</strong> (122 celdas).</li>
+        <li>CGR <em>per-neighbor</em> no completó para 360 satélites por costo computacional prohibitivo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-3 — Delivery Ratio ──────────────────────────── -->
+  <div class="slide" id="slide-sim-3">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Delivery Ratio</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-4 — Arrival Time ────────────────────────────── -->
+  <div class="slide" id="slide-sim-4">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Arrival Time</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-5 — Elapsed Time ────────────────────────────── -->
+  <div class="slide" id="slide-sim-5">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Elapsed Time</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-6 — Number of Hops ──────────────────────────── -->
+  <div class="slide" id="slide-sim-6">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Number of Hops</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-7 — Resumen comparativo ─────────────────────── -->
+  <div class="slide" id="slide-sim-7">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:22px;">
+      <div style="text-align:center;">
+        <p class="section-tag">simulaciones</p>
+        <h2 class="slide-title">Resumen comparativo</h2>
+      </div>
+      <table class="epoch-table" style="max-width:900px;width:100%;">
+        <thead>
+          <tr>
+            <th class="th-row">Métrica</th>
+            <th class="th-p1">ANTop</th>
+            <th class="th-p2">CGR per-neighbor</th>
+            <th class="th-x">CGR one-best</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-row">Delivery Ratio</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">100% siempre</td>
+            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">~100%</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">hasta 93%</td>
+          </tr>
+          <tr>
+            <td class="td-row">Arrival Time</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">menor en todos los casos</td>
+            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">intermedio</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">mayor</td>
+          </tr>
+          <tr>
+            <td class="td-row">Elapsed Time</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">0.01–0.1 ms, estable</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">mayor costo</td>
+            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">bajo pero impredecible</td>
+          </tr>
+          <tr>
+            <td class="td-row">Number of Hops</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">1–10, estable</td>
+            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">comparable</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">hasta &gt;10.000</td>
+          </tr>
+          <tr>
+            <td class="td-row">Escalabilidad</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">mejora con más satélites</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">se degrada</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">se degrada</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════ SECCIÓN 7: Conclusiones ═══════════════════ -->
+
+  <!-- ─── SLIDE conc-1 — Conclusiones ───────────────────────────── -->
+  <div class="slide" id="slide-conc-1">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:24px;">
+      <div style="text-align:center;">
+        <p class="section-tag">conclusiones</p>
+        <h2 class="slide-title">ANTop es una alternativa viable a CGR</h2>
+      </div>
+      <ul class="key-points" style="max-width:820px;width:100%;">
+        <li><strong>100% de tasa de entrega</strong> en todos los escenarios, incluso con 20% de fallas — CGR no lo garantiza.</li>
+        <li><strong>Menor tiempo de llegada</strong> en todos los casos, con tendencia a mejorar en constelaciones más grandes.</li>
+        <li><strong>Costo computacional predecible</strong>: 0.01–0.1 ms estables, sin los picos esporádicos de CGR.</li>
+        <li><strong>Rutas más cortas</strong>: medianas de 1–10 saltos frente a casos extremos de &gt;10.000 en CGR one-best.</li>
+        <li>Su naturaleza <strong>reactiva y descentralizada</strong> lo hace inherentemente más adaptable a fallas y cambios de topología que CGR, cuya efectividad depende de un contact plan global preciso.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE conc-2 — Trabajo futuro ─────────────────────────── -->
+  <div class="slide" id="slide-conc-2">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:24px;">
+      <div style="text-align:center;">
+        <p class="section-tag">trabajo futuro</p>
+        <h2 class="slide-title">Líneas abiertas</h2>
+      </div>
+      <ul class="key-points" style="max-width:820px;width:100%;">
+        <li><strong>Resoluciones H3 mayores</strong>: evaluar ANTop con resoluciones 1 y 2 en megaconstelaciones tipo Starlink.</li>
+        <li><strong>Otras geometrías orbitales</strong>: inclinaciones, altitudes y distribuciones no-Walker.</li>
+        <li><strong>Tráfico no uniforme</strong>: patrones heterogéneos y hot spots geográficos.</li>
+        <li><strong>Modelos orbitales reales</strong>: integrar TLE de constelaciones existentes para contrastar con los resultados paramétricos.</li>
+        <li><strong>Optimizaciones del algoritmo</strong>: variantes del mecanismo de loop epoch y estrategias de selección de vecinos bajo alta carga.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE close — Cierre ───────────────────────────────────── -->
+  <div class="slide" id="slide-close">
+    <canvas id="canvas-close"></canvas>
+    <div class="close-vignette"></div>
+    <div class="close-content">
+      <div class="close-question">¿Preguntas?</div>
+      <p class="close-authors">
+        <span class="author-name">Gastón Frenkel</span>
+        <span class="author-sep">·</span>
+        <span class="author-name">Valentina Adelsflügel</span>
+      </p>
+    </div>
+  </div>
 
 </div><!-- /presentation -->
 
@@ -1903,7 +2254,7 @@ html, body {
   <div class="dot"></div>
   <div class="dot"></div>
 </div>
-<div id="slide-counter">1 / 43</div>
+<div id="slide-counter">1 / 53</div>
 
 <script>
 'use strict';
@@ -1912,7 +2263,8 @@ html, body {
 const slides  = Array.from(document.querySelectorAll('.slide'));
 const dots    = Array.from(document.querySelectorAll('.dot'));
 const counter = document.getElementById('slide-counter');
-let current   = 0;
+const _initialSlide = parseInt(new URLSearchParams(location.search).get('slide'), 10);
+let current   = (_initialSlide >= 1 && _initialSlide <= slides.length) ? _initialSlide - 1 : 0;
 
 // Windowed dot nav: 13 dots, center (index 6) = current slide.
 // Sizes by distance from center: 0→9px, 1→7px, 2→6px, 3→5px, 4→4px, 5→3px, 6→3px
@@ -1941,8 +2293,14 @@ function goTo(n) {
   slides[current].classList.add('active');
   counter.textContent = `${current + 1} / ${slides.length}`;
   updateDots();
+  history.replaceState(null, '', `?slide=${current + 1}`);
 }
 
+// Activate initial slide (may be non-zero from query param).
+// Slide 1 has 'active' hardcoded in HTML; clear it first so only one slide is active.
+slides[0].classList.remove('active');
+slides[current].classList.add('active');
+counter.textContent = `${current + 1} / ${slides.length}`;
 updateDots();
 
 document.addEventListener('keydown', e => {
@@ -3107,6 +3465,140 @@ document.querySelectorAll('.lp-orig-canvas').forEach(c => makeLoopSlide(c, {
   hexSvg.innerHTML = hexHtml;
 })();
 
+// ── SLIDE close — CLOSING SCENE ──────────────────────────────
+// 6 orbital planes × 8 satellites = 48 total.
+// All satisfy rxF × cos(inc) < 0.115 so back arcs occlude correctly.
+//   0.215×cos(68°)=0.081 ✓  0.250×cos(70°)=0.086 ✓  0.285×cos(72°)=0.088 ✓
+//   0.315×cos(74°)=0.087 ✓  0.345×cos(75°)=0.089 ✓  0.375×cos(76°)=0.091 ✓
+function evenPhasesN(n, offset) {
+  return Array.from({ length: n }, (_, i) => (i / n + offset) % 1);
+}
+const ORBITS_CLOSE = [
+  { rxF: 0.215, inc: 68, lan:   0, phases: evenPhasesN(8, 0.00), speed: 0.000088, color: '#38bdf8' },
+  { rxF: 0.250, inc: 70, lan:  30, phases: evenPhasesN(8, 0.06), speed: 0.000074, color: '#818cf8' },
+  { rxF: 0.285, inc: 72, lan:  60, phases: evenPhasesN(8, 0.12), speed: 0.000063, color: '#38bdf8' },
+  { rxF: 0.315, inc: 74, lan:  90, phases: evenPhasesN(8, 0.03), speed: 0.000055, color: '#818cf8' },
+  { rxF: 0.345, inc: 75, lan: 120, phases: evenPhasesN(8, 0.09), speed: 0.000049, color: '#38bdf8' },
+  { rxF: 0.375, inc: 76, lan: 150, phases: evenPhasesN(8, 0.15), speed: 0.000044, color: '#818cf8' },
+];
+const TRAIL_LEN  = 12;  // trail steps
+const TRAIL_STEP = 18;  // ms per trail step (~1 frame at 60fps)
+
+const cClose   = document.getElementById('canvas-close');
+const ctxClose = cClose ? cClose.getContext('2d') : null;
+function resizeCClose() {
+  if (!cClose) return;
+  const dpr = window.devicePixelRatio || 1;
+  cClose.width  = Math.round(window.innerWidth  * dpr);
+  cClose.height = Math.round(window.innerHeight * dpr);
+  ctxClose.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeCClose();
+window.addEventListener('resize', resizeCClose);
+
+function drawSceneClose(t) {
+  if (!ctxClose) return;
+  const W = window.innerWidth, H = window.innerHeight;
+  const CX = W * 0.5, CY = H * 0.44;
+  const D  = Math.min(W, H);
+  const ER = D * 0.115;
+
+  ctxClose.fillStyle = '#060b18';
+  ctxClose.fillRect(0, 0, W, H);
+
+  // Stars (phase-shifted so they don't sync with slide 1)
+  for (const s of stars1) {
+    const a = s.base * (0.65 + 0.35 * Math.sin(t * s.freq + s.phase + 1.3));
+    ctxClose.beginPath();
+    ctxClose.arc(s.nx * W, s.ny * H, s.r, 0, Math.PI * 2);
+    ctxClose.fillStyle = `rgba(241,245,249,${a.toFixed(3)})`;
+    ctxClose.fill();
+  }
+
+  const orbs = ORBITS_CLOSE.map(o => ({
+    ...o, rx: o.rxF * D,
+    incR: o.inc * Math.PI / 180,
+    lanR: o.lan * Math.PI / 180,
+  }));
+  function satAlphaC(z, rx) { return 0.15 + 0.85 * (z / rx + 1) / 2; }
+
+  // Collect near-side satellite screen positions for ISL links
+  const nearSats = [];
+  for (const o of orbs) {
+    for (const phase of o.phases) {
+      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
+      if (p.z >= 0) nearSats.push({ x: CX + p.sx, y: CY + p.sy, z: p.z, rx: o.rx });
+    }
+  }
+
+  // 1. Back orbit arcs
+  for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, false);
+
+  // 2. ISL network links between nearby near-side satellites
+  const ISL_DIST = D * 0.20;
+  for (let i = 0; i < nearSats.length; i++) {
+    for (let j = i + 1; j < nearSats.length; j++) {
+      const a = nearSats[i], b = nearSats[j];
+      const dx = a.x - b.x, dy = a.y - b.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > ISL_DIST) continue;
+      const alpha = (1 - dist / ISL_DIST) * 0.28;
+      ctxClose.beginPath();
+      ctxClose.moveTo(a.x, a.y);
+      ctxClose.lineTo(b.x, b.y);
+      ctxClose.strokeStyle = `rgba(56,189,248,${alpha.toFixed(3)})`;
+      ctxClose.lineWidth = 0.8;
+      ctxClose.stroke();
+    }
+  }
+
+  // 3. Far-side satellites with comet trails, drawn before Earth
+  for (const o of orbs) {
+    for (const phase of o.phases) {
+      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
+      if (p.z >= 0) continue;
+      const baseAlpha = satAlphaC(p.z, o.rx);
+      for (let k = TRAIL_LEN; k >= 1; k--) {
+        const tPast = t - k * TRAIL_STEP;
+        const pt = orbitPoint(o.rx, o.incR, o.lanR, ((tPast * o.speed + phase) % 1) * Math.PI * 2);
+        if (pt.z >= 0) continue;
+        const frac = 1 - k / TRAIL_LEN;
+        ctxClose.beginPath();
+        ctxClose.arc(CX + pt.sx, CY + pt.sy, 1.6 * frac, 0, Math.PI * 2);
+        ctxClose.fillStyle = `rgba(56,189,248,${(baseAlpha * frac * 0.45).toFixed(3)})`;
+        ctxClose.fill();
+      }
+      drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, baseAlpha);
+    }
+  }
+
+  // 4. Earth
+  drawEarth(ctxClose, CX, CY, ER);
+
+  // 5. Front orbit arcs
+  for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, true);
+
+  // 6. Near-side satellites with comet trails, drawn on top
+  for (const o of orbs) {
+    for (const phase of o.phases) {
+      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
+      if (p.z < 0) continue;
+      const baseAlpha = satAlphaC(p.z, o.rx);
+      for (let k = TRAIL_LEN; k >= 1; k--) {
+        const tPast = t - k * TRAIL_STEP;
+        const pt = orbitPoint(o.rx, o.incR, o.lanR, ((tPast * o.speed + phase) % 1) * Math.PI * 2);
+        if (pt.z < 0) continue;
+        const frac = 1 - k / TRAIL_LEN;
+        ctxClose.beginPath();
+        ctxClose.arc(CX + pt.sx, CY + pt.sy, 1.6 * frac, 0, Math.PI * 2);
+        ctxClose.fillStyle = `rgba(56,189,248,${(baseAlpha * frac * 0.45).toFixed(3)})`;
+        ctxClose.fill();
+      }
+      drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, baseAlpha);
+    }
+  }
+}
+
 // ── MAIN LOOP ─────────────────────────────────────────────────
 function loop(t) {
   requestAnimationFrame(loop);
@@ -3114,6 +3606,7 @@ function loop(t) {
   drawScene2(t);
   drawScene4(t);
   drawScene14(t);
+  drawSceneClose(t);
 }
 requestAnimationFrame(loop);
 
@@ -3447,67 +3940,124 @@ requestAnimationFrame(loop);
 
 // ── H3-9: Dimensión prima ─────────────────────────────────────
 (function() {
+  // Same hex map as H3-3 / H3-4 slides: pointy-top, R=22, ox=120, oy=110
   const R = 22, SQ3 = Math.sqrt(3);
+  const ox = 120, oy = 110;
+
   function hexPts(cx, cy) {
-    const pts=[];
-    for(let i=0;i<6;i++){const a=Math.PI/6+i*Math.PI/3;pts.push(`${(cx+R*Math.cos(a)).toFixed(1)},${(cy+R*Math.sin(a)).toFixed(1)}`);}
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI/6 + i*Math.PI/3;
+      pts.push(`${(cx+R*Math.cos(a)).toFixed(1)},${(cy+R*Math.sin(a)).toFixed(1)}`);
+    }
     return pts.join(' ');
   }
-  function a2p(q, r, ox, oy, rotDeg) {
-    const rot = (rotDeg||0) * Math.PI/180;
-    const x0 = R * SQ3 * (q + r/2), y0 = R * 1.5 * r;
+  // Cell position — grid is always unrotated (same map as H3-3)
+  function a2p(q, r) {
+    return { x: ox + R*SQ3*(q + r/2), y: oy + R*1.5*r };
+  }
+  // Axis arrow endpoint — only the arrows rotate by axRot degrees
+  function axisEnd(q, r, axRot) {
+    const rad = axRot * Math.PI/180;
+    const x0 = R*SQ3*(q + r/2), y0 = R*1.5*r;
     return {
-      x: ox + x0*Math.cos(rot) - y0*Math.sin(rot),
-      y: oy + x0*Math.sin(rot) + y0*Math.cos(rot)
+      x: ox + x0*Math.cos(rad) - y0*Math.sin(rad),
+      y: oy + x0*Math.sin(rad) + y0*Math.cos(rad)
     };
   }
-  function drawIJK(svgId, rotDeg, highlightCell, highlightColor, problemCellOK) {
+
+  function draw(svgId, axRot, isPrime) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
-    const ox=120, oy=115;
-    const cells=[[0,0],[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1],[2,0],[2,-1],[2,-2],[1,-2],[0,-2],[-1,-1],[-2,0],[-2,1]];
-    let h='<defs><marker id="arr-dim-'+svgId+'" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(56,189,248,0.7)"/></marker></defs>';
-    cells.forEach(([q,r])=>{
-      const {x,y}=a2p(q,r,ox,oy,rotDeg);
-      if(x>4&&x<236&&y>4&&y<216)
-        h+=`<polygon points="${hexPts(x,y)}" fill="rgba(255,255,255,0.02)" stroke="rgba(63,79,103,0.4)" stroke-width="0.8"/>`;
+    const lbl = isPrime ? ["I'", "J'", "K'"] : ['I', 'J', 'K'];
+
+    // Arrowhead markers — same color scheme as IJK slide (H3-3)
+    let h = `<defs>
+      <marker id="ai-${svgId}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgb(56,189,248)"/></marker>
+      <marker id="aj-${svgId}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgb(129,140,248)"/></marker>
+      <marker id="ak-${svgId}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(56,189,248,0.55)"/></marker>
+    </defs>`;
+
+    // Background hex grid — same cells as H3-3
+    const bgCells = [[0,0],[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1],
+                     [2,0],[2,-1],[2,-2],[1,-2],[0,-2],[-1,-1],[-2,0],[-2,1]];
+    bgCells.forEach(([q,r]) => {
+      const {x,y} = a2p(q,r);
+      if (x>4 && x<236 && y>4 && y<181)
+        h += `<polygon points="${hexPts(x,y)}" fill="rgba(255,255,255,0.02)" stroke="rgba(63,79,103,0.4)" stroke-width="0.8"/>`;
     });
-    // Origin
-    const o=a2p(0,0,ox,oy,rotDeg);
-    h+=`<polygon points="${hexPts(o.x,o.y)}" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.6)" stroke-width="1.5"/>`;
-    h+=`<text x="${o.x}" y="${o.y+5}" text-anchor="middle" fill="rgba(56,189,248,0.9)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">O</text>`;
-    // Problem cell (1,-1) — needs 2 steps in original IJK
-    const prob=a2p(1,-1,ox,oy,rotDeg);
-    const probColor = problemCellOK ? 'rgba(52,211,153,0.7)' : 'rgba(248,113,113,0.7)';
-    const probFill  = problemCellOK ? 'rgba(52,211,153,0.1)' : 'rgba(248,113,113,0.1)';
-    h+=`<polygon points="${hexPts(prob.x,prob.y)}" fill="${probFill}" stroke="${probColor}" stroke-width="1.5"/>`;
-    h+=`<text x="${prob.x}" y="${prob.y+5}" text-anchor="middle" fill="${probColor}" font-size="9" font-family="Space Grotesk,sans-serif">P</text>`;
-    // Green cell (1,0) — always 1 step
-    const g=a2p(1,0,ox,oy,rotDeg);
-    h+=`<polygon points="${hexPts(g.x,g.y)}" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.6)" stroke-width="1.5"/>`;
-    // Axes
-    const ia=a2p(2.8,0,ox,oy,rotDeg);
-    h+=`<line x1="${o.x}" y1="${o.y}" x2="${ia.x.toFixed(1)}" y2="${ia.y.toFixed(1)}" stroke="rgba(56,189,248,0.6)" stroke-width="1.3"/>`;
-    h+=`<text x="${(ia.x+5).toFixed(1)}" y="${(ia.y+4).toFixed(1)}" fill="rgba(56,189,248,0.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700">I</text>`;
-    const ja=a2p(-2.2,-1.4,ox,oy,rotDeg);
-    h+=`<line x1="${o.x}" y1="${o.y}" x2="${ja.x.toFixed(1)}" y2="${ja.y.toFixed(1)}" stroke="rgba(129,140,248,0.6)" stroke-width="1.3"/>`;
-    h+=`<text x="${(ja.x-14).toFixed(1)}" y="${(ja.y).toFixed(1)}" fill="rgba(129,140,248,0.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700">J</text>`;
-    // Arrow to problem cell
-    if (!problemCellOK) {
-      // show that you need 2 steps from O
-      const mid1=a2p(1,0,ox,oy,rotDeg);
-      h+=`<line x1="${o.x}" y1="${o.y}" x2="${mid1.x.toFixed(1)}" y2="${mid1.y.toFixed(1)}" stroke="rgba(248,113,113,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
-      h+=`<line x1="${mid1.x.toFixed(1)}" y1="${mid1.y.toFixed(1)}" x2="${prob.x.toFixed(1)}" y2="${prob.y.toFixed(1)}" stroke="rgba(248,113,113,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
-      h+=`<text x="${prob.x+R+2}" y="${prob.y+4}" fill="rgba(248,113,113,0.75)" font-size="9" font-family="Inter,sans-serif">2 pasos</text>`;
-    } else {
-      // show that in prime system it's 1 step
-      h+=`<line x1="${o.x}" y1="${o.y}" x2="${prob.x.toFixed(1)}" y2="${prob.y.toFixed(1)}" stroke="rgba(52,211,153,0.7)" stroke-width="2"/>`;
-      h+=`<text x="${prob.x+R+2}" y="${prob.y+4}" fill="rgba(52,211,153,0.75)" font-size="9" font-family="Inter,sans-serif">1 paso</text>`;
+
+    // Problem cell P = axial (1,−1): red in both panels (caption calls it "la celda roja")
+    const prob = a2p(1,-1);
+    h += `<polygon points="${hexPts(prob.x,prob.y)}"
+            fill="rgba(248,113,113,0.1)"
+            stroke="rgba(248,113,113,0.7)"
+            stroke-width="1.5"/>`;
+
+    // Easy cell (1,0): green in original panel only
+    if (!isPrime) {
+      const easy = a2p(1,0);
+      h += `<polygon points="${hexPts(easy.x,easy.y)}" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.6)" stroke-width="1.5"/>`;
     }
+
+    // Origin (drawn after highlights so border is on top)
+    const o = a2p(0,0);
+    h += `<polygon points="${hexPts(o.x,o.y)}" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.6)" stroke-width="1.5"/>`;
+
+    // Path to P
+    if (!isPrime) {
+      // Original: needs 2 IJK steps O→(1,0)→(1,−1)
+      const mid = a2p(1,0);
+      h += `<line x1="${o.x}" y1="${o.y}" x2="${mid.x.toFixed(1)}" y2="${mid.y.toFixed(1)}"
+              stroke="rgba(248,113,113,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+      h += `<line x1="${mid.x.toFixed(1)}" y1="${mid.y.toFixed(1)}" x2="${prob.x.toFixed(1)}" y2="${prob.y.toFixed(1)}"
+              stroke="rgba(248,113,113,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    } else {
+      // Prime: 1 J' step direct
+      h += `<line x1="${o.x}" y1="${o.y}" x2="${prob.x.toFixed(1)}" y2="${prob.y.toFixed(1)}"
+              stroke="rgba(52,211,153,0.75)" stroke-width="2"/>`;
+    }
+
+    // Axis arrows (only these rotate)
+    // I axis: axial (1,0) direction — at 0° in original, 60° in prime
+    const ia = axisEnd(1.8, 0, axRot);
+    h += `<line x1="${o.x}" y1="${o.y}" x2="${ia.x.toFixed(1)}" y2="${ia.y.toFixed(1)}"
+            stroke="rgba(56,189,248,0.7)" stroke-width="1.4" marker-end="url(#ai-${svgId})"/>`;
+    // J axis: axial (0,−1) direction — upper-left at 0°, upper-right at 60° (toward P)
+    const ja = axisEnd(0, -2.2, axRot);
+    h += `<line x1="${o.x}" y1="${o.y}" x2="${ja.x.toFixed(1)}" y2="${ja.y.toFixed(1)}"
+            stroke="rgba(129,140,248,0.7)" stroke-width="1.4" marker-end="url(#aj-${svgId})"/>`;
+    // K axis: axial (−1,1) direction — lower-left at 0°, left at 60°
+    const ka = axisEnd(-1.5, 1.5, axRot);
+    h += `<line x1="${o.x}" y1="${o.y}" x2="${ka.x.toFixed(1)}" y2="${ka.y.toFixed(1)}"
+            stroke="rgba(56,189,248,0.38)" stroke-width="1.2" marker-end="url(#ak-${svgId})"/>`;
+
+    // Labels — all text last so it renders above lines
+    h += `<text x="${prob.x}" y="${prob.y+5}" text-anchor="middle"
+            fill="rgba(248,113,113,0.9)"
+            font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">P</text>`;
+    if (!isPrime) {
+      // Step count annotation
+      const mid = a2p(1,0);
+      h += `<text x="${(prob.x+R+3).toFixed(1)}" y="${(prob.y+4).toFixed(1)}"
+              fill="rgba(248,113,113,0.8)" font-size="9" font-family="Inter,sans-serif">2 pasos</text>`;
+    } else {
+      h += `<text x="${(prob.x+R+3).toFixed(1)}" y="${(prob.y+4).toFixed(1)}"
+              fill="rgba(248,113,113,0.8)" font-size="9" font-family="Inter,sans-serif">1 paso</text>`;
+    }
+    // Axis labels
+    h += `<text x="${(ia.x+6).toFixed(1)}" y="${(ia.y+5).toFixed(1)}"
+            fill="rgba(56,189,248,0.85)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">${lbl[0]}</text>`;
+    h += `<text x="${(ja.x-14).toFixed(1)}" y="${(ja.y-4).toFixed(1)}"
+            fill="rgba(129,140,248,0.85)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">${lbl[1]}</text>`;
+    h += `<text x="${(ka.x-15).toFixed(1)}" y="${(ka.y+12).toFixed(1)}"
+            fill="rgba(56,189,248,0.5)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">${lbl[2]}</text>`;
+
     svg.innerHTML = h;
   }
-  drawIJK('svg-ijk-orig',  0,  [1,-1], 'red',   false);
-  drawIJK('svg-ijk-prime', 60, [1,-1], 'green', true);
+
+  draw('svg-ijk-orig',  0,  false);
+  draw('svg-ijk-prime', 60, true);
 })();
 
 // ── H3-10: Pentagons on Earth ─────────────────────────────────
@@ -3620,6 +4170,203 @@ requestAnimationFrame(loop);
   // Axes
   h+=`<line x1="${mx}" y1="${my}" x2="${mx}" y2="${my+gH}" stroke="rgba(63,79,103,0.6)" stroke-width="1"/>`;
   h+=`<line x1="${mx}" y1="${my+gH}" x2="${mx+gW}" y2="${my+gH}" stroke="rgba(63,79,103,0.6)" stroke-width="1"/>`;
+  svg.innerHTML = h;
+})();
+
+// ═══════════════════ SECCIÓN 5: DTNSim ═══════════════════════
+
+
+// ── dtnsim-2a: DTN original (contact plan panel) ──────────────
+(function() {
+  const svg = document.getElementById('svg-dtnsim-orig');
+  if (!svg) return;
+  let h = `<defs><marker id="arr-dtn-o" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgba(248,113,113,0.8)"/></marker></defs>`;
+  // Contact plan table
+  h += `<rect x="15" y="12" width="250" height="108" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(63,79,103,0.4)" stroke-width="1"/>`;
+  h += `<rect x="15" y="12" width="250" height="24" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(63,79,103,0.35)" stroke-width="1"/>`;
+  h += `<text x="28" y="28" fill="rgba(148,163,184,0.75)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing="0.08em">CONTACT PLAN</text>`;
+  [['SAT-0','SAT-3','t = 100..220'],['SAT-1','SAT-4','t = 310..440'],['SAT-2','SAT-5','t = 250..370']].forEach(([a,b,t],i) => {
+    const ry = 50+i*28;
+    if (i%2===0) h += `<rect x="16" y="${ry-10}" width="248" height="24" rx="2" fill="rgba(255,255,255,0.015)"/>`;
+    h += `<text x="28" y="${ry+5}" fill="rgba(56,189,248,0.7)" font-size="10" font-family="ui-monospace,monospace">${a} ↔ ${b}</text>`;
+    h += `<text x="185" y="${ry+5}" fill="rgba(148,163,184,0.5)" font-size="9" font-family="ui-monospace,monospace">${t}</text>`;
+  });
+  // Arrow → Router
+  h += `<line x1="140" y1="120" x2="140" y2="143" stroke="rgba(248,113,113,0.5)" stroke-width="1.5" marker-end="url(#arr-dtn-o)"/>`;
+  h += `<rect x="60" y="146" width="160" height="32" rx="6" fill="rgba(248,113,113,0.06)" stroke="rgba(248,113,113,0.4)" stroke-width="1.5"/>`;
+  h += `<text x="140" y="166" text-anchor="middle" fill="rgba(248,113,113,0.85)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">Router</text>`;
+  svg.innerHTML = h;
+})();
+
+// ── dtnsim-2b: ContactlessDtn — orbital sim → connectivity → router ──
+(function() {
+  const canvas = document.getElementById('canvas-dtnsim-new');
+  if (!canvas) return;
+
+  // Defer until the slide is visible so offsetWidth/Height are valid.
+  // Draw in CSS-pixel space (ctx.setTransform(dpr,...)) — no logical-to-CSS scaling.
+  // Buffer = CSS size × DPR — no upscaling ever.
+  function draw() {
+    const cssW = canvas.offsetWidth, cssH = canvas.offsetHeight;
+    if (!cssW || !cssH) { requestAnimationFrame(draw); return; }
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS-pixel coordinates
+
+    const CX = cssW / 2;
+
+    // ── Orbital section (top ~40% of panel height) ─────────────
+    const EY = cssH * 0.20;
+    // ER proportional to panel; condition rx*cos(inc)<ER must hold.
+    // f=2.5: 2.5*cos(68°)=0.937 < 1 ✓   f=2.3: 2.3*cos(65°)=0.972 < 1 ✓
+    // LANs match slide 2 (10° and 72°) so orbits project at clearly different angles.
+    const ER = Math.min(cssW, cssH) * 0.088;
+    const orbs = [
+      { rx: ER * 2.5,  incR: 68 * Math.PI/180, lanR: 10 * Math.PI/180, phases: [0.10, 0.40, 0.72] },
+      { rx: ER * 2.3,  incR: 65 * Math.PI/180, lanR: 72 * Math.PI/180, phases: [0.02, 0.35, 0.66] },
+    ];
+
+    for (const o of orbs) drawOrbitArc(ctx, CX, EY, o.rx, o.incR, o.lanR, false);
+
+    const satPos = [];
+    for (const o of orbs)
+      for (const ph of o.phases) {
+        const p = orbitPoint(o.rx, o.incR, o.lanR, ph * 2 * Math.PI);
+        satPos.push({ x: CX + p.sx, y: EY + p.sy, z: p.z, rx: o.rx });
+      }
+    function localAlpha(p) { return 0.15 + 0.85 * (p.z / p.rx + 1) / 2; }
+    for (const p of satPos) if (p.z < 0) drawSatDot(ctx, p.x, p.y, '#38bdf8', localAlpha(p));
+
+    drawEarth(ctx, CX, EY, ER);
+
+    for (const o of orbs) drawOrbitArc(ctx, CX, EY, o.rx, o.incR, o.lanR, true);
+    for (const p of satPos) if (p.z >= 0) drawSatDot(ctx, p.x, p.y, '#38bdf8', localAlpha(p));
+
+    // ── Arrow 1 ─────────────────────────────────────────────────
+    const a1y1 = cssH * 0.40, a1y2 = a1y1 + cssH * 0.05;
+    ctx.beginPath(); ctx.moveTo(CX, a1y1); ctx.lineTo(CX, a1y2);
+    ctx.strokeStyle = 'rgba(52,211,153,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(CX - 5, a1y2 - 6); ctx.lineTo(CX, a1y2); ctx.lineTo(CX + 5, a1y2 - 6);
+    ctx.fillStyle = 'rgba(52,211,153,0.65)'; ctx.fill();
+
+    // ── Connectivity graph ───────────────────────────────────────
+    const gyc = a1y2 + cssH * 0.22;
+    const NR  = cssH * 0.052;
+    const spr = Math.min(cssW, cssH) * 0.22;
+    const nodes = [
+      { x: CX,            y: gyc - spr * 0.58 },
+      { x: CX + spr,      y: gyc - spr * 0.14 },
+      { x: CX + spr*0.76, y: gyc + spr * 0.54 },
+      { x: CX - spr*0.80, y: gyc + spr * 0.48 },
+      { x: CX - spr,      y: gyc - spr * 0.20 },
+    ];
+
+    ctx.strokeStyle = 'rgba(52,211,153,0.32)'; ctx.lineWidth = 1.3;
+    for (const [a, b] of [[0,1],[1,2],[0,4],[4,3],[3,2]]) {
+      const dx = nodes[b].x - nodes[a].x, dy = nodes[b].y - nodes[a].y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+      ctx.beginPath();
+      ctx.moveTo(nodes[a].x + NR*dx/len, nodes[a].y + NR*dy/len);
+      ctx.lineTo(nodes[b].x - NR*dx/len, nodes[b].y - NR*dy/len);
+      ctx.stroke();
+    }
+    for (let i = 0; i < nodes.length; i++) {
+      const { x, y } = nodes[i];
+      ctx.beginPath(); ctx.arc(x, y, NR, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(52,211,153,0.08)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(52,211,153,0.55)'; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.fillStyle = 'rgba(52,211,153,0.8)';
+      ctx.font = `600 ${Math.round(NR * 0.75)}px "Space Grotesk", sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(`S${i}`, x, y);
+    }
+
+    // ── Arrow 2 ─────────────────────────────────────────────────
+    const a2y1 = gyc + spr * 0.68, a2y2 = a2y1 + cssH * 0.05;
+    ctx.beginPath(); ctx.moveTo(CX, a2y1); ctx.lineTo(CX, a2y2);
+    ctx.strokeStyle = 'rgba(52,211,153,0.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(CX - 5, a2y2 - 6); ctx.lineTo(CX, a2y2); ctx.lineTo(CX + 5, a2y2 - 6);
+    ctx.fillStyle = 'rgba(52,211,153,0.65)'; ctx.fill();
+
+    // ── Router box ───────────────────────────────────────────────
+    const bH = cssH * 0.11, bW = cssW * 0.50;
+    const bY = a2y2 + 3, bX = CX - bW/2, bR = 6;
+    ctx.beginPath();
+    ctx.moveTo(bX+bR, bY); ctx.lineTo(bX+bW-bR, bY);
+    ctx.quadraticCurveTo(bX+bW, bY, bX+bW, bY+bR);
+    ctx.lineTo(bX+bW, bY+bH-bR);
+    ctx.quadraticCurveTo(bX+bW, bY+bH, bX+bW-bR, bY+bH);
+    ctx.lineTo(bX+bR, bY+bH); ctx.quadraticCurveTo(bX, bY+bH, bX, bY+bH-bR);
+    ctx.lineTo(bX, bY+bR); ctx.quadraticCurveTo(bX, bY, bX+bR, bY);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(52,211,153,0.07)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(52,211,153,0.45)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = 'rgba(52,211,153,0.9)';
+    ctx.font = `700 ${Math.round(bH * 0.42)}px "Space Grotesk", sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Router', CX, bY + bH / 2);
+  }
+
+  requestAnimationFrame(draw);
+})();
+
+// ── dtnsim-3: Atlas phase offset ──────────────────────────────
+(function() {
+  const svg = document.getElementById('svg-dtnsim-atlas');
+  if (!svg) return;
+  let h = '';
+  const nPlanes=3, nSats=4, rx=52, ry=16;
+
+  function drawConst(cx, cy, phaseOffset, dotColor) {
+    for (let p=0; p<nPlanes; p++) {
+      const tilt = (p/nPlanes)*Math.PI + Math.PI/6;
+      const ct=Math.cos(tilt), st=Math.sin(tilt);
+      // Orbital ellipse
+      const pts=[];
+      for (let i=0;i<=40;i++) {
+        const t=(i/40)*2*Math.PI;
+        const ex=rx*Math.cos(t), ey=ry*Math.sin(t);
+        pts.push(`${(cx+ex*ct-ey*st).toFixed(1)},${(cy+ex*st+ey*ct*0.42).toFixed(1)}`);
+      }
+      h+=`<polyline points="${pts.join(' ')}" fill="none" stroke="rgba(56,189,248,0.18)" stroke-width="0.8"/>`;
+      // Satellites
+      for (let s=0;s<nSats;s++) {
+        const ang=(s/nSats)*2*Math.PI + p*phaseOffset;
+        const ex=rx*Math.cos(ang), ey=ry*Math.sin(ang);
+        h+=`<circle cx="${(cx+ex*ct-ey*st).toFixed(1)}" cy="${(cy+ex*st+ey*ct*0.42).toFixed(1)}" r="3.5" fill="${dotColor}" stroke="none"/>`;
+      }
+    }
+  }
+
+  // Earth circles
+  function earthCircle(cx, cy) {
+    h+=`<defs><radialGradient id="eg-a${cx}" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#1e6da8"/><stop offset="100%" stop-color="#040f1e"/></radialGradient></defs>`;
+    h+=`<circle cx="${cx}" cy="${cy}" r="22" fill="url(#eg-a${cx})" stroke="rgba(56,189,248,0.2)" stroke-width="1"/>`;
+  }
+
+  // Titles
+  h+=`<text x="75" y="15" text-anchor="middle" fill="rgba(248,113,113,0.7)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">sin phase offset</text>`;
+  h+=`<text x="225" y="15" text-anchor="middle" fill="rgba(52,211,153,0.7)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">con phase offset</text>`;
+
+  // Draw constellations (orbits + sats behind Earth, Earth on top)
+  drawConst(75,  105, 0,                   'rgba(248,113,113,0.75)');
+  drawConst(225, 105, 2*Math.PI/(nPlanes*nSats), 'rgba(52,211,153,0.75)');
+  earthCircle(75,  105);
+  earthCircle(225, 105);
+
+  // Separator
+  h+=`<line x1="150" y1="18" x2="150" y2="218" stroke="rgba(63,79,103,0.3)" stroke-width="1" stroke-dasharray="4,4"/>`;
+
+  // Captions
+  h+=`<text x="75"  y="195" text-anchor="middle" fill="rgba(248,113,113,0.55)" font-size="9" font-family="Inter,sans-serif">satélites agrupados</text>`;
+  h+=`<text x="75"  y="209" text-anchor="middle" fill="rgba(248,113,113,0.4)"  font-size="8" font-family="Inter,sans-serif">cobertura H3 reducida</text>`;
+  h+=`<text x="225" y="195" text-anchor="middle" fill="rgba(52,211,153,0.55)"  font-size="9" font-family="Inter,sans-serif">satélites distribuidos</text>`;
+  h+=`<text x="225" y="209" text-anchor="middle" fill="rgba(52,211,153,0.4)"  font-size="8" font-family="Inter,sans-serif">cobertura H3 uniforme</text>`;
+
   svg.innerHTML = h;
 })();
 </script>

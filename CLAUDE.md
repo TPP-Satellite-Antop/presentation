@@ -89,12 +89,63 @@ Presentación de ~45 minutos (~45 slides) sobre el trabajo final de carrera **"A
 | Sección | Estado |
 |---|---|
 | Introducción (slides 1–3) | ✅ Construida y aprobada |
-| Estado del arte | ⬜ Pendiente |
-| ANTop Satelital | ⬜ Pendiente |
-| H3 | ⬜ Pendiente |
+| Estado del arte (slides 4–13) | ✅ Construida y aprobada |
+| ANTop Satelital (slides 14–19) | ✅ Construida y aprobada |
+| H3 (slides H3-1 a H3-10) | ✅ Construida y aprobada |
 | dtnsim | ⬜ Pendiente |
 | Simulaciones y resultados | ⬜ Pendiente |
 | Conclusiones | ⬜ Pendiente |
+
+## Estructura HTML de `index.html`
+
+### Convenciones de navegación
+- Secciones: `<!-- ═══════════════════ SECCIÓN N: NOMBRE ═══════════════════ -->`
+- Slides numerados: `<!-- ─────────────────────── SLIDE N — NOMBRE ─────────────────────────── -->`
+- Slides con ID alfanumérico: `<!-- ─── SLIDE H3-1 — NOMBRE ────────────────────── -->`
+- Slides con sufijo: `<!-- ─── SLIDE 17b — NOMBRE ──── -->`
+- Grupos de slides: `<!-- ─── SLIDES LP1–LP5 — NOMBRE ──────────── -->`
+
+### Slides actuales por sección
+
+**Sección 1 — Introducción**
+- SLIDE 1 — Apertura (starfield + constelación orbital)
+- SLIDE 2 — El problema (ISL intermitentes)
+- SLIDE 3 — La solución
+
+**Sección 2 — Estado del arte**
+- SLIDE 4 — DTN (store-carry-forward)
+- SLIDE 5 — CGR
+- SLIDE 6 — Limitaciones CGR
+- SLIDE 7 — ANTop (hipercubo estático)
+- SLIDES 8–11 — Ruteo greedy (paso a paso)
+- SLIDE 12 — Reactivo vs proactivo
+- SLIDE 13 — Tablas ANTop (hipercubo de referencia)
+
+**Sección 3 — ANTop Satelital**
+- SLIDE 14 — El desafío (hipercubo con conectividad intermitente)
+- SLIDE 15 — Detección de bucles
+- SLIDES LP1–LP5 — Bucle en ANTop original (demo animada, 5 pasos)
+- SLIDES PP0–PP5 — Propuesta: ruteo alternativo (demo animada, 6 pasos)
+- SLIDE 16 — Paquetes del mismo flujo
+- SLIDES 17 / 17b / 17c — Loop epoch: mecanismo (3 estados)
+- SLIDE 18 — Falsos positivos
+- SLIDE 19 — Transición a H3
+
+**Sección 4 — H3**
+- SLIDE H3-1 — Por qué hexágonos
+- SLIDE H3-3 — Sistema IJK
+- SLIDE H3-4 — Construcción ANTop: concepto
+- SLIDE H3-5 — Paso 1: descomposición
+- SLIDE H3-6 — Paso 2: codificación en bits
+- SLIDE H3-7 — Paso 3: compresión en bytes
+- SLIDE H3-8 — Dimensión prima
+- SLIDE H3-9 — Origen del hipercubo
+- SLIDE H3-10 — Medición del error
+
+### Estructura CSS/JS
+- Estilos globales y por sección: bloque `<style>` al inicio
+- Cada sección tiene su propio bloque CSS marcado con `/* ═══ SECCIÓN N ═══ */`
+- Animaciones JS: bloque `<script>` al final, organizado por slide (`// ── SLIDE N ──`)
 
 ## Sistema visual establecido
 
