@@ -757,10 +757,6 @@ html, body {
   display: flex; flex-direction: column;
   align-items: center; text-align: center; gap: 16px;
 }
-@keyframes close-pulse {
-  0%, 100% { text-shadow: 0 0 80px rgba(56,189,248,0.4), 0 2px 6px rgba(0,0,0,0.7); }
-  50%       { text-shadow: 0 0 160px rgba(56,189,248,0.75), 0 0 50px rgba(56,189,248,0.3), 0 2px 6px rgba(0,0,0,0.7); }
-}
 .close-question {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(64px, 9vw, 130px);
@@ -768,7 +764,7 @@ html, body {
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--white);
-  animation: close-pulse 3.2s ease-in-out infinite;
+  text-shadow: 0 0 100px rgba(56,189,248,0.5), 0 2px 6px rgba(0,0,0,0.7);
 }
 .close-authors {
   display: grid;
@@ -2420,9 +2416,9 @@ const stars1 = Array.from({ length: 240 }, () => ({
 //   Orbit 1: 0.235 * cos(70°) = 0.080  ✓
 //   Orbit 2: 0.280 * cos(72°) = 0.087  ✓
 //   Orbit 3: 0.330 * cos(74°) = 0.091  ✓
-// 5 evenly-spaced satellites per plane (phases 0, 0.2, 0.4, 0.6, 0.8).
+// 7 evenly-spaced satellites per plane.
 // Each plane is offset slightly so the sats don't align across planes.
-const N_SATS = 5;
+const N_SATS = 7;
 function evenPhases(offset = 0) {
   return Array.from({ length: N_SATS }, (_, i) => (i / N_SATS + offset) % 1);
 }
@@ -3466,24 +3462,6 @@ document.querySelectorAll('.lp-orig-canvas').forEach(c => makeLoopSlide(c, {
 })();
 
 // ── SLIDE close — CLOSING SCENE ──────────────────────────────
-// 6 orbital planes × 8 satellites = 48 total.
-// All satisfy rxF × cos(inc) < 0.115 so back arcs occlude correctly.
-//   0.215×cos(68°)=0.081 ✓  0.250×cos(70°)=0.086 ✓  0.285×cos(72°)=0.088 ✓
-//   0.315×cos(74°)=0.087 ✓  0.345×cos(75°)=0.089 ✓  0.375×cos(76°)=0.091 ✓
-function evenPhasesN(n, offset) {
-  return Array.from({ length: n }, (_, i) => (i / n + offset) % 1);
-}
-const ORBITS_CLOSE = [
-  { rxF: 0.215, inc: 68, lan:   0, phases: evenPhasesN(8, 0.00), speed: 0.000088, color: '#38bdf8' },
-  { rxF: 0.250, inc: 70, lan:  30, phases: evenPhasesN(8, 0.06), speed: 0.000074, color: '#818cf8' },
-  { rxF: 0.285, inc: 72, lan:  60, phases: evenPhasesN(8, 0.12), speed: 0.000063, color: '#38bdf8' },
-  { rxF: 0.315, inc: 74, lan:  90, phases: evenPhasesN(8, 0.03), speed: 0.000055, color: '#818cf8' },
-  { rxF: 0.345, inc: 75, lan: 120, phases: evenPhasesN(8, 0.09), speed: 0.000049, color: '#38bdf8' },
-  { rxF: 0.375, inc: 76, lan: 150, phases: evenPhasesN(8, 0.15), speed: 0.000044, color: '#818cf8' },
-];
-const TRAIL_LEN  = 12;  // trail steps
-const TRAIL_STEP = 18;  // ms per trail step (~1 frame at 60fps)
-
 const cClose   = document.getElementById('canvas-close');
 const ctxClose = cClose ? cClose.getContext('2d') : null;
 function resizeCClose() {
@@ -3506,7 +3484,6 @@ function drawSceneClose(t) {
   ctxClose.fillStyle = '#060b18';
   ctxClose.fillRect(0, 0, W, H);
 
-  // Stars (phase-shifted so they don't sync with slide 1)
   for (const s of stars1) {
     const a = s.base * (0.65 + 0.35 * Math.sin(t * s.freq + s.phase + 1.3));
     ctxClose.beginPath();
@@ -3515,86 +3492,26 @@ function drawSceneClose(t) {
     ctxClose.fill();
   }
 
-  const orbs = ORBITS_CLOSE.map(o => ({
+  const orbs = ORBITS1.map(o => ({
     ...o, rx: o.rxF * D,
     incR: o.inc * Math.PI / 180,
     lanR: o.lan * Math.PI / 180,
   }));
   function satAlphaC(z, rx) { return 0.15 + 0.85 * (z / rx + 1) / 2; }
 
-  // Collect near-side satellite screen positions for ISL links
-  const nearSats = [];
-  for (const o of orbs) {
-    for (const phase of o.phases) {
-      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
-      if (p.z >= 0) nearSats.push({ x: CX + p.sx, y: CY + p.sy, z: p.z, rx: o.rx });
-    }
-  }
-
-  // 1. Back orbit arcs
   for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, false);
-
-  // 2. ISL network links between nearby near-side satellites
-  const ISL_DIST = D * 0.20;
-  for (let i = 0; i < nearSats.length; i++) {
-    for (let j = i + 1; j < nearSats.length; j++) {
-      const a = nearSats[i], b = nearSats[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist > ISL_DIST) continue;
-      const alpha = (1 - dist / ISL_DIST) * 0.28;
-      ctxClose.beginPath();
-      ctxClose.moveTo(a.x, a.y);
-      ctxClose.lineTo(b.x, b.y);
-      ctxClose.strokeStyle = `rgba(56,189,248,${alpha.toFixed(3)})`;
-      ctxClose.lineWidth = 0.8;
-      ctxClose.stroke();
-    }
-  }
-
-  // 3. Far-side satellites with comet trails, drawn before Earth
   for (const o of orbs) {
     for (const phase of o.phases) {
       const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
-      if (p.z >= 0) continue;
-      const baseAlpha = satAlphaC(p.z, o.rx);
-      for (let k = TRAIL_LEN; k >= 1; k--) {
-        const tPast = t - k * TRAIL_STEP;
-        const pt = orbitPoint(o.rx, o.incR, o.lanR, ((tPast * o.speed + phase) % 1) * Math.PI * 2);
-        if (pt.z >= 0) continue;
-        const frac = 1 - k / TRAIL_LEN;
-        ctxClose.beginPath();
-        ctxClose.arc(CX + pt.sx, CY + pt.sy, 1.6 * frac, 0, Math.PI * 2);
-        ctxClose.fillStyle = `rgba(56,189,248,${(baseAlpha * frac * 0.45).toFixed(3)})`;
-        ctxClose.fill();
-      }
-      drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, baseAlpha);
+      if (p.z < 0) drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, satAlphaC(p.z, o.rx));
     }
   }
-
-  // 4. Earth
   drawEarth(ctxClose, CX, CY, ER);
-
-  // 5. Front orbit arcs
   for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, true);
-
-  // 6. Near-side satellites with comet trails, drawn on top
   for (const o of orbs) {
     for (const phase of o.phases) {
       const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
-      if (p.z < 0) continue;
-      const baseAlpha = satAlphaC(p.z, o.rx);
-      for (let k = TRAIL_LEN; k >= 1; k--) {
-        const tPast = t - k * TRAIL_STEP;
-        const pt = orbitPoint(o.rx, o.incR, o.lanR, ((tPast * o.speed + phase) % 1) * Math.PI * 2);
-        if (pt.z < 0) continue;
-        const frac = 1 - k / TRAIL_LEN;
-        ctxClose.beginPath();
-        ctxClose.arc(CX + pt.sx, CY + pt.sy, 1.6 * frac, 0, Math.PI * 2);
-        ctxClose.fillStyle = `rgba(56,189,248,${(baseAlpha * frac * 0.45).toFixed(3)})`;
-        ctxClose.fill();
-      }
-      drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, baseAlpha);
+      if (p.z >= 0) drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, satAlphaC(p.z, o.rx));
     }
   }
 }
