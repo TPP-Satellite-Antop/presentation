@@ -607,7 +607,7 @@ html, body {
   text-align: left;
   color: var(--dim);
   font-weight: 500;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   border-bottom: 1px solid rgba(63,79,103,0.5);
@@ -619,7 +619,7 @@ html, body {
   color: var(--muted);
   border-bottom: 1px solid rgba(63,79,103,0.18);
   font-family: 'ui-monospace', 'Cascadia Mono', 'Consolas', monospace;
-  font-size: clamp(11px, 1vw, 13px);
+  font-size: clamp(13px, 1.1vw, 15px);
 }
 
 .rt-table tr:last-child td { border-bottom: none; }
@@ -784,27 +784,27 @@ html, body {
 .sim-metrics-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 20px;
   width: 100%;
-  max-width: 860px;
+  max-width: 1000px;
 }
 .sim-metric-card {
   background: rgba(56,189,248,0.05);
   border: 1px solid rgba(56,189,248,0.18);
-  border-radius: 12px;
-  padding: 18px 22px;
-  display: flex; flex-direction: column; gap: 6px;
+  border-radius: 14px;
+  padding: 28px 32px;
+  display: flex; flex-direction: column; gap: 10px;
 }
 .sim-metric-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(13px,1.1vw,16px);
+  font-size: clamp(16px,1.5vw,22px);
   font-weight: 700;
   color: var(--blue);
 }
 .sim-metric-desc {
-  font-size: clamp(11px,0.85vw,13px);
+  font-size: clamp(13px,1vw,16px);
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .sim-plots-slide {
   display: flex;
@@ -1690,7 +1690,7 @@ html, body {
           <li>H3 usa coordenadas discretas <strong>IJK</strong>: tres ejes separados <strong>120°</strong> entre sí.</li>
           <li>Expresa cada celda como desplazamiento <strong>IJK</strong> desde un origen.</li>
           <li><strong>Problema:</strong> cada hexágono tiene 6 vecinos pero IJK solo tiene 3 ejes → no todas las direcciones de vecindad coinciden con un eje.</li>
-          <li>La celda <span style="color:rgba(251,146,60,0.95);">naranja</span> <strong>(1,0,0)</strong> está a 1 salto físico y se alcanza en <strong>1 paso IJK</strong>. La celda <span style="color:#67e8f9;">celeste</span> <strong>(2,1,0)</strong> está a <strong>2 saltos físicos</strong> pero requiere <strong>3 pasos IJK</strong>.</li>
+          <li>La celda <span style="color:rgba(251,146,60,0.95);">naranja</span> <strong>(1,0,0)</strong> está a 1 salto físico y se alcanza en <strong>1 paso IJK</strong>. La celda <span style="color:#67e8f9;">celeste</span> <strong>(3,1,0)</strong> está a <strong>3 saltos físicos</strong> pero requiere <strong>4 pasos IJK</strong>.</li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 48%;">
@@ -1725,9 +1725,9 @@ html, body {
       <svg id="svg-h3g-1" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
         <p style="font-family:'Space Grotesk',sans-serif;font-size:clamp(14px,1.4vw,18px);color:var(--muted);line-height:1.6;">
-          Celda objetivo: <strong style="color:var(--white);">IJK (2, 1, 0)</strong><br>
-          Distancia física: <strong style="color:var(--blue);">2 saltos</strong><br>
-          Pasos IJK necesarios: <strong style="color:var(--purple);">3</strong>
+          Celda objetivo: <strong style="color:var(--white);">IJK (3, 1, 0)</strong><br>
+          Distancia física: <strong style="color:var(--blue);">3 saltos</strong><br>
+          Pasos IJK necesarios: <strong style="color:var(--purple);">4</strong>
         </p>
         <div class="h3-encoding">
           <p class="h3-enc-label">Movimientos</p>
@@ -1736,12 +1736,12 @@ html, body {
             <span style="color:var(--dim);font-size:16px;">dirección I</span>
           </div>
           <div class="h3-enc-row">
-            <span class="h3-byte h3-byte-hi">(1,0,0)</span>
-            <span style="color:var(--dim);font-size:16px;">dirección I</span>
+            <span class="h3-byte h3-byte-pu">(1,1,0)</span>
+            <span style="color:var(--dim);font-size:16px;">dirección IJ</span>
           </div>
           <div class="h3-enc-row">
-            <span class="h3-byte h3-byte-pu">(0,1,0)</span>
-            <span style="color:var(--dim);font-size:16px;">dirección J</span>
+            <span class="h3-byte h3-byte-hi">(1,0,0)</span>
+            <span style="color:var(--dim);font-size:16px;">dirección I</span>
           </div>
         </div>
       </div>
@@ -1763,14 +1763,14 @@ html, body {
             <span class="h3-byte h3-byte-hi">100</span>
           </div>
           <div class="h3-enc-row">
+            <span class="h3-byte h3-byte-pu">(1,1,0)</span>
+            <span style="color:var(--dim);font-size:16px;">→ dir. 6 →</span>
+            <span class="h3-byte h3-byte-pu">110</span>
+          </div>
+          <div class="h3-enc-row">
             <span class="h3-byte h3-byte-hi">(1,0,0)</span>
             <span style="color:var(--dim);font-size:16px;">→ dir. 4 →</span>
             <span class="h3-byte h3-byte-hi">100</span>
-          </div>
-          <div class="h3-enc-row">
-            <span class="h3-byte h3-byte-pu">(0,1,0)</span>
-            <span style="color:var(--dim);font-size:16px;">→ dir. 2 →</span>
-            <span class="h3-byte h3-byte-pu">010</span>
           </div>
         </div>
       </div>
@@ -1790,21 +1790,21 @@ html, body {
             <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 1</span>
             <span class="h3-byte h3-byte-hi">100</span>
             <span class="h3-byte" style="color:var(--dim);">+</span>
-            <span class="h3-byte h3-byte-hi">100</span>
+            <span class="h3-byte h3-byte-pu">110</span>
             <span style="color:var(--dim);font-size:16px;">→</span>
-            <span class="h3-byte h3-byte-hi">00100100</span>
+            <span class="h3-byte h3-byte-hi">00110100</span>
           </div>
           <div class="h3-enc-row">
             <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 2</span>
-            <span class="h3-byte h3-byte-pu">010</span>
+            <span class="h3-byte h3-byte-hi">100</span>
             <span style="color:var(--dim);font-size:16px;">→</span>
-            <span class="h3-byte h3-byte-pu">00000010</span>
+            <span class="h3-byte h3-byte-hi">00000100</span>
           </div>
           <div style="margin-top:6px;padding-top:10px;border-top:1px solid rgba(63,79,103,0.35);">
             <p class="h3-enc-label" style="margin-bottom:6px;">Dirección ANTop</p>
             <div class="h3-enc-row">
-              <span class="h3-byte h3-byte-hi">00100100</span>
-              <span class="h3-byte h3-byte-pu">00000010</span>
+              <span class="h3-byte h3-byte-hi">00110100</span>
+              <span class="h3-byte h3-byte-hi">00000100</span>
             </div>
           </div>
           <div style="margin-top:6px;padding-top:10px;border-top:1px solid rgba(63,79,103,0.35);">
@@ -1817,11 +1817,11 @@ html, body {
               </div>
               <div class="h3-enc-row">
                 <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Destino</span>
-                <span class="h3-byte h3-byte-hi">00<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
-                <span class="h3-byte h3-byte-pu">000000<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>0</span>
+                <span class="h3-byte h3-byte-hi">00<span style="color:rgba(251,146,60,0.95);font-weight:700;">11</span>0<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
+                <span class="h3-byte h3-byte-hi">00000<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
               </div>
             </div>
-            <p style="margin-top:12px;font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,1.5vw,22px);font-weight:700;color:rgba(251,146,60,0.95);">d<sub style="font-size:0.7em;">H</sub> = 3</p>
+            <p style="margin-top:12px;font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,1.5vw,22px);font-weight:700;color:rgba(251,146,60,0.95);">d<sub style="font-size:0.7em;">H</sub> = 4</p>
           </div>
         </div>
       </div>
@@ -1863,7 +1863,7 @@ html, body {
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 46%;">
-        <svg id="svg-pentagons" viewBox="0 0 300 280" width="100%" style="display:block;border-radius:14px;"></svg>
+        <img src="public/pentagons.png" style="width:100%;border-radius:14px;object-fit:contain;display:block;" alt="12 pentágonos por resolución">
         <p class="s2-caption">12 pentágonos por resolución — orígenes de hipercubo</p>
       </div>
     </div>
@@ -1976,9 +1976,18 @@ html, body {
           <li>El phase offset distribuye los satélites uniformemente entre planos → mayor cobertura H3 → mejor conectividad.</li>
         </ul>
       </div>
-      <div class="col-visual" style="flex:0 0 46%;">
-        <div style="flex:1;min-height:0;border-radius:14px;background:rgba(255,255,255,0.02);border:1px dashed rgba(63,79,103,0.4);"></div>
-        <p class="s2-caption">Sin phase offset vs. con phase offset — distribución de satélites</p>
+      <div class="col-visual" style="flex:0 0 46%;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:center;">
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+          <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+            <img src="public/phase0h3.png" style="max-height:28vh;max-width:100%;border-radius:10px;object-fit:contain;" alt="Sin phase offset">
+            <span style="font-size:0.7rem;color:#94a3b8;">Sin phase offset</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+            <img src="public/phase7h3.png" style="max-height:28vh;max-width:100%;border-radius:10px;object-fit:contain;" alt="Con phase offset">
+            <span style="font-size:0.7rem;color:#94a3b8;">Con phase offset</span>
+          </div>
+        </div>
+        <p class="s2-caption">Distribución de satélites en celdas H3 según phase offset</p>
       </div>
     </div>
   </div>
@@ -2016,52 +2025,58 @@ html, body {
 
   <!-- ─── SLIDE sim-2 — Marco experimental: escenarios ──────────── -->
   <div class="slide" id="slide-sim-2">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:22px;">
+    <div style="display:flex;flex-direction:column;height:100%;padding:30px 5vw 62px;gap:20px;justify-content:center;">
       <div style="text-align:center;">
         <p class="section-tag">simulaciones</p>
         <h2 class="slide-title">Escenarios</h2>
       </div>
-      <table class="epoch-table" style="max-width:700px;width:100%;">
-        <thead>
-          <tr>
-            <th class="th-row">Constelación</th>
-            <th class="th-p1">ANTop</th>
-            <th class="th-x">CGR one-best</th>
-            <th class="th-p2">CGR per-neighbor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-row">120 satélites</td>
-            <td class="e-blue">✓</td>
-            <td>✓</td>
-            <td class="e-purple">✓</td>
-          </tr>
-          <tr>
-            <td class="td-row">180 satélites</td>
-            <td class="e-blue">✓</td>
-            <td>✓</td>
-            <td class="e-purple">✓</td>
-          </tr>
-          <tr>
-            <td class="td-row">240 satélites</td>
-            <td class="e-blue">✓</td>
-            <td>✓</td>
-            <td class="e-purple">✓</td>
-          </tr>
-          <tr>
-            <td class="td-row">360 satélites</td>
-            <td class="e-blue">✓</td>
-            <td>✓</td>
-            <td style="color:rgba(248,113,113,0.75);font-style:italic;font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">no completó</td>
-          </tr>
-        </tbody>
-      </table>
-      <ul class="key-points" style="max-width:760px;width:100%;">
-        <li>Constelaciones <strong>Walker</strong> con inclinación 53°. Fallas: <strong>0%, 5%, 10%, 20%</strong>.</li>
-        <li><strong>100 paquetes por nodo</strong>. ANTop con resolución H3 <strong>0</strong> (122 celdas).</li>
-        <li>CGR <em>per-neighbor</em> no completó para 360 satélites por costo computacional prohibitivo.</li>
-      </ul>
+      <div style="display:flex;gap:4vw;align-items:flex-start;">
+        <div style="flex:0 0 52%;">
+          <table class="epoch-table" style="width:100%;">
+            <thead>
+              <tr>
+                <th class="th-row">Constelación</th>
+                <th class="th-p1">ANTop</th>
+                <th class="th-x">CGR one-best</th>
+                <th class="th-p2">CGR per-neighbor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-row">120 satélites</td>
+                <td class="e-blue">✓</td>
+                <td>✓</td>
+                <td class="e-purple">✓</td>
+              </tr>
+              <tr>
+                <td class="td-row">180 satélites</td>
+                <td class="e-blue">✓</td>
+                <td>✓</td>
+                <td class="e-purple">✓</td>
+              </tr>
+              <tr>
+                <td class="td-row">240 satélites</td>
+                <td class="e-blue">✓</td>
+                <td>✓</td>
+                <td class="e-purple">✓</td>
+              </tr>
+              <tr>
+                <td class="td-row">360 satélites</td>
+                <td class="e-blue">✓</td>
+                <td>✓</td>
+                <td style="color:rgba(248,113,113,0.75);font-style:italic;font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">no completó</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="flex:1;">
+          <ul class="key-points">
+            <li>Constelaciones <strong>Walker</strong> con inclinación 53°. Fallas: <strong>0%, 5%, 10%, 20%</strong>.</li>
+            <li><strong>100 paquetes por nodo</strong>. ANTop con resolución H3 <strong>0</strong> (122 celdas).</li>
+            <li>CGR <em>per-neighbor</em> no completó para 360 satélites por costo computacional prohibitivo.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3737,8 +3752,8 @@ requestAnimationFrame(loop);
   // Orange cell: 1 physical hop, 1 IJK step — (1,0)
   const g = a2p(1,0);
   h += `<polygon points="${hexPts(g.x,g.y)}" fill="rgba(251,146,60,0.1)" stroke="rgba(251,146,60,0.6)" stroke-width="1.5"/>`;
-  // Cyan cell: (2,-1) = IJK(2,1,0), 2 physical hops, 3 IJK steps
-  const c = a2p(2,-1);
+  // Cyan cell: (3,-1) = IJK(3,1,0), 3 physical hops, 4 IJK steps
+  const c = a2p(3,-1);
   h += `<polygon points="${hexPts(c.x,c.y)}" fill="rgba(103,232,249,0.1)" stroke="rgba(103,232,249,0.6)" stroke-width="1.5"/>`;
   // I axis arrow (direction q+1, rightward)
   const ia = a2p(3.2, 0);
@@ -3756,12 +3771,12 @@ requestAnimationFrame(loop);
   h += `<text x="${ka.x-16}" y="${ka.y+14}" fill="rgba(56,189,248,0.65)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">K</text>`;
   // Cell labels (on top of everything)
   h += `<text x="${g.x}" y="${g.y+10}" text-anchor="middle" fill="rgba(251,146,60,0.95)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">(1,0,0)</text>`;
-  h += `<text x="${c.x}" y="${c.y+5}" text-anchor="middle" fill="rgba(103,232,249,0.95)" font-size="9" font-family="Space Grotesk,sans-serif">(2,1,0)</text>`;
+  h += `<text x="${c.x}" y="${c.y+5}" text-anchor="middle" fill="rgba(103,232,249,0.95)" font-size="9" font-family="Space Grotesk,sans-serif">(3,1,0)</text>`;
   // Legend
   h += `<circle cx="16" cy="260" r="5" fill="rgba(251,146,60,0.5)" stroke="rgba(251,146,60,0.8)" stroke-width="1"/>`;
   h += `<text x="26" y="264" fill="rgba(251,146,60,0.85)" font-size="10" font-family="Inter,sans-serif">(1,0,0) — 1 salto = 1 paso IJK</text>`;
   h += `<circle cx="16" cy="275" r="5" fill="rgba(103,232,249,0.5)" stroke="rgba(103,232,249,0.7)" stroke-width="1"/>`;
-  h += `<text x="26" y="279" fill="rgba(103,232,249,0.8)" font-size="10" font-family="Inter,sans-serif">(2,1,0) — 2 saltos = 3 pasos IJK</text>`;
+  h += `<text x="26" y="279" fill="rgba(103,232,249,0.8)" font-size="10" font-family="Inter,sans-serif">(3,1,0) — 3 saltos = 4 pasos IJK</text>`;
   // Arrowhead markers — fully opaque tips
   const defs = `<defs>
     <marker id="arr-ijk-i" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="rgb(56,189,248)"/></marker>
@@ -3789,10 +3804,10 @@ requestAnimationFrame(loop);
   function pathArrow(q1, r1, q2, r2, color, markerId) {
     const from=a2p(q1,r1), to=a2p(q2,r2);
     const dx=to.x-from.x, dy=to.y-from.y, len=Math.sqrt(dx*dx+dy*dy);
-    const ux=dx/len, uy=dy/len, pad=R*0.48;
+    const ux=dx/len, uy=dy/len, pad=R*0.65;
     const sx=(from.x+ux*pad).toFixed(1), sy=(from.y+uy*pad).toFixed(1);
     const ex=(to.x-ux*pad).toFixed(1), ey=(to.y-uy*pad).toFixed(1);
-    return `<line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}" stroke="${color}" stroke-width="2.2" marker-end="url(#${markerId})"/>`;
+    return `<line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}" stroke="${color}" stroke-width="1.4" marker-end="url(#${markerId})"/>`;
   }
   const bgCells = [[0,0],[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1],[2,0],[2,-1],[2,-2],[1,-2],[0,-2],[-1,-1],[-2,0],[-2,1],[-2,2],[-1,2],[0,2],[1,1],[3,-1],[3,-2],[3,-3],[2,-3],[1,-3]];
   [0,1,2,3].forEach(step => {
@@ -3803,8 +3818,9 @@ requestAnimationFrame(loop);
       <marker id="ai-${sid}" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="rgb(56,189,248)"/></marker>
       <marker id="aj-${sid}" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="rgb(129,140,248)"/></marker>
       <marker id="ak-${sid}" markerWidth="5" markerHeight="5" refX="0.25" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="rgb(56,189,248)"/></marker>
-      <marker id="pi-${sid}" markerWidth="8" markerHeight="6" refX="0.25" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L0,6 L8,3 z" fill="rgba(56,189,248,0.95)"/></marker>
-      <marker id="pj-${sid}" markerWidth="8" markerHeight="6" refX="0.25" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L0,6 L8,3 z" fill="rgba(129,140,248,0.95)"/></marker>
+      <marker id="pi-${sid}" markerWidth="5" markerHeight="4" refX="0.25" refY="2" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L0,4 L5,2 z" fill="rgba(56,189,248,0.95)"/></marker>
+      <marker id="pj-${sid}" markerWidth="5" markerHeight="4" refX="0.25" refY="2" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L0,4 L5,2 z" fill="rgba(129,140,248,0.95)"/></marker>
+      <marker id="pij-${sid}" markerWidth="5" markerHeight="4" refX="0.25" refY="2" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L0,4 L5,2 z" fill="rgba(52,211,153,0.95)"/></marker>
     </defs>`;
     let h = '';
     // Background grid
@@ -3815,7 +3831,7 @@ requestAnimationFrame(loop);
     });
     // Intermediate path cells
     if (step >= 1) {
-      const p1=a2p(1,0), p2=a2p(2,0);
+      const p1=a2p(1,0), p2=a2p(2,-1);
       h += `<polygon points="${hexPts(p1.x,p1.y)}" fill="rgba(56,189,248,0.07)" stroke="none"/>`;
       h += `<polygon points="${hexPts(p2.x,p2.y)}" fill="rgba(56,189,248,0.07)" stroke="none"/>`;
     }
@@ -3823,7 +3839,7 @@ requestAnimationFrame(loop);
     const o = a2p(0,0);
     h += `<polygon points="${hexPts(o.x,o.y)}" fill="rgba(56,189,248,0.14)" stroke="rgba(56,189,248,0.75)" stroke-width="1.5"/>`;
     // Target
-    const t = a2p(2,-1);
+    const t = a2p(3,-1);
     h += `<polygon points="${hexPts(t.x,t.y)}" fill="rgba(129,140,248,0.14)" stroke="rgba(129,140,248,0.75)" stroke-width="1.5"/>`;
     // Dashed physical-distance line (step 0 only)
     if (step === 0) {
@@ -3836,9 +3852,9 @@ requestAnimationFrame(loop);
     h += `<line x1="${o.x}" y1="${o.y}" x2="${ka.x}" y2="${ka.y}" stroke="rgba(56,189,248,0.25)" stroke-width="1.2" marker-end="url(#ak-${sid})"/>`;
     // Path arrows
     if (step >= 1) {
-      h += pathArrow(0,0, 1,0, 'rgba(56,189,248,0.9)',  `pi-${sid}`);
-      h += pathArrow(1,0, 2,0, 'rgba(56,189,248,0.9)',  `pi-${sid}`);
-      h += pathArrow(2,0, 2,-1,'rgba(129,140,248,0.9)', `pj-${sid}`);
+      h += pathArrow(0,0,  1,0,  'rgba(56,189,248,0.9)',  `pi-${sid}`);
+      h += pathArrow(1,0,  2,-1, 'rgba(52,211,153,0.9)',  `pij-${sid}`);
+      h += pathArrow(2,-1, 3,-1, 'rgba(56,189,248,0.9)',  `pi-${sid}`);
     }
     // --- All texts last ---
     // Axis labels
@@ -3846,10 +3862,10 @@ requestAnimationFrame(loop);
     h += `<text x="${ja.x-14}" y="${ja.y-5}" fill="rgba(129,140,248,0.7)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">J</text>`;
     h += `<text x="${ka.x-14}" y="${ka.y+13}" fill="rgba(56,189,248,0.4)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">K</text>`;
     // Target label
-    h += `<text x="${t.x}" y="${t.y+5}" text-anchor="middle" fill="rgba(129,140,248,0.9)" font-size="9" font-family="Space Grotesk,sans-serif">(2,1,0)</text>`;
+    h += `<text x="${t.x}" y="${t.y+5}" text-anchor="middle" fill="rgba(129,140,248,0.9)" font-size="9" font-family="Space Grotesk,sans-serif">(3,1,0)</text>`;
     // Step 0: physical distance annotation
     if (step === 0) {
-      h += `<text x="${(o.x+t.x)/2-10}" y="${(o.y+t.y)/2-8}" text-anchor="middle" fill="rgba(148,163,184,0.55)" font-size="9" font-family="Inter,sans-serif">2 saltos</text>`;
+      h += `<text x="${(o.x+t.x)/2-10}" y="${(o.y+t.y)/2-8}" text-anchor="middle" fill="rgba(148,163,184,0.55)" font-size="9" font-family="Inter,sans-serif">3 saltos</text>`;
     }
     svg.innerHTML = defs + h;
   });
@@ -3977,68 +3993,6 @@ requestAnimationFrame(loop);
   draw('svg-ijk-prime', 60, true);
 })();
 
-// ── H3-10: Pentagons on Earth ─────────────────────────────────
-(function() {
-  const svg = document.getElementById('svg-pentagons');
-  if (!svg) return;
-  const cx=150, cy=138, R=90;
-  let h = '';
-  // Earth disk
-  h+=`<defs><radialGradient id="eg-pent" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#2078b8"/><stop offset="55%" stop-color="#0d4070"/><stop offset="100%" stop-color="#040f1e"/></radialGradient><radialGradient id="atm-pent" cx="50%" cy="50%" r="50%"><stop offset="70%" stop-color="rgba(56,189,248,0.1)"/><stop offset="100%" stop-color="rgba(56,189,248,0)"/></radialGradient></defs>`;
-  h+=`<circle cx="${cx}" cy="${cy}" r="${R*1.5}" fill="url(#atm-pent)"/>`;
-  h+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#eg-pent)"/>`;
-  h+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(56,189,248,0.2)" stroke-width="1.2"/>`;
-  // 12 pentagon positions (approximate icosahedron vertices projected)
-  // Using approximate lat/lon positions of icosahedron vertices mapped to screen
-  const pentagons = [
-    {lat:90,lon:0},{lat:90,lon:72},{lat:90,lon:144},{lat:90,lon:216},{lat:90,lon:288},   // North pole ring (5) — actually just the top
-    {lat:26.57,lon:36},{lat:26.57,lon:108},{lat:26.57,lon:180},{lat:26.57,lon:252},{lat:26.57,lon:324},
-    {lat:-26.57,lon:0},{lat:-26.57,lon:72},
-  ];
-  // Simplified: 12 points distributed on sphere, projected orthographically
-  const pts12 = [
-    [0,-80],[52,-26],[32,58],[-32,58],[-52,-26],   // top ring (5+1 pole)
-    [80,18],[14,76],[-60,48],[-72,-20],[0,-76],     // bottom ring approx
-    [66,-58],[-66,-58],
-  ];
-  // Better: use actual dodecahedron/icosahedron vertex projections on a circle
-  // 12 points roughly uniformly on sphere visible face:
-  const pent12 = [];
-  // North pole
-  pent12.push({sx:0, sy:-R*0.95});
-  // South pole (partially hidden)
-  pent12.push({sx:0, sy:R*0.95});
-  // Two rings of 5
-  for (let i=0;i<5;i++) {
-    const a1 = (i/5)*2*Math.PI - 0.3;
-    pent12.push({sx:R*0.65*Math.cos(a1), sy:R*0.4*Math.sin(a1)-R*0.28});
-  }
-  for (let i=0;i<5;i++) {
-    const a2 = (i/5)*2*Math.PI + Math.PI/5 + 0.1;
-    pent12.push({sx:R*0.65*Math.cos(a2), sy:R*0.4*Math.sin(a2)+R*0.28});
-  }
-  pent12.forEach(({sx,sy}, i) => {
-    const x=cx+sx, y=cy+sy;
-    // Check if on visible hemisphere (rough)
-    const onFront = sx*sx + sy*sy < R*R*0.99;
-    const alpha = onFront ? 0.9 : 0.35;
-    const col = `rgba(129,140,248,${alpha})`;
-    // Pentagon symbol (5-pointed star outline approximation using small circle)
-    function pentPath(cx2,cy2,r) {
-      let d='';
-      for(let j=0;j<5;j++){
-        const a=j*Math.PI*2/5-Math.PI/2;
-        d+=(j===0?'M':'L')+`${(cx2+r*Math.cos(a)).toFixed(1)},${(cy2+r*Math.sin(a)).toFixed(1)}`;
-      }
-      return d+'Z';
-    }
-    h+=`<path d="${pentPath(x,y,6)}" fill="${col.replace('0.9','0.2').replace('0.35','0.08')}" stroke="${col}" stroke-width="1.2"/>`;
-    h+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="${col}"/>`;
-  });
-  // Labels
-  h+=`<text x="${cx}" y="${cy+R+22}" text-anchor="middle" fill="rgba(129,140,248,0.7)" font-size="11" font-family="Space Grotesk,sans-serif" letter-spacing="0.1em">12 PENTÁGONOS — ORÍGENES DE HIPERCUBO</text>`;
-  svg.innerHTML = h;
-})();
 
 // ── H3-11: Error chart ────────────────────────────────────────
 (function() {
