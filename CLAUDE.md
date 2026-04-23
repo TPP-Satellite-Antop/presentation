@@ -168,6 +168,60 @@ Presentación de ~45 minutos (~45 slides) sobre el trabajo final de carrera **"A
 - Brillo dinámico: `alpha = 0.15 + 0.85 × (z/rx + 1) / 2` (continuo, sin saltos)
 - Condición para que back arc pase por detrás del disco terrestre: `rxF × cos(inc) < ER_frac`
 
+## Técnicas de canvas establecidas
+
+### Flechas transparentes sin artefacto de composición
+
+**Problema**: al dibujar una flecha como línea + cabeza de flecha sobre canvas con colores semitransparentes, la línea se superpone con la cabeza triangular. Como ambos elementos se componen por separado, la línea se ve a través de la punta.
+
+**Solución**: acortar la línea para que termine exactamente en la base de la cabeza, no en el vértice. La profundidad de la cabeza es `hl * Math.cos(α)` donde `hl` es la longitud total de la flecha y `α` es el semiángulo de apertura.
+
+```javascript
+function drawArrow(x1, y1, x2, y2, color, dashed, lw, trimStart) {
+  const hl = Math.min(W, H) * 0.055;   // longitud de la cabeza
+  const ang = Math.atan2(y2 - y1, x2 - x1);
+  const depth = hl * Math.cos(0.42);   // distancia base → vértice
+
+  // Recortar inicio si una flecha opuesta apunta hacia aquí
+  const startX = trimStart ? x1 + depth * Math.cos(ang) : x1;
+  const startY = trimStart ? y1 + depth * Math.sin(ang) : y1;
+
+  // Línea termina en la BASE de la cabeza, no en el vértice
+  const baseX = x2 - depth * Math.cos(ang);
+  const baseY = y2 - depth * Math.sin(ang);
+
+  ctx.beginPath();
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(baseX, baseY);
+  // ... stroke ...
+
+  // Cabeza como triángulo relleno desde el vértice
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - hl * Math.cos(ang - 0.42), y2 - hl * Math.sin(ang - 0.42));
+  ctx.lineTo(x2 - hl * Math.cos(ang + 0.42), y2 - hl * Math.sin(ang + 0.42));
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+```
+
+**Flechas bidireccionales**: cuando dos flechas opuestas (`A→B` y `B→A`) comparten el mismo par de nodos, la cabeza de cada una apunta al inicio de la otra. Pasar `trimStart=true` en ambas para que las líneas no se superpongan con las cabezas opuestas. Al construir las flechas, detectar automáticamente si existe una flecha opuesta:
+
+```javascript
+// pathEdges
+(opts.pathEdges || []).forEach(([a, b]) => {
+  const opposingReturnEdge = opts.returnEdge && opts.returnEdge[0] === b && opts.returnEdge[1] === a;
+  const opposingPathEdge = (opts.pathEdges || []).some(([pa, pb]) => pa === b && pb === a);
+  drawArrow(..., opposingReturnEdge || opposingPathEdge);
+});
+
+// returnEdge siempre con trimStart=true (siempre hay una pathEdge opuesta)
+drawArrow(x1, y1, x2, y2, color, false, lw, true);
+```
+
+**SVG** (flechas con `marker-end`): el mismo problema existe. Solución: reemplazar `marker-end` por un `<polygon>` independiente y acortar la línea manualmente hasta la base de la cabeza.
+
 ## Pendientes
 
 - División de slides entre co-autores (a definir más adelante).
