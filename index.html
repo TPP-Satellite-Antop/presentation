@@ -684,19 +684,6 @@ html, body {
 /* Slide 18 — falsos positivos */
 #slide-18 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 44px 6vw; gap: 26px; }
 
-/* Slide 19 — transición H3 */
-#slide-19 { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 38px 6vw; gap: 20px; }
-.s19-comp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
-.s19-panel { background: rgba(255,255,255,0.02); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-.s19-panel-bad  { border: 1px solid rgba(248,113,113,0.20); }
-.s19-panel-good { border: 1px solid rgba(56,189,248,0.20); }
-.s19-panel-title { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 16px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); width: 100%; text-align: center; }
-.s19-panel-bad  .s19-panel-title { color: #f87171; }
-.s19-panel-good .s19-panel-title { color: var(--blue); }
-.s19-caption { font-size: clamp(11px,0.95vw,13px); padding: 6px 14px 10px; text-align: center; }
-.s19-panel-bad  .s19-caption { color: #f87171; opacity: 0.8; }
-.s19-panel-good .s19-caption { color: var(--blue); opacity: 0.85; }
-
 /* ═══════════════════ SECCIÓN 4: H3 ═══════════════════ */
 #slide-h3-1,#slide-h3-3,#slide-h3-4,
 #slide-h3-5,#slide-h3-6,#slide-h3-7,#slide-h3-8,
@@ -1039,7 +1026,7 @@ html, body {
       <div class="s6-panel panel-bad">
         <p class="panel-label panel-label-bad">Constelación grande</p>
         <ul class="panel-items">
-          <li>Contact Plan <strong>difícil de mantener</strong></li>
+          <li>Contact Plan <strong>difícil de mantener.</strong></li>
           <li><strong>Ruteo lento:</strong> la complejidad crece <strong>exponencialmente</strong> con el número de nodos.</li>
           <li>Una falla no prevista <strong>invalida el plan completo</strong> → decisiones de ruteo incorrectas.</li>
         </ul>
@@ -1592,29 +1579,6 @@ html, body {
     </p>
   </div>
 
-  <!-- ──────────────────── SLIDE 19 — TRANSICIÓN H3 ──────────────────── -->
-  <div class="slide" id="slide-19">
-    <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
-      De la topología al <em>espacio geográfico</em>
-    </h2>
-    <div class="s19-comp">
-      <div class="s19-panel s19-panel-bad">
-        <p class="s19-panel-title">Grilla cuadrada</p>
-        <svg id="s19-squares" viewBox="0 0 300 210" width="92%" xmlns="http://www.w3.org/2000/svg" style="padding:10px 0;"></svg>
-        <p class="s19-caption">Distorsión geométrica significativa — especialmente en los polos</p>
-      </div>
-      <div class="s19-panel s19-panel-good">
-        <p class="s19-panel-title">Celdas hexagonales (H3)</p>
-        <svg id="s19-hexes" viewBox="0 0 300 210" width="92%" xmlns="http://www.w3.org/2000/svg" style="padding:10px 0;"></svg>
-        <p class="s19-caption">Relaciones de vecindad uniformes — sin distorsión a escala global</p>
-      </div>
-    </div>
-    <p class="s3-footnote" style="text-align:center;">
-      La siguiente sección explica cómo H3 construye las <strong>direcciones ANTop</strong> a partir de esta discretización hexagonal.
-    </p>
-  </div>
-
-
   <!-- ═══════════════════ SECCIÓN 4: H3 ═══════════════════ -->
 
   <!-- ─── SLIDE H3-1 — Por qué hexágonos ─────────────────── -->
@@ -1666,7 +1630,7 @@ html, body {
       <div class="h3-grid-side">
         <ul class="key-points" style="gap:18px;">
           <li>Una dirección ANTop es una <strong>secuencia de movimientos IJK</strong> desde el origen hasta la celda objetivo.</li>
-          <li>Hay <strong>6 movimientos posibles</strong> (uno por dirección de vecindad), numerados 1 a 6.</li>
+          <li>Hay <strong>6 movimientos posibles</strong> (uno por dirección de vecindad), numerados del 1 al 6.</li>
           <li>Cada movimiento se codifica en <strong>3 bits</strong>. Se empaquetan <strong>2 movimientos por byte</strong>.</li>
           <li>La <strong>distancia de Hamming</strong> entre dos direcciones ANTop aproxima la distancia real en H3.</li>
         </ul>
@@ -1802,7 +1766,7 @@ html, body {
       </div>
     </div>
     <p class="s3-footnote" style="text-align:center;">
-      Juntos, IJK + IJK prima cubren las <strong>6 direcciones de vecindad</strong> hexagonal → se eliminan los saltos extra.
+      Juntos, IJK + IJK' cubren las <strong>6 direcciones de vecindad</strong> hexagonal → se eliminan los saltos extra.
     </p>
   </div>
 
@@ -3547,64 +3511,6 @@ document.querySelectorAll('.lp-orig-canvas').forEach(c => makeLoopSlide(c, {
   pathEdges: [['A','B'],['B','D'],['D','B'],['B','D']],
   stored: true,
 }));
-
-// ── SLIDE 19 — GRIDS: SQUARE & HEXAGONAL ─────────────────────
-(function() {
-  // Square grid with distortion near top/bottom (simulating Mercator poles issue)
-  const sqSvg = document.getElementById('s19-squares');
-  let html = '';
-  const cols = 7, rows = 5;
-  const startX = 18, startY = 14;
-  for (let r = 0; r < rows; r++) {
-    // Compress cells near poles (rows 0 and 4)
-    const scaleY = r === 0 || r === rows-1 ? 0.55 : 1.0;
-    const scaleX = r === 0 || r === rows-1 ? 1.30 : 1.0;
-    const cW = 37 * scaleX, cH = 34 * scaleY;
-    const baseY = startY + r * 36;
-    for (let c = 0; c < cols; c++) {
-      const x = startX + c * 38;
-      const col = r === 0 || r === rows-1 ? '#f87171' : '#3f4f67';
-      const opacity = r === 0 || r === rows-1 ? 0.5 : 0.4;
-      html += `<rect x="${x.toFixed(1)}" y="${baseY.toFixed(1)}" width="${(cW-2).toFixed(1)}" height="${(cH-2).toFixed(1)}" fill="none" stroke="${col}" stroke-width="0.9" opacity="${opacity}"/>`;
-    }
-  }
-  // Distortion labels
-  html += `<text x="150" y="194" text-anchor="middle" fill="#f87171" font-size="10" font-family="Inter,sans-serif" opacity="0.7">distorsión en los polos</text>`;
-  sqSvg.innerHTML = html;
-
-  // Hexagonal grid (flat-top hexagons, axial coordinates)
-  const hexSvg = document.getElementById('s19-hexes');
-  let hexHtml = '';
-  const S = 22; // hex size
-  const sqrt3 = Math.sqrt(3);
-
-  function hexPoly(cx, cy) {
-    const pts = [];
-    for (let i = 0; i < 6; i++) {
-      const a = Math.PI / 180 * (60 * i);
-      pts.push(`${(cx + S * Math.cos(a)).toFixed(1)},${(cy + S * Math.sin(a)).toFixed(1)}`);
-    }
-    return pts.join(' ');
-  }
-
-  // Axial coords (q, r), flat-top layout
-  const hexCoords = [
-    [0,0],[1,0],[2,0],[-1,0],[-2,0],
-    [0,1],[1,1],[-1,1],[-2,1],
-    [0,-1],[1,-1],[-1,-1],[2,-1],
-    [0,2],[1,2],[-1,2],
-    [0,-2],[1,-2],[-1,-2],
-  ];
-  const offX = 150, offY = 108;
-  for (const [q, r] of hexCoords) {
-    const px = offX + S * 1.5 * q;
-    const py = offY + S * sqrt3 * (r + q * 0.5);
-    if (px > 10 && px < 290 && py > 14 && py < 196) {
-      hexHtml += `<polygon points="${hexPoly(px, py)}" fill="none" stroke="rgba(56,189,248,0.5)" stroke-width="0.9"/>`;
-    }
-  }
-  hexSvg.innerHTML = hexHtml;
-})();
 
 // ── SLIDE close — CLOSING SCENE ──────────────────────────────
 const cClose   = document.getElementById('canvas-close');
