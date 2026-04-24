@@ -822,15 +822,24 @@ html, body {
 .sim-plots-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 12px;
   flex: 1;
   min-height: 0;
 }
 .sim-plot-box {
   border-radius: 10px;
-  border: 1px dashed rgba(63,79,103,0.45);
-  background: rgba(255,255,255,0.015);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.sim-plot-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 </style>
 </head>
@@ -1819,20 +1828,14 @@ html, body {
 
   <!-- ─── SLIDE H3-10 — Medición del error ────────────────── -->
   <div class="slide" id="slide-h3-10">
-    <div class="slide-2col" style="height:100%;">
-      <div class="col-visual" style="flex:0 0 54%;">
-        <svg id="svg-error" viewBox="0 0 380 280" width="100%" style="display:block;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);"></svg>
-        <p class="s2-caption">Error relativo ANTop vs. distancia H3 — por resolución</p>
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">H3</p>
+        <h2 class="slide-title" style="margin:0;">Error de <em>distancias</em></h2>
       </div>
-      <div class="col-text">
-        <p class="section-tag">H3</p>
-        <h2 class="slide-title">Error de<br><em>distancias</em></h2>
-        <ul class="key-points">
-          <li>Se mide la diferencia entre distancia <strong>ANTop (Hamming)</strong> y distancia real <strong>H3 (saltos en grilla)</strong>.</li>
-          <li><strong>Distancias cortas:</strong> error prácticamente nulo.</li>
-          <li><strong>Error relativo:</strong> peor en distancias intermedias; se diluye a distancias largas.</li>
-          <li>Conclusión: la aproximación es suficientemente precisa para <strong>orientar decisiones de ruteo</strong> — no se busca exactitud de distancias.</li>
-        </ul>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"><img src="plots/relative_error_vs_distance_per_resolution.png" alt="Error relativo vs distancia H3"></div>
+        <div class="sim-plot-box"><img src="plots/relative_error_cdf.png" alt="CDF del error relativo"></div>
       </div>
     </div>
   </div>
@@ -2028,66 +2031,114 @@ html, body {
     </div>
   </div>
 
-  <!-- ─── SLIDE sim-3 — Delivery Ratio ──────────────────────────── -->
-  <div class="slide" id="slide-sim-3">
+  <!-- ─── SLIDE sim-3a — Delivery Ratio (0%, 5%) ─────────────────── -->
+  <div class="slide" id="slide-sim-3a">
     <div class="sim-plots-slide">
       <div class="sim-plots-header">
         <p class="section-tag" style="margin:0;">simulaciones</p>
         <h2 class="slide-title" style="margin:0;">Delivery Ratio</h2>
       </div>
       <div class="sim-plots-grid">
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"><img src="plots/delivery_ratio_0-faults.png" alt="Delivery Ratio 0% faults"></div>
+        <div class="sim-plot-box"><img src="plots/delivery_ratio_5-faults.png" alt="Delivery Ratio 5% faults"></div>
       </div>
     </div>
   </div>
 
-  <!-- ─── SLIDE sim-4 — Arrival Time ────────────────────────────── -->
-  <div class="slide" id="slide-sim-4">
+  <!-- ─── SLIDE sim-3b — Delivery Ratio (10%, 20%) ────────────────── -->
+  <div class="slide" id="slide-sim-3b">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Delivery Ratio</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"><img src="plots/delivery_ratio_10-faults.png" alt="Delivery Ratio 10% faults"></div>
+        <div class="sim-plot-box"><img src="plots/delivery_ratio_20-faults.png" alt="Delivery Ratio 20% faults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-4a — Arrival Time (0%, 5%) ───────────────────── -->
+  <div class="slide" id="slide-sim-4a">
     <div class="sim-plots-slide">
       <div class="sim-plots-header">
         <p class="section-tag" style="margin:0;">simulaciones</p>
         <h2 class="slide-title" style="margin:0;">Arrival Time</h2>
       </div>
       <div class="sim-plots-grid">
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_arrivalTime_0-faults.png" alt="Arrival Time 0% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_arrivalTime_5-faults.png" alt="Arrival Time 5% faults"></div>
       </div>
     </div>
   </div>
 
-  <!-- ─── SLIDE sim-5 — Elapsed Time ────────────────────────────── -->
-  <div class="slide" id="slide-sim-5">
+  <!-- ─── SLIDE sim-4b — Arrival Time (10%, 20%) ──────────────────── -->
+  <div class="slide" id="slide-sim-4b">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Arrival Time</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"><img src="plots/boxplot_arrivalTime_10-faults.png" alt="Arrival Time 10% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_arrivalTime_20-faults.png" alt="Arrival Time 20% faults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-5a — Elapsed Time (0%, 5%) ───────────────────── -->
+  <div class="slide" id="slide-sim-5a">
     <div class="sim-plots-slide">
       <div class="sim-plots-header">
         <p class="section-tag" style="margin:0;">simulaciones</p>
         <h2 class="slide-title" style="margin:0;">Elapsed Time</h2>
       </div>
       <div class="sim-plots-grid">
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_elapsedTime_0-faults.png" alt="Elapsed Time 0% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_elapsedTime_5-faults.png" alt="Elapsed Time 5% faults"></div>
       </div>
     </div>
   </div>
 
-  <!-- ─── SLIDE sim-6 — Number of Hops ──────────────────────────── -->
-  <div class="slide" id="slide-sim-6">
+  <!-- ─── SLIDE sim-5b — Elapsed Time (10%, 20%) ──────────────────── -->
+  <div class="slide" id="slide-sim-5b">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Elapsed Time</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"><img src="plots/boxplot_elapsedTime_10-faults.png" alt="Elapsed Time 10% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_elapsedTime_20-faults.png" alt="Elapsed Time 20% faults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-6a — Number of Hops (0%, 5%) ─────────────────── -->
+  <div class="slide" id="slide-sim-6a">
     <div class="sim-plots-slide">
       <div class="sim-plots-header">
         <p class="section-tag" style="margin:0;">simulaciones</p>
         <h2 class="slide-title" style="margin:0;">Number of Hops</h2>
       </div>
       <div class="sim-plots-grid">
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
-        <div class="sim-plot-box"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_numberOfHops_0-faults.png" alt="Number of Hops 0% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_numberOfHops_5-faults.png" alt="Number of Hops 5% faults"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SLIDE sim-6b — Number of Hops (10%, 20%) ────────────────── -->
+  <div class="slide" id="slide-sim-6b">
+    <div class="sim-plots-slide">
+      <div class="sim-plots-header">
+        <p class="section-tag" style="margin:0;">simulaciones</p>
+        <h2 class="slide-title" style="margin:0;">Number of Hops</h2>
+      </div>
+      <div class="sim-plots-grid">
+        <div class="sim-plot-box"><img src="plots/boxplot_numberOfHops_10-faults.png" alt="Number of Hops 10% faults"></div>
+        <div class="sim-plot-box"><img src="plots/boxplot_numberOfHops_20-faults.png" alt="Number of Hops 20% faults"></div>
       </div>
     </div>
   </div>
@@ -2186,7 +2237,7 @@ html, body {
     <canvas id="canvas-close"></canvas>
     <div class="close-vignette"></div>
     <div class="close-content">
-      <div class="close-question">¿Preguntas?</div>
+      <div class="close-question">Muchas gracias</div>
       <p class="close-authors">
         <span class="author-name">Gastón Frenkel</span>
         <span class="author-sep">·</span>
@@ -2351,6 +2402,117 @@ function drawEarth(ctx, CX, CY, ER) {
   ctx.strokeStyle = rim; ctx.lineWidth = 1.5; ctx.stroke();
 }
 
+// ── SLIDE 1 — NEBULA (top strip, pre-rendered) ────────────────
+const nebulaCanvas1 = document.createElement('canvas');
+(function buildNebula1() {
+  const W = window.innerWidth, H = window.innerHeight;
+  nebulaCanvas1.width  = W;
+  nebulaCanvas1.height = H;
+  const nc = nebulaCanvas1.getContext('2d');
+  const D  = Math.min(W, H);
+
+  function splotch(x, y, rx, ry, angle, r, g, b, a) {
+    nc.save();
+    nc.translate(x, y);
+    nc.rotate(angle);
+    nc.scale(rx, ry);
+    const gr = nc.createRadialGradient(0, 0, 0, 0, 0, 1);
+    gr.addColorStop(0,    `rgba(${r},${g},${b},${a.toFixed(4)})`);
+    gr.addColorStop(0.45, `rgba(${r},${g},${b},${(a*0.28).toFixed(4)})`);
+    gr.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+    nc.beginPath();
+    nc.arc(0, 0, 1, 0, Math.PI * 2);
+    nc.fillStyle = gr;
+    nc.fill();
+    nc.restore();
+  }
+
+  // Clip all cloud drawing to the top strip so wide blobs don't bleed below
+  nc.save();
+  nc.beginPath();
+  nc.rect(0, 0, W, H * 0.36);
+  nc.clip();
+
+  // Four clouds evenly spread across the top strip, overlapping so colours merge
+  const clouds = [
+    { cx: W*0.14, cy: H*0.12, sx: W*0.12, sy: H*0.07, cols: [[78,72,218],[129,140,248],[172,155,255]] },  // purple-blue
+    { cx: W*0.37, cy: H*0.10, sx: W*0.13, sy: H*0.07, cols: [[14,145,225],[56,189,248],[128,218,255]] },  // cyan
+    { cx: W*0.63, cy: H*0.13, sx: W*0.12, sy: H*0.07, cols: [[172,52,208],[192,132,252],[228,160,255]] }, // magenta-violet
+    { cx: W*0.86, cy: H*0.11, sx: W*0.11, sy: H*0.06, cols: [[78,72,218],[99,102,241],[150,155,255]] },   // indigo
+  ];
+
+  for (const cl of clouds) {
+    const { cx, cy, sx, sy, cols } = cl;
+
+    // Wide diffuse base — rx references W so blobs always bridge the gap on widescreen
+    for (let i = 0; i < 5; i++) {
+      const x  = cx + (Math.random()-0.5)*sx*1.4;
+      const y  = cy + (Math.random()-0.5)*sy*1.2;
+      const rx = W*(0.18 + Math.random()*0.12);
+      const ry = D*(0.10 + Math.random()*0.09);
+      const [r,g,b] = cols[i % 2];
+      splotch(x, y, rx, ry, Math.random()*Math.PI, r, g, b, 0.05);
+    }
+
+    // Medium Gaussian-scattered blobs
+    for (let i = 0; i < 140; i++) {
+      const u = Math.random()+1e-9, v = Math.random();
+      const z0 = Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+      const z1 = Math.sqrt(-2*Math.log(u))*Math.sin(2*Math.PI*v);
+      const x  = cx + z0*sx;
+      const y  = cy + z1*sy;
+      const rm = D*(0.018 + Math.random()*0.055);
+      const ry = rm*(0.2 + Math.random()*0.8);
+      const [r,g,b] = cols[Math.floor(Math.random()*3)];
+      splotch(x, y, rm, ry, Math.random()*Math.PI, r, g, b, 0.025 + Math.random()*0.04);
+    }
+
+    // Small dense inner blobs
+    for (let i = 0; i < 90; i++) {
+      const u = Math.random()+1e-9, v = Math.random();
+      const z0 = Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+      const z1 = Math.sqrt(-2*Math.log(u))*Math.sin(2*Math.PI*v);
+      const x  = cx + z0*sx*0.45;
+      const y  = cy + z1*sy*0.45;
+      const rm = D*(0.006 + Math.random()*0.020);
+      const ry = rm*(0.25 + Math.random()*0.75);
+      const [r,g,b] = cols[2];
+      splotch(x, y, rm, ry, Math.random()*Math.PI, r, g, b, 0.05 + Math.random()*0.07);
+    }
+  }
+
+  // Bright cores
+  [
+    { x:W*0.14, y:H*0.11, r:D*0.030, col:[205,215,255] },
+    { x:W*0.41, y:H*0.09, r:D*0.028, col:[140,228,255] },
+    { x:W*0.66, y:H*0.12, r:D*0.026, col:[228,172,255] },
+    { x:W*0.87, y:H*0.10, r:D*0.024, col:[170,175,255] },
+  ].forEach(({ x, y, r, col:[r_,g_,b_] }) => {
+    splotch(x, y, r*2.5, r*2.5, 0, r_, g_, b_, 0.16);
+    splotch(x, y, r*0.7, r*0.7, 0, 245, 250, 255, 0.26);
+    splotch(x, y, r*0.2, r*0.2, 0, 255, 255, 255, 0.45);
+  });
+
+  // Dust rifts
+  nc.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < 5; i++) {
+    const x  = W*(0.10 + Math.random()*0.80);
+    const y  = H*(0.04 + Math.random()*0.20);
+    const rx = D*(0.03 + Math.random()*0.07);
+    const ry = D*(0.008 + Math.random()*0.020);
+    splotch(x, y, rx, ry, Math.random()*Math.PI, 0, 0, 0, 0.20 + Math.random()*0.20);
+  }
+  nc.globalCompositeOperation = 'source-over';
+  nc.restore(); // release clip
+
+  // Fade to background at the bottom edge so it blends into the slide
+  const fade = nc.createLinearGradient(0, H*0.22, 0, H*0.38);
+  fade.addColorStop(0, 'rgba(6,11,24,0)');
+  fade.addColorStop(1, 'rgba(6,11,24,1)');
+  nc.fillStyle = fade;
+  nc.fillRect(0, H*0.22, W, H*0.16);
+})();
+
 // ── SLIDE 1 — STARFIELD + ORBITAL SCENE ──────────────────────
 // HiDPI fix: buffer = viewport × devicePixelRatio; context is pre-scaled so
 // all drawing functions use CSS pixel coordinates (window.innerWidth/Height).
@@ -2399,6 +2561,8 @@ function drawScene1(t) {
 
   ctx1.fillStyle = '#060b18';
   ctx1.fillRect(0, 0, W, H);
+
+  ctx1.drawImage(nebulaCanvas1, 0, 0, W, H);
 
   // Stars
   for (const s of stars1) {
@@ -2460,12 +2624,28 @@ const ER2 = 58;
   ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
 })();
 
-// Two satellites. Condition to pass behind Earth disk: rx * cos(inc) < ER2 (58)
-//   SAT_A: 133 * cos(68°) = 49.9  ✓
-//   SAT_B: 121 * cos(65°) = 51.1  ✓
+// Condition to pass behind Earth disk: rx * cos(inc) < ER2 (58)
+//   Orbit A: 133 * cos(68°) = 49.9 ✓   Orbit B: 121 * cos(65°) = 51.1 ✓
+//   Orbit C: 120 * cos(62°) = 56.3 ✓
 const S2_SATS = [
-  { rx: 133, inc: 68, lan: 10, phase: 0, speed: 0.00018, color: '#38bdf8' },
-  { rx: 121, inc: 65, lan: 72, phase: 0, speed: 0.00013, color: '#a78bfa' },
+  // Orbit A — blue
+  { rx: 133, inc: 68, lan: 10,  phase: 0.00, speed: 0.00018, color: '#38bdf8' },
+  { rx: 133, inc: 68, lan: 10,  phase: 0.20, speed: 0.00018, color: '#38bdf8' },
+  { rx: 133, inc: 68, lan: 10,  phase: 0.40, speed: 0.00018, color: '#38bdf8' },
+  { rx: 133, inc: 68, lan: 10,  phase: 0.60, speed: 0.00018, color: '#38bdf8' },
+  { rx: 133, inc: 68, lan: 10,  phase: 0.80, speed: 0.00018, color: '#38bdf8' },
+  // Orbit B — purple
+  { rx: 121, inc: 65, lan: 72,  phase: 0.00, speed: 0.00013, color: '#a78bfa' },
+  { rx: 121, inc: 65, lan: 72,  phase: 0.20, speed: 0.00013, color: '#a78bfa' },
+  { rx: 121, inc: 65, lan: 72,  phase: 0.40, speed: 0.00013, color: '#a78bfa' },
+  { rx: 121, inc: 65, lan: 72,  phase: 0.60, speed: 0.00013, color: '#a78bfa' },
+  { rx: 121, inc: 65, lan: 72,  phase: 0.80, speed: 0.00013, color: '#a78bfa' },
+  // Orbit C — teal
+  { rx: 120, inc: 62, lan: 145, phase: 0.00, speed: 0.00015, color: '#34d399' },
+  { rx: 120, inc: 62, lan: 145, phase: 0.20, speed: 0.00015, color: '#34d399' },
+  { rx: 120, inc: 62, lan: 145, phase: 0.40, speed: 0.00015, color: '#34d399' },
+  { rx: 120, inc: 62, lan: 145, phase: 0.60, speed: 0.00015, color: '#34d399' },
+  { rx: 120, inc: 62, lan: 145, phase: 0.80, speed: 0.00015, color: '#34d399' },
 ];
 const LINK_THRESHOLD = 165;
 
@@ -2507,76 +2687,71 @@ function drawScene2(t) {
   bg.addColorStop(1, 'rgba(6,11,24,0)');
   ctx2.fillStyle = bg; ctx2.fillRect(0, 0, W2, H2);
 
-  const sats = S2_SATS.map(s => ({
-    ...s, incR: s.inc * Math.PI / 180, lanR: s.lan * Math.PI / 180,
-  }));
-
-  // 1. Back arcs
-  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, false);
-
-  // 2. Compute satellite positions; draw far-side ones before Earth
-  const positions = sats.map(s => {
-    const p = orbitPoint(s.rx, s.incR, s.lanR, ((t * s.speed + s.phase) % 1) * Math.PI * 2);
+  // Compute positions for all satellites
+  const positions = S2_SATS.map(s => {
+    const incR = s.inc * Math.PI / 180, lanR = s.lan * Math.PI / 180;
+    const p = orbitPoint(s.rx, incR, lanR, ((t * s.speed + s.phase) % 1) * Math.PI * 2);
     return { x: CX2 + p.sx, y: CY2 + p.sy, z: p.z, rx: s.rx, color: s.color };
   });
   function satAlpha2(p) { return 0.15 + 0.85 * (p.z / p.rx + 1) / 2; }
-  for (const p of positions) {
-    if (p.z < 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+
+  // Deduplicate orbits for arc drawing
+  const seen = new Set(), orbits = [];
+  for (const s of S2_SATS) {
+    const key = `${s.rx},${s.inc},${s.lan}`;
+    if (!seen.has(key)) { seen.add(key); orbits.push({ rx: s.rx, incR: s.inc*Math.PI/180, lanR: s.lan*Math.PI/180 }); }
   }
 
-  // ISL link geometry — computed once, drawn at the right z-layer below.
-  const [pA, pB] = positions;
-  const islDist  = Math.hypot(pA.x - pB.x, pA.y - pB.y);
-  const islClear = segmentClearOf3DSphere(
-    pA.x - CX2, pA.y - CY2, pA.z,
-    pB.x - CX2, pB.y - CY2, pB.z,
-    ER2
-  );
-  const bothBehind = pA.z < 0 && pB.z < 0;
-  // Draw behind Earth also when one sat is behind and the projected line crosses the disk.
-  const crossesDisk = seg2dCrossesDisk(pA.x, pA.y, pB.x, pB.y, CX2, CY2, ER2);
-  const drawBehind  = bothBehind || ((pA.z < 0 || pB.z < 0) && crossesDisk);
+  // Compute all ISL links between every pair of satellites
+  const links = [];
+  for (let i = 0; i < positions.length; i++) {
+    for (let j = i + 1; j < positions.length; j++) {
+      const pA = positions[i], pB = positions[j];
+      const dist = Math.hypot(pA.x - pB.x, pA.y - pB.y);
+      if (dist >= LINK_THRESHOLD) continue;
+      const clear = segmentClearOf3DSphere(pA.x-CX2, pA.y-CY2, pA.z, pB.x-CX2, pB.y-CY2, pB.z, ER2);
+      if (!clear) continue;
+      const bothBehind = pA.z < 0 && pB.z < 0;
+      const crossesDisk = seg2dCrossesDisk(pA.x, pA.y, pB.x, pB.y, CX2, CY2, ER2);
+      const behind = bothBehind || ((pA.z < 0 || pB.z < 0) && crossesDisk);
+      links.push({ pA, pB, behind, str: 1 - dist / LINK_THRESHOLD });
+    }
+  }
 
-  const islVisible = islDist < LINK_THRESHOLD && islClear;
-  const islStr     = islVisible ? 1 - islDist / LINK_THRESHOLD : 0;
-
-  function drawISLLine() {
-    if (!islVisible) return;
+  function drawLinks(behindEarth) {
     ctx2.save();
     ctx2.setLineDash([7, 7]);
     ctx2.lineDashOffset = -(t * 0.06) % 14;
-    ctx2.beginPath();
-    ctx2.moveTo(pA.x, pA.y); ctx2.lineTo(pB.x, pB.y);
-    ctx2.strokeStyle = '#38bdf8';
     ctx2.lineWidth = 1.5;
-    ctx2.stroke();
+    for (const lk of links) {
+      if (lk.behind !== behindEarth) continue;
+      ctx2.beginPath(); ctx2.moveTo(lk.pA.x, lk.pA.y); ctx2.lineTo(lk.pB.x, lk.pB.y);
+      ctx2.strokeStyle = `rgba(56,189,248,${(0.35 + 0.5 * lk.str).toFixed(2)})`;
+      ctx2.stroke();
+    }
     ctx2.restore();
   }
 
-  // 2b. Link line behind Earth: both sats behind, OR one behind with line crossing the disk
-  if (drawBehind) drawISLLine();
+  // 1. Back arcs
+  for (const o of orbits) drawOrbitArc(ctx2, CX2, CY2, o.rx, o.incR, o.lanR, false);
+
+  // 2. Far-side satellites
+  for (const p of positions) if (p.z < 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+
+  // 2b. Links behind Earth
+  drawLinks(true);
 
   // 3. Earth
   drawEarth(ctx2, CX2, CY2, ER2);
 
   // 4. Front arcs
-  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, true);
+  for (const o of orbits) drawOrbitArc(ctx2, CX2, CY2, o.rx, o.incR, o.lanR, true);
 
-  // 5. Link line in front of Earth (both sats in front, or one behind but line clears the disk)
-  if (!drawBehind) drawISLLine();
+  // 5. Links in front of Earth
+  drawLinks(false);
 
-  // 6. Near-side satellites — drawn last (on top of Earth and ISL line)
-  for (const p of positions) {
-    if (p.z >= 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
-  }
-
-  // 7. Label — always on top, full brightness
-  if (islVisible) {
-    ctx2.font = '500 11px Inter, sans-serif';
-    ctx2.fillStyle = '#38bdf8';
-    ctx2.textAlign = 'center';
-    ctx2.fillText('Enlace activo', (pA.x+pB.x)/2, (pA.y+pB.y)/2 - 12);
-  }
+  // 6. Near-side satellites
+  for (const p of positions) if (p.z >= 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
 }
 
 // ── EASE ──────────────────────────────────────────────────────
@@ -3434,6 +3609,124 @@ document.querySelectorAll('.lp-orig-canvas').forEach(c => makeLoopSlide(c, {
 // ── SLIDE close — CLOSING SCENE ──────────────────────────────
 const cClose   = document.getElementById('canvas-close');
 const ctxClose = cClose ? cClose.getContext('2d') : null;
+const starsClose = Array.from({ length: 600 }, () => ({
+  nx: Math.random(), ny: Math.random(),
+  r:     Math.random() * 1.4 + 0.25,
+  base:  Math.random() * 0.55 + 0.2,
+  phase: Math.random() * Math.PI * 2,
+  freq:  Math.random() * 0.0008 + 0.0003,
+}));
+
+// ── NEBULA — pre-rendered offscreen texture ────────────────────
+const nebulaCanvas = document.createElement('canvas');
+
+(function buildNebula() {
+  const W = window.innerWidth, H = window.innerHeight;
+  nebulaCanvas.width  = W;
+  nebulaCanvas.height = H;
+  const nc = nebulaCanvas.getContext('2d');
+  const D  = Math.min(W, H);
+
+  // Draw one soft elliptical blob centred at (x,y) with half-axes rx,ry rotated by angle
+  function splotch(x, y, rx, ry, angle, r, g, b, a) {
+    nc.save();
+    nc.translate(x, y);
+    nc.rotate(angle);
+    nc.scale(rx, ry);
+    const gr = nc.createRadialGradient(0, 0, 0, 0, 0, 1);
+    gr.addColorStop(0,    `rgba(${r},${g},${b},${a.toFixed(4)})`);
+    gr.addColorStop(0.45, `rgba(${r},${g},${b},${(a*0.28).toFixed(4)})`);
+    gr.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+    nc.beginPath();
+    nc.arc(0, 0, 1, 0, Math.PI * 2);
+    nc.fillStyle = gr;
+    nc.fill();
+    nc.restore();
+  }
+
+  // Cloud regions: each has a centre, Gaussian spread, and 3 color stops (base/mid/bright)
+  const clouds = [
+    { cx: W*0.30, cy: H*0.40, sx: W*0.14, sy: H*0.11,
+      cols: [[78,72,218],[129,140,248],[172,155,255]] },   // purple-blue, left
+    { cx: W*0.70, cy: H*0.53, sx: W*0.12, sy: H*0.10,
+      cols: [[14,145,225],[56,189,248],[128,218,255]] },   // cyan, right
+    { cx: W*0.50, cy: H*0.63, sx: W*0.11, sy: H*0.09,
+      cols: [[172,52,208],[192,132,252],[228,160,255]] },  // magenta-violet, low centre
+    { cx: W*0.18, cy: H*0.60, sx: W*0.09, sy: H*0.08,
+      cols: [[55,80,200],[99,102,241],[150,155,255]] },    // indigo, bottom-left
+    { cx: W*0.82, cy: H*0.30, sx: W*0.09, sy: H*0.08,
+      cols: [[10,130,200],[14,165,233],[80,200,255]] },    // blue, top-right
+  ];
+
+  for (const cl of clouds) {
+    const { cx, cy, sx, sy, cols } = cl;
+
+    // Pass 1 — very wide diffuse base (4 large tilted blobs)
+    for (let i = 0; i < 4; i++) {
+      const x  = cx + (Math.random()-0.5)*sx*1.2;
+      const y  = cy + (Math.random()-0.5)*sy*1.2;
+      const rx = D*(0.20 + Math.random()*0.20);
+      const ry = D*(0.14 + Math.random()*0.14);
+      const [r,g,b] = cols[i % 2];
+      splotch(x, y, rx, ry, Math.random()*Math.PI, r, g, b, 0.05);
+    }
+
+    // Pass 2 — medium Gaussian-scattered blobs (texture body)
+    for (let i = 0; i < 180; i++) {
+      const u = Math.random()+1e-9, v = Math.random();
+      const z0 = Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+      const z1 = Math.sqrt(-2*Math.log(u))*Math.sin(2*Math.PI*v);
+      const x  = cx + z0*sx;
+      const y  = cy + z1*sy;
+      const rm = D*(0.025 + Math.random()*0.085);
+      const ry = rm*(0.2 + Math.random()*0.8);
+      const [r,g,b] = cols[Math.floor(Math.random()*3)];
+      splotch(x, y, rm, ry, Math.random()*Math.PI, r, g, b, 0.028 + Math.random()*0.048);
+    }
+
+    // Pass 3 — small dense inner blobs for bright core texture
+    for (let i = 0; i < 120; i++) {
+      const u = Math.random()+1e-9, v = Math.random();
+      const z0 = Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+      const z1 = Math.sqrt(-2*Math.log(u))*Math.sin(2*Math.PI*v);
+      const x  = cx + z0*sx*0.45;
+      const y  = cy + z1*sy*0.45;
+      const rm = D*(0.008 + Math.random()*0.028);
+      const ry = rm*(0.25 + Math.random()*0.75);
+      const [r,g,b] = cols[2];
+      splotch(x, y, rm, ry, Math.random()*Math.PI, r, g, b, 0.055 + Math.random()*0.075);
+    }
+  }
+
+  // Bright ionized cores — each cloud has a hot nucleus
+  [
+    { x:W*0.28, y:H*0.39, r:D*0.055, col:[205,215,255] },
+    { x:W*0.72, y:H*0.51, r:D*0.048, col:[140,228,255] },
+    { x:W*0.51, y:H*0.61, r:D*0.042, col:[228,172,255] },
+    { x:W*0.17, y:H*0.59, r:D*0.030, col:[160,165,255] },
+    { x:W*0.83, y:H*0.29, r:D*0.028, col:[100,200,255] },
+  ].forEach(({ x, y, r, col:[r_,g_,b_] }) => {
+    splotch(x, y, r*2.8, r*2.8, 0, r_, g_, b_, 0.18);
+    splotch(x, y, r*0.8, r*0.8, 0, 245, 250, 255, 0.28);
+    splotch(x, y, r*0.25, r*0.25, 0, 255, 255, 255, 0.50);
+  });
+
+  // Dark dust rifts — carved out with destination-out for depth/contrast
+  nc.globalCompositeOperation = 'destination-out';
+  for (let i = 0; i < 8; i++) {
+    const x  = W*(0.15 + Math.random()*0.70);
+    const y  = H*(0.25 + Math.random()*0.50);
+    const rx = D*(0.04 + Math.random()*0.10);
+    const ry = D*(0.012 + Math.random()*0.030);
+    splotch(x, y, rx, ry, Math.random()*Math.PI, 0, 0, 0, 0.22 + Math.random()*0.22);
+  }
+  nc.globalCompositeOperation = 'source-over';
+})();
+
+function drawNebula(ctx, W, H) {
+  ctx.drawImage(nebulaCanvas, 0, 0, W, H);
+}
+
 function resizeCClose() {
   if (!cClose) return;
   const dpr = window.devicePixelRatio || 1;
@@ -3447,53 +3740,34 @@ window.addEventListener('resize', resizeCClose);
 function drawSceneClose(t) {
   if (!ctxClose) return;
   const W = window.innerWidth, H = window.innerHeight;
-  const CX = W * 0.5, CY = H * 0.44;
-  const D  = Math.min(W, H);
-  const ER = D * 0.115;
 
   ctxClose.fillStyle = '#060b18';
   ctxClose.fillRect(0, 0, W, H);
 
-  for (const s of stars1) {
+  drawNebula(ctxClose, W, H);
+
+  for (const s of starsClose) {
     const a = s.base * (0.65 + 0.35 * Math.sin(t * s.freq + s.phase + 1.3));
     ctxClose.beginPath();
     ctxClose.arc(s.nx * W, s.ny * H, s.r, 0, Math.PI * 2);
     ctxClose.fillStyle = `rgba(241,245,249,${a.toFixed(3)})`;
     ctxClose.fill();
   }
-
-  const orbs = ORBITS1.map(o => ({
-    ...o, rx: o.rxF * D,
-    incR: o.inc * Math.PI / 180,
-    lanR: o.lan * Math.PI / 180,
-  }));
-  function satAlphaC(z, rx) { return 0.15 + 0.85 * (z / rx + 1) / 2; }
-
-  for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, false);
-  for (const o of orbs) {
-    for (const phase of o.phases) {
-      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
-      if (p.z < 0) drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, satAlphaC(p.z, o.rx));
-    }
-  }
-  drawEarth(ctxClose, CX, CY, ER);
-  for (const o of orbs) drawOrbitArc(ctxClose, CX, CY, o.rx, o.incR, o.lanR, true);
-  for (const o of orbs) {
-    for (const phase of o.phases) {
-      const p = orbitPoint(o.rx, o.incR, o.lanR, ((t * o.speed + phase) % 1) * Math.PI * 2);
-      if (p.z >= 0) drawSatDot(ctxClose, CX + p.sx, CY + p.sy, o.color, satAlphaC(p.z, o.rx));
-    }
-  }
 }
 
 // ── MAIN LOOP ─────────────────────────────────────────────────
+function isActive(id) {
+  const el = document.getElementById(id);
+  return el && el.classList.contains('active');
+}
+
 function loop(t) {
   requestAnimationFrame(loop);
-  drawScene1(t);
-  drawScene2(t);
-  drawScene4(t);
-  drawScene14(t);
-  drawSceneClose(t);
+  if (isActive('slide-1'))     drawScene1(t);
+  if (isActive('slide-2'))     drawScene2(t);
+  if (isActive('slide-4'))     drawScene4(t);
+  if (isActive('slide-14'))    drawScene14(t);
+  if (isActive('slide-close')) drawSceneClose(t);
 }
 requestAnimationFrame(loop);
 
