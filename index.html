@@ -502,7 +502,8 @@ html, body {
 .comp-table td {
   padding: 10px 20px;
   border-bottom: 1px solid rgba(63,79,103,0.35);
-  color: var(--muted);
+  color: var(--white);
+  font-size: clamp(14px, 1.2vw, 17px);
   line-height: 1.4;
   vertical-align: middle;
 }
@@ -671,9 +672,9 @@ html, body {
 .epoch-table { width: 100%; border-collapse: collapse; }
 .epoch-table th { padding: 10px 18px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(63,79,103,0.4); text-align: center; }
 .epoch-table th.th-row { text-align: left; color: var(--dim); }
-.epoch-table th.th-x   { color: var(--muted); }
-.epoch-table th.th-p1  { color: var(--blue); }
-.epoch-table th.th-p2  { color: var(--purple); }
+.epoch-table th.th-x   { color: var(--white); }
+.epoch-table th.th-p1  { color: var(--white); }
+.epoch-table th.th-p2  { color: var(--white); }
 .epoch-table td { padding: 12px 18px; text-align: center; font-family: 'ui-monospace', monospace; font-size: clamp(15px,1.4vw,19px); border-bottom: 1px solid rgba(63,79,103,0.15); color: var(--muted); }
 .epoch-table td.td-row { text-align: left; font-family: 'Inter', sans-serif; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
 .epoch-table tr:last-child td { border-bottom: none; }
@@ -875,7 +876,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Entorno</div>
         <div class="block-name">Red LEO</div>
-        <div class="block-desc">Constelación de satélites con topología dinámica e intermitente</div>
+        <div class="block-desc">Constelación de satélites en órbita baja (160–2.000 km)</div>
       </div>
 
       <!-- Arrow -->
@@ -889,7 +890,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Arquitectura</div>
         <div class="block-name">DTN</div>
-        <div class="block-desc">Redes tolerantes a demoras e interrupciones, diseñadas para este entorno</div>
+        <div class="block-desc">Redes tolerantes a demoras e interrupciones</div>
       </div>
 
       <!-- Arrow -->
@@ -903,7 +904,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Ruteo estándar</div>
         <div class="block-name">CGR</div>
-        <div class="block-desc">Requiere conocimiento global de la topología → limitaciones de escalabilidad</div>
+        <div class="block-desc">Requiere conocimiento global de la topología</div>
       </div>
 
       <!-- VS -->
@@ -940,7 +941,6 @@ html, body {
           <li>Arquitectura diseñada para redes donde la conectividad extremo a extremo <strong>no está garantizada</strong>.</li>
           <li><strong>Bundle Protocol</strong>: los datos se encapsulan en bundles que se almacenan en nodos intermedios y se reenvían cuando hay conectividad.</li>
           <li>Permite comunicación con largas latencias, interrupciones frecuentes y <strong>sin ruta simultánea de extremo a extremo</strong>.</li>
-          <li>Estándar en comunicaciones espaciales: NASA, ESA, redes interplanetarias.</li>
         </ul>
       </div>
     </div>
@@ -1008,7 +1008,6 @@ html, body {
         <p class="panel-label panel-label-good">Constelación pequeña</p>
         <ul class="panel-items">
           <li>Contact Plan <strong>manejable</strong>: pocas entradas, fácil de mantener actualizado.</li>
-          <li>Señalización limitada para sincronizar el plan entre nodos.</li>
           <li>Dijkstra converge rápido sobre grafos pequeños.</li>
         </ul>
         <svg viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;">
@@ -1027,7 +1026,7 @@ html, body {
         <p class="panel-label panel-label-bad">Constelación grande</p>
         <ul class="panel-items">
           <li>Contact Plan <strong>difícil de mantener.</strong></li>
-          <li><strong>Ruteo lento:</strong> la complejidad crece <strong>exponencialmente</strong> con el número de nodos.</li>
+          <li>La complejidad crece <strong>exponencialmente</strong> con el número de nodos.</li>
           <li>Una falla no prevista <strong>invalida el plan completo</strong> → decisiones de ruteo incorrectas.</li>
         </ul>
         <svg id="dense-const-svg" viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;"></svg>
@@ -1091,17 +1090,17 @@ html, body {
     </div>
   </div>
 
-  <!-- ──────────────────── SLIDE 12 — REACTIVO VS PROACTIVO ────────── -->
+  <!-- ──────────────────── SLIDE 12 — CGR VS ANTOP ────────── -->
   <div class="slide" id="slide-12">
     <h2 class="slide-title" style="text-align:center; margin-bottom:0;">
-      Proactivo vs. <em>reactivo</em>
+      CGR vs. <em>ANTop</em>
     </h2>
     <table class="comp-table">
       <thead>
         <tr>
           <th class="th-dim">Dimensión</th>
-          <th class="th-cgr">CGR (proactivo)</th>
-          <th class="th-antop">ANTop (reactivo)</th>
+          <th class="th-cgr">CGR</th>
+          <th class="th-antop">ANTop</th>
         </tr>
       </thead>
       <tbody>
@@ -1821,40 +1820,9 @@ html, body {
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 46%;">
-        <svg viewBox="0 0 400 300" width="100%" xmlns="http://www.w3.org/2000/svg"
-             style="border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);">
-          <!-- Non-path edges -->
-          <line x1="72"  y1="150" x2="200" y2="240" stroke="#3f4f67" stroke-width="1.2"/>
-          <line x1="200" y1="240" x2="328" y2="150" stroke="#3f4f67" stroke-width="1.2"/>
-          <!-- Path edges -->
-          <line x1="72"  y1="150" x2="200" y2="68"  stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
-          <line x1="200" y1="68"  x2="328" y2="150" stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
-          <!-- Time window labels — non-path -->
-          <text x="118" y="212" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[0, 40]</text>
-          <text x="278" y="215" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[50, 90]</text>
-          <!-- Time window labels — path -->
-          <text x="122" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[10, 35]</text>
-          <text x="278" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[38, 70]</text>
-          <!-- Node A (source) -->
-          <circle cx="72"  cy="150" r="22" fill="#071426" stroke="#38bdf8" stroke-width="2"/>
-          <text   x="72"   y="155" fill="#38bdf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">A</text>
-          <text   x="72"   y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-1</text>
-          <!-- Node B (relay, on path) -->
-          <circle cx="200" cy="68"  r="18" fill="#071426" stroke="rgba(56,189,248,0.5)" stroke-width="1.5"/>
-          <text   x="200"  y="73"  fill="#94a3b8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">B</text>
-          <text   x="200"  y="97"  fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-2</text>
-          <!-- Node C (relay, off path) -->
-          <circle cx="200" cy="240" r="18" fill="#071426" stroke="#3f4f67" stroke-width="1.2"/>
-          <text   x="200"  y="245" fill="#3f4f67" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">C</text>
-          <text   x="200"  y="268" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-3</text>
-          <!-- Node D (destination) -->
-          <circle cx="328" cy="150" r="22" fill="#071426" stroke="#818cf8" stroke-width="2"/>
-          <text   x="328"  y="155" fill="#818cf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">D</text>
-          <text   x="328"  y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-4</text>
-          <!-- Legend -->
-          <text x="200" y="28" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" opacity="0.7" letter-spacing="1.5">CONTACT PLAN — VENTANAS DE TIEMPO</text>
-        </svg>
-        <p class="s2-caption">Contact plan — bundles esperan hasta la próxima ventana</p>
+        <svg id="svg-dtnsim-1-vis" viewBox="0 0 280 190" width="100%"
+             style="border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);"></svg>
+        <p class="s2-caption">Contact plan — conectividad predefinida</p>
       </div>
     </div>
   </div>
@@ -1884,8 +1852,7 @@ html, body {
         <p class="section-tag">dtnsim</p>
         <h2 class="slide-title">Constelaciones<br>paramétricas <em>Atlas</em></h2>
         <ul class="key-points">
-          <li><strong>Atlas</strong> define constelaciones satelitales de forma completamente <strong>paramétrica</strong>.</li>
-          <li>Genera órbitas sintéticas configurando satélites, planos, altitud e inclinación.</li>
+          <li><strong>Atlas</strong> define constelaciones satelitales de forma completamente <strong>paramétrica</strong>, configurando satélites, planos, altitud e inclinación.</li>
           <li>Permite explorar distintas topologías sin depender de datos orbitales reales.</li>
           <li><strong>Extensión:</strong> Atlas no soportaba <strong>phase offset</strong> → se extendió para modelar constelaciones <strong>Walker</strong> completas.</li>
           <li>El phase offset distribuye los satélites uniformemente entre planos → mayor cobertura H3 → mejor conectividad.</li>
@@ -1932,7 +1899,7 @@ html, body {
         </div>
         <div class="sim-metric-card">
           <div class="sim-metric-name">Number of Hops</div>
-          <div class="sim-metric-desc">Cantidad de nodos intermedios recorridos. Indica la eficiencia de la ruta encontrada.</div>
+          <div class="sim-metric-desc">Cantidad de nodos intermedios recorridos.</div>
         </div>
       </div>
     </div>
@@ -2107,11 +2074,13 @@ html, body {
     </div>
   </div>
 
+  <!-- ═══════════════════ SECCIÓN 7: Conclusiones ═══════════════════ -->
+
   <!-- ─── SLIDE sim-7 — Resumen comparativo ─────────────────────── -->
   <div class="slide" id="slide-sim-7">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:22px;">
       <div style="text-align:center;">
-        <p class="section-tag">simulaciones</p>
+        <p class="section-tag">conclusiones</p>
         <h2 class="slide-title">Resumen comparativo</h2>
       </div>
       <table class="epoch-table" style="max-width:900px;width:100%;">
@@ -2128,7 +2097,7 @@ html, body {
             <td class="td-row">Delivery Ratio</td>
             <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">100% siempre</td>
             <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">~100%</td>
-            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">hasta 93%</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">93–99%</td>
           </tr>
           <tr>
             <td class="td-row">Arrival Time</td>
@@ -2144,9 +2113,9 @@ html, body {
           </tr>
           <tr>
             <td class="td-row">Number of Hops</td>
-            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">1–10, estable</td>
-            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">comparable</td>
-            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">hasta &gt;10.000</td>
+            <td class="e-blue" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">1-13, estable</td>
+            <td class="e-purple" style="font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">levemente peor, outliers extremos</td>
+            <td style="color:rgba(248,113,113,0.75);font-family:'Inter',sans-serif;font-size:clamp(12px,1vw,15px);">moderadamente peor, outliers extremos</td>
           </tr>
           <tr>
             <td class="td-row">Escalabilidad</td>
@@ -2159,39 +2128,17 @@ html, body {
     </div>
   </div>
 
-
-  <!-- ═══════════════════ SECCIÓN 7: Conclusiones ═══════════════════ -->
-
-  <!-- ─── SLIDE conc-1 — Conclusiones ───────────────────────────── -->
-  <div class="slide" id="slide-conc-1">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:24px;">
-      <div style="text-align:center;">
-        <p class="section-tag">conclusiones</p>
-        <h2 class="slide-title">ANTop es una alternativa viable a CGR</h2>
-      </div>
-      <ul class="key-points" style="max-width:820px;width:100%;">
-        <li><strong>100% de tasa de entrega</strong> en todos los escenarios, incluso con 20% de fallas — CGR no lo garantiza.</li>
-        <li><strong>Menor tiempo de llegada</strong> en todos los casos, con tendencia a mejorar en constelaciones más grandes.</li>
-        <li><strong>Costo computacional predecible</strong>: 0.01–0.1 ms estables, sin los picos esporádicos de CGR.</li>
-        <li><strong>Rutas más cortas</strong>: medianas de 1–10 saltos frente a casos extremos de &gt;10.000 en CGR one-best.</li>
-        <li>Su naturaleza <strong>reactiva y descentralizada</strong> lo hace inherentemente más adaptable a fallas y cambios de topología que CGR, cuya efectividad depende de un contact plan global preciso.</li>
-      </ul>
-    </div>
-  </div>
-
   <!-- ─── SLIDE conc-2 — Trabajo futuro ─────────────────────────── -->
   <div class="slide" id="slide-conc-2">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:30px 5vw 62px;gap:24px;">
       <div style="text-align:center;">
-        <p class="section-tag">trabajo futuro</p>
-        <h2 class="slide-title">Líneas abiertas</h2>
+        <p class="section-tag">Conclusiones</p>
+        <h2 class="slide-title">Trabajos futuros</h2>
       </div>
       <ul class="key-points" style="max-width:820px;width:100%;">
-        <li><strong>Resoluciones H3 mayores</strong>: evaluar ANTop con resoluciones 1 y 2 en megaconstelaciones tipo Starlink.</li>
-        <li><strong>Otras geometrías orbitales</strong>: inclinaciones, altitudes y distribuciones no-Walker.</li>
-        <li><strong>Tráfico no uniforme</strong>: patrones heterogéneos y hot spots geográficos.</li>
-        <li><strong>Modelos orbitales reales</strong>: integrar TLE de constelaciones existentes para contrastar con los resultados paramétricos.</li>
-        <li><strong>Optimizaciones del algoritmo</strong>: variantes del mecanismo de loop epoch y estrategias de selección de vecinos bajo alta carga.</li>
+        <li>Evaluar ANTop en <strong>escenarios con baja conectividad</strong> y mejorar su <strong>resiliencia ante interrupciones</strong>.</li>
+        <li>Explorar <strong>alternativas a H3</strong> para una discretización más flexible y simple.</li>
+        <li>Profundizar el análisis de CGR y mejorar su <strong>desempeño en ciertas métricas</strong>.</li>
       </ul>
     </div>
   </div>
@@ -2590,26 +2537,11 @@ const ER2 = 58;
 
 // Condition to pass behind Earth disk: rx * cos(inc) < ER2 (58)
 //   Orbit A: 133 * cos(68°) = 49.9 ✓   Orbit B: 121 * cos(65°) = 51.1 ✓
-//   Orbit C: 120 * cos(62°) = 56.3 ✓
 const S2_SATS = [
   // Orbit A — blue
-  { rx: 133, inc: 68, lan: 10,  phase: 0.00, speed: 0.00018, color: '#38bdf8' },
-  { rx: 133, inc: 68, lan: 10,  phase: 0.20, speed: 0.00018, color: '#38bdf8' },
-  { rx: 133, inc: 68, lan: 10,  phase: 0.40, speed: 0.00018, color: '#38bdf8' },
-  { rx: 133, inc: 68, lan: 10,  phase: 0.60, speed: 0.00018, color: '#38bdf8' },
-  { rx: 133, inc: 68, lan: 10,  phase: 0.80, speed: 0.00018, color: '#38bdf8' },
+  { rx: 133, inc: 68, lan: 10, phase: 0.00, speed: 0.00018, color: '#38bdf8' },
   // Orbit B — purple
-  { rx: 121, inc: 65, lan: 72,  phase: 0.00, speed: 0.00013, color: '#a78bfa' },
-  { rx: 121, inc: 65, lan: 72,  phase: 0.20, speed: 0.00013, color: '#a78bfa' },
-  { rx: 121, inc: 65, lan: 72,  phase: 0.40, speed: 0.00013, color: '#a78bfa' },
-  { rx: 121, inc: 65, lan: 72,  phase: 0.60, speed: 0.00013, color: '#a78bfa' },
-  { rx: 121, inc: 65, lan: 72,  phase: 0.80, speed: 0.00013, color: '#a78bfa' },
-  // Orbit C — teal
-  { rx: 120, inc: 62, lan: 145, phase: 0.00, speed: 0.00015, color: '#34d399' },
-  { rx: 120, inc: 62, lan: 145, phase: 0.20, speed: 0.00015, color: '#34d399' },
-  { rx: 120, inc: 62, lan: 145, phase: 0.40, speed: 0.00015, color: '#34d399' },
-  { rx: 120, inc: 62, lan: 145, phase: 0.60, speed: 0.00015, color: '#34d399' },
-  { rx: 120, inc: 62, lan: 145, phase: 0.80, speed: 0.00015, color: '#34d399' },
+  { rx: 121, inc: 65, lan: 72, phase: 0.00, speed: 0.00013, color: '#a78bfa' },
 ];
 const LINK_THRESHOLD = 165;
 
@@ -2651,71 +2583,74 @@ function drawScene2(t) {
   bg.addColorStop(1, 'rgba(6,11,24,0)');
   ctx2.fillStyle = bg; ctx2.fillRect(0, 0, W2, H2);
 
-  // Compute positions for all satellites
-  const positions = S2_SATS.map(s => {
-    const incR = s.inc * Math.PI / 180, lanR = s.lan * Math.PI / 180;
-    const p = orbitPoint(s.rx, incR, lanR, ((t * s.speed + s.phase) % 1) * Math.PI * 2);
+  const sats = S2_SATS.map(s => ({
+    ...s, incR: s.inc * Math.PI / 180, lanR: s.lan * Math.PI / 180,
+  }));
+
+  // 1. Back arcs
+  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, false);
+
+  // 2. Compute satellite positions; draw far-side ones before Earth
+  const positions = sats.map(s => {
+    const p = orbitPoint(s.rx, s.incR, s.lanR, ((t * s.speed + s.phase) % 1) * Math.PI * 2);
     return { x: CX2 + p.sx, y: CY2 + p.sy, z: p.z, rx: s.rx, color: s.color };
   });
   function satAlpha2(p) { return 0.15 + 0.85 * (p.z / p.rx + 1) / 2; }
-
-  // Deduplicate orbits for arc drawing
-  const seen = new Set(), orbits = [];
-  for (const s of S2_SATS) {
-    const key = `${s.rx},${s.inc},${s.lan}`;
-    if (!seen.has(key)) { seen.add(key); orbits.push({ rx: s.rx, incR: s.inc*Math.PI/180, lanR: s.lan*Math.PI/180 }); }
+  for (const p of positions) {
+    if (p.z < 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
   }
 
-  // Compute all ISL links between every pair of satellites
-  const links = [];
-  for (let i = 0; i < positions.length; i++) {
-    for (let j = i + 1; j < positions.length; j++) {
-      const pA = positions[i], pB = positions[j];
-      const dist = Math.hypot(pA.x - pB.x, pA.y - pB.y);
-      if (dist >= LINK_THRESHOLD) continue;
-      const clear = segmentClearOf3DSphere(pA.x-CX2, pA.y-CY2, pA.z, pB.x-CX2, pB.y-CY2, pB.z, ER2);
-      if (!clear) continue;
-      const bothBehind = pA.z < 0 && pB.z < 0;
-      const crossesDisk = seg2dCrossesDisk(pA.x, pA.y, pB.x, pB.y, CX2, CY2, ER2);
-      const behind = bothBehind || ((pA.z < 0 || pB.z < 0) && crossesDisk);
-      links.push({ pA, pB, behind, str: 1 - dist / LINK_THRESHOLD });
-    }
-  }
+  // ISL link geometry — computed once, drawn at the right z-layer below.
+  const [pA, pB] = positions;
+  const islDist  = Math.hypot(pA.x - pB.x, pA.y - pB.y);
+  const islClear = segmentClearOf3DSphere(
+    pA.x - CX2, pA.y - CY2, pA.z,
+    pB.x - CX2, pB.y - CY2, pB.z,
+    ER2
+  );
+  const bothBehind = pA.z < 0 && pB.z < 0;
+  const crossesDisk = seg2dCrossesDisk(pA.x, pA.y, pB.x, pB.y, CX2, CY2, ER2);
+  const drawBehind  = bothBehind || ((pA.z < 0 || pB.z < 0) && crossesDisk);
 
-  function drawLinks(behindEarth) {
+  const islVisible = islDist < LINK_THRESHOLD && islClear;
+
+  function drawISLLine() {
+    if (!islVisible) return;
     ctx2.save();
     ctx2.setLineDash([7, 7]);
     ctx2.lineDashOffset = -(t * 0.06) % 14;
+    ctx2.beginPath();
+    ctx2.moveTo(pA.x, pA.y); ctx2.lineTo(pB.x, pB.y);
+    ctx2.strokeStyle = '#38bdf8';
     ctx2.lineWidth = 1.5;
-    for (const lk of links) {
-      if (lk.behind !== behindEarth) continue;
-      ctx2.beginPath(); ctx2.moveTo(lk.pA.x, lk.pA.y); ctx2.lineTo(lk.pB.x, lk.pB.y);
-      ctx2.strokeStyle = `rgba(56,189,248,${(0.35 + 0.5 * lk.str).toFixed(2)})`;
-      ctx2.stroke();
-    }
+    ctx2.stroke();
     ctx2.restore();
   }
 
-  // 1. Back arcs
-  for (const o of orbits) drawOrbitArc(ctx2, CX2, CY2, o.rx, o.incR, o.lanR, false);
-
-  // 2. Far-side satellites
-  for (const p of positions) if (p.z < 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
-
-  // 2b. Links behind Earth
-  drawLinks(true);
+  // 2b. Link line behind Earth
+  if (drawBehind) drawISLLine();
 
   // 3. Earth
   drawEarth(ctx2, CX2, CY2, ER2);
 
   // 4. Front arcs
-  for (const o of orbits) drawOrbitArc(ctx2, CX2, CY2, o.rx, o.incR, o.lanR, true);
+  for (const s of sats) drawOrbitArc(ctx2, CX2, CY2, s.rx, s.incR, s.lanR, true);
 
-  // 5. Links in front of Earth
-  drawLinks(false);
+  // 5. Link line in front of Earth
+  if (!drawBehind) drawISLLine();
 
   // 6. Near-side satellites
-  for (const p of positions) if (p.z >= 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+  for (const p of positions) {
+    if (p.z >= 0) drawSatDot(ctx2, p.x, p.y, p.color, satAlpha2(p));
+  }
+
+  // 7. Label — always on top, full brightness
+  if (islVisible) {
+    ctx2.font = '500 11px Inter, sans-serif';
+    ctx2.fillStyle = '#38bdf8';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('Enlace activo', (pA.x+pB.x)/2, (pA.y+pB.y)/2 - 12);
+  }
 }
 
 // ── EASE ──────────────────────────────────────────────────────
@@ -4197,9 +4132,7 @@ requestAnimationFrame(loop);
 
 
 // ── dtnsim-2a: DTN original (contact plan panel) ──────────────
-(function() {
-  const svg = document.getElementById('svg-dtnsim-orig');
-  if (!svg) return;
+function buildDtnsimOrigSVG() {
   let h = '';
   // Contact plan table
   h += `<rect x="15" y="12" width="250" height="108" rx="6" fill="rgba(255,255,255,0.02)" stroke="rgba(63,79,103,0.4)" stroke-width="1"/>`;
@@ -4216,8 +4149,12 @@ requestAnimationFrame(loop);
   h += `<polygon points="140,143 136.3,134.8 143.7,134.8" fill="rgba(248,113,113,0.5)"/>`;
   h += `<rect x="60" y="146" width="160" height="32" rx="6" fill="rgba(248,113,113,0.06)" stroke="rgba(248,113,113,0.4)" stroke-width="1.5"/>`;
   h += `<text x="140" y="166" text-anchor="middle" fill="rgba(248,113,113,1)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">Router</text>`;
-  svg.innerHTML = h;
-})();
+  return h;
+}
+['svg-dtnsim-orig', 'svg-dtnsim-1-vis'].forEach(id => {
+  const svg = document.getElementById(id);
+  if (svg) svg.innerHTML = buildDtnsimOrigSVG();
+});
 
 // ── dtnsim-2b: ContactlessDtn — orbital sim → connectivity → router ──
 (function() {
