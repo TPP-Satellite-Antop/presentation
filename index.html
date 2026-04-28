@@ -547,7 +547,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid rgba(63,79,103,0.25);
 }
 
 .s13-left canvas {
@@ -858,10 +857,10 @@ html, body {
     <div class="s2-text">
       <h2 class="slide-title">El problema:<br><em>redes LEO</em></h2>
       <ul class="key-points">
-        <li>Los satélites en órbita baja <strong>se mueven continuamente</strong> por lo que la topología de la red cambia en tiempo real.</li>
-        <li>Los enlaces entre satélites son <strong>intermitentes</strong>: dos satélites se "ven" solo durante ventanas de tiempo limitadas.</li>
-        <li>Las latencias de propagación <strong>varían dinámicamente</strong>.</li>
-        <li>Los protocolos tradicionales (TCP/IP) asumen conectividad estable por lo cual <strong>no funcionan</strong> en este entorno.</li>
+        <li>Topología <strong>cambia constantemente</strong></li>
+        <li>Enlaces <strong>intermitentes</strong></li>
+        <li>Latencias <strong>variables</strong></li>
+        <li>TCP/IP <strong>no funciona</strong></li>
       </ul>
     </div>
   </div>
@@ -876,7 +875,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Entorno</div>
         <div class="block-name">Red LEO</div>
-        <div class="block-desc">Constelación de satélites en órbita baja (160–2.000 km)</div>
+        <div class="block-desc">160–2.000 km</div>
       </div>
 
       <!-- Arrow -->
@@ -890,7 +889,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Arquitectura</div>
         <div class="block-name">DTN</div>
-        <div class="block-desc">Redes tolerantes a demoras e interrupciones</div>
+        <div class="block-desc">Delay Tolerant Network</div>
       </div>
 
       <!-- Arrow -->
@@ -904,7 +903,7 @@ html, body {
       <div class="block">
         <div class="block-tag">Ruteo estándar</div>
         <div class="block-name">CGR</div>
-        <div class="block-desc">Requiere conocimiento global de la topología</div>
+        <div class="block-desc">Conocimiento global de la topología</div>
       </div>
 
       <!-- VS -->
@@ -914,14 +913,9 @@ html, body {
       <div class="block block-highlight">
         <div class="block-tag">Este trabajo</div>
         <div class="block-name">ANTop</div>
-        <div class="block-desc">Ruteo descentralizado: cada satélite decide usando solo información local</div>
+        <div class="block-desc">Ruteo descentralizado con información local</div>
       </div>
     </div>
-
-    <p class="s3-footnote">
-      Este trabajo propone, implementa y evalúa <strong>ANTop</strong> como alternativa
-      escalable a CGR en constelaciones LEO, integrando el sistema geoespacial <strong>H3</strong>.
-    </p>
   </div>
 
 
@@ -938,9 +932,9 @@ html, body {
         <p class="section-tag">Estado del arte</p>
         <h2 class="slide-title">DTN: redes<br><em>tolerantes a demoras</em></h2>
         <ul class="key-points">
-          <li>Arquitectura diseñada para redes donde la conectividad extremo a extremo <strong>no está garantizada</strong>.</li>
-          <li><strong>Bundle Protocol</strong>: los datos se encapsulan en bundles que se almacenan en nodos intermedios y se reenvían cuando hay conectividad.</li>
-          <li>Permite comunicación con largas latencias, interrupciones frecuentes y <strong>sin ruta simultánea de extremo a extremo</strong>.</li>
+          <li>Conectividad extremo a extremo <strong>no garantizada</strong></li>
+          <li><strong>Bundle Protocol</strong>: datos almacenados y reenviados al haber contacto</li>
+          <li>Tolera latencias altas e <strong>interrupciones frecuentes</strong></li>
         </ul>
       </div>
     </div>
@@ -953,10 +947,10 @@ html, body {
         <p class="section-tag">Estado del arte</p>
         <h2 class="slide-title">CGR: <em>Contact Graph Routing</em></h2>
         <ul class="key-points">
-          <li><strong>Contact Plan</strong>: tabla con todas las oportunidades de comunicación futuras entre nodos: inicio, fin, tasa, latencia.</li>
-          <li>Construye un <strong>Contact Graph</strong>: grafo acíclico donde los vértices son episodios de contacto.</li>
-          <li>Usa <strong>Dijkstra</strong> para encontrar la ruta que minimiza el tiempo de entrega (<em>Best Delivery Time</em>).</li>
-          <li>Evalúa condiciones locales al reenviar: prioridad, tamaño del bundle, estado de colas.</li>
+          <li><strong>Contact Plan</strong>: agenda de contactos futuros entre nodos</li>
+          <li><strong>Contact Graph</strong>: grafo de episodios de contacto</li>
+          <li><strong>Dijkstra</strong> sobre el grafo → menor tiempo de entrega</li>
+          <li>Evalúa condiciones locales al reenviar</li>
         </ul>
       </div>
       <div class="col-visual">
@@ -1007,8 +1001,8 @@ html, body {
       <div class="s6-panel panel-good">
         <p class="panel-label panel-label-good">Constelación pequeña</p>
         <ul class="panel-items">
-          <li>Contact Plan <strong>manejable</strong>: pocas entradas, fácil de mantener actualizado.</li>
-          <li>Dijkstra converge rápido sobre grafos pequeños.</li>
+          <li>Contact Plan <strong>manejable</strong></li>
+          <li>Dijkstra converge rápido</li>
         </ul>
         <svg viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;">
           <line x1="28" y1="38" x2="72" y2="18"  stroke="#38bdf8" stroke-width="1" opacity="0.4"/>
@@ -1025,9 +1019,9 @@ html, body {
       <div class="s6-panel panel-bad">
         <p class="panel-label panel-label-bad">Constelación grande</p>
         <ul class="panel-items">
-          <li>Contact Plan <strong>difícil de mantener.</strong></li>
-          <li>La complejidad crece <strong>exponencialmente</strong> con el número de nodos.</li>
-          <li>Una falla no prevista <strong>invalida el plan completo</strong> → decisiones de ruteo incorrectas.</li>
+          <li>Contact Plan <strong>difícil de mantener</strong></li>
+          <li>Complejidad <strong>exponencial</strong> con los nodos</li>
+          <li>Una falla <strong>invalida el plan completo</strong></li>
         </ul>
         <svg id="dense-const-svg" viewBox="0 0 210 72" width="100%" xmlns="http://www.w3.org/2000/svg" style="margin-top:4px; opacity:0.85;"></svg>
       </div>
@@ -1041,10 +1035,10 @@ html, body {
         <p class="section-tag">Estado del arte</p>
         <h2 class="slide-title">ANTop: <em>topología codificada<br>en las direcciones</em></h2>
         <ul class="key-points">
-          <li>Cada nodo tiene una dirección en forma de <strong>secuencia de bits</strong> que refleja su posición en una estructura lógica: el <strong>hipercubo</strong>.</li>
-          <li>Las decisiones de ruteo se toman usando <strong>solo información local</strong> (no hay Contact Plan global).</li>
-          <li>La distancia entre dos nodos es la <strong>distancia Hamming</strong> de sus direcciones: cuántos bits difieren.</li>
-          <li>Diseñado para redes <strong>ad-hoc descentralizadas</strong> donde todos los nodos tienen igual jerarquía.</li>
+          <li>Dirección  posición en el <strong>hipercubo</strong></li>
+          <li>Ruteo con <strong>información local</strong> únicamente</li>
+          <li>Distancia entre nodos = <strong>distancia Hamming</strong></li>
+          <li>Redes <strong>ad-hoc descentralizadas</strong></li>
         </ul>
       </div>
       <div class="col-visual">
@@ -1106,23 +1100,23 @@ html, body {
       <tbody>
         <tr>
           <td class="td-dim">Conocimiento requerido</td>
-          <td>Global — todos los contactos futuros de toda la red</td>
-          <td class="td-antop">Local — solo el estado de los vecinos inmediatos</td>
+          <td>Global</td>
+          <td class="td-antop">Local</td>
         </tr>
         <tr>
           <td class="td-dim">Cálculo de rutas</td>
-          <td>Precomputado y mantenido continuamente</td>
-          <td class="td-antop">Al momento de rutear (on-demand)</td>
+          <td>Precomputado</td>
+          <td class="td-antop">On-demand</td>
         </tr>
         <tr>
           <td class="td-dim">Ante fallas</td>
-          <td>Contact Plan queda desactualizado → rutas incorrectas</td>
-          <td class="td-antop">Adapta en base al estado local disponible</td>
+          <td>Plan desactualizado → rutas incorrectas</td>
+          <td class="td-antop">Se adapta localmente</td>
         </tr>
         <tr>
           <td class="td-dim">Complejidad</td>
-          <td><span class="badge-bad">Exponencial</span></td>
-          <td><span class="badge-good">Lineal</span></td>
+          <td><span class="badge-bad">O(n(log(n)))</span></td>
+          <td><span class="badge-good">O(log(n))</span></td>
         </tr>
       </tbody>
     </table>
@@ -1163,9 +1157,6 @@ html, body {
           </table>
         </div>
       </div>
-      <p class="s3-footnote">
-        Tablas locales del nodo <strong>1010</strong>. Se construyen <strong>dinámicamente</strong> al recibir cada paquete — no son precomputadas.
-      </p>
     </div>
   </div>
 
@@ -1179,9 +1170,9 @@ html, body {
         <p class="section-tag">ANTop Satelital</p>
         <h2 class="slide-title">El desafío:<br><em>ANTop en LEO</em></h2>
         <ul class="key-points">
-          <li>En LEO la topología cambia de forma <strong>predecible pero continua</strong> — el hipercubo nunca está completo y los vecinos disponibles varían constantemente.</li>
-          <li>Baja conectividad → <strong>bucles temporales más frecuentes</strong> e inevitables durante el ruteo.</li>
-          <li>Las direcciones del hipercubo deben reflejar <strong>posiciones geográficas</strong>: dos satélites cercanos deben tener direcciones de Hamming cercanas.</li>
+          <li>Hipercubo <strong>incompleto y variable</strong></li>
+          <li>Baja conectividad → <strong>bucles frecuentes</strong></li>
+          <li>Direcciones deben reflejar <strong>proximidad geográfica</strong></li>
         </ul>
       </div>
       <div class="col-visual">
@@ -1200,14 +1191,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp0" class="lp-canvas"></canvas>
         <p class="lp-step">Paquete en A · destino E</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1219,14 +1208,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp1" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 1 / 4 — A envía a B</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1237,14 +1224,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp2" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 2 / 4 — B envía a D</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1255,14 +1240,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp3" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 3 / 4 — D devuelve a B (sin camino a E)</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1273,14 +1256,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp4" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 4 / 4 — B detecta bucle · devuelve a D sin explorar alternativas</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1291,14 +1272,12 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas id="canvas-lp5" class="lp-canvas"></canvas>
         <p class="lp-step">D almacena el paquete · sin vecinos sin explorar</p>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
       </div>
     </div>
   </div>
@@ -1310,13 +1289,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp0" class="lp-canvas"></canvas>
         <p class="lp-step">Paquete en A · destino E</p>
       </div>
@@ -1329,13 +1306,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp1" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 1 / 4 — A envía a B</p>
       </div>
@@ -1348,13 +1323,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp2" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 2 / 4 — B envía a D</p>
       </div>
@@ -1367,13 +1340,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp3" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 3 / 4 — D devuelve a B (sin camino a E)</p>
       </div>
@@ -1386,13 +1357,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp4" class="lp-canvas"></canvas>
         <p class="lp-step">Paso 4 / 4 — B detecta bucle · rutea a C</p>
       </div>
@@ -1405,13 +1374,11 @@ html, body {
       <div class="s15-panel s15-panel-bad">
         <p class="s15-label s15-label-bad">ANTop original</p>
         <h3>Bucle → devolver al sender</h3>
-        <p class="s15-desc">Al detectar un ciclo, el paquete se retorna al nodo emisor. El nodo que detecta el bucle <strong>no reconsidera sus propios vecinos</strong> por lo que pueden perderse caminos alternativos válidos.</p>
         <canvas class="lp-canvas lp-orig-canvas"></canvas>
       </div>
       <div class="s15-panel s15-panel-good">
         <p class="s15-label s15-label-good">Propuesta</p>
         <h3>Bucle → explorar alternativas</h3>
-        <p class="s15-desc">El nodo que detecta el ciclo, en vez de devolver el paquete al emisor, explora nuevos caminos alternativos. Solo en caso de no encontrar ninguno es que el paquete regresa al emisor.</p>
         <canvas id="canvas-pp5" class="lp-canvas"></canvas>
         <p class="lp-step">¡Paquete entregado! — C rutea a E</p>
       </div>
@@ -1573,9 +1540,6 @@ html, body {
         <p style="font-size:14px; color:var(--purple); padding:10px 16px; line-height:1.4; opacity:0.85;">epoch local &gt; epoch P2 → bucle ya resuelto, usa next hop vigente</p>
       </div>
     </div>
-    <p class="s3-footnote" style="text-align:center;">
-      El epoch se propaga implícitamente a través de los paquetes → <strong>convergencia eventual sin sincronización explícita</strong>.
-    </p>
   </div>
 
   <!-- ═══════════════════ SECCIÓN 4: H3 ═══════════════════ -->
@@ -1607,10 +1571,10 @@ html, body {
         <p class="section-tag">H3</p>
         <h2 class="slide-title">Coordenadas<br><em>IJK</em></h2>
         <ul class="key-points">
-          <li>H3 usa coordenadas discretas <strong>IJK</strong>: tres ejes separados <strong>120°</strong> entre sí.</li>
-          <li>Expresa cada celda como desplazamiento <strong>IJK</strong> desde un origen.</li>
-          <li><strong>Problema:</strong> cada hexágono tiene 6 vecinos pero IJK solo tiene 3 ejes → no todas las direcciones de vecindad coinciden con un eje.</li>
-          <li>La celda <span style="color:rgba(251,146,60,0.95);">naranja</span> <strong>(1,0,0)</strong> está a 1 salto físico y se alcanza en <strong>1 paso IJK</strong>. La celda <span style="color:#67e8f9;">celeste</span> <strong>(3,1,0)</strong> está a <strong>3 saltos físicos</strong> pero requiere <strong>4 pasos IJK</strong>.</li>
+          <li>Tres ejes separados <strong>120°</strong> entre sí</li>
+          <li>Cada celda = desplazamiento <strong>IJK</strong> desde origen</li>
+          <li>6 vecinos pero solo 3 ejes → <strong>no hay correspondencia exacta</strong></li>
+          <li>Distancia IJK puede <strong>superar</strong> la distancia física</li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 48%;">
@@ -1622,16 +1586,18 @@ html, body {
 
   <!-- ─── SLIDE H3-4 — Construcción ANTop: concepto ─────────── -->
   <div class="slide" id="slide-h3-4">
-    <p class="section-tag">H3</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Construcción de <em>direcciones ANTop</em></h2>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">H3</p>
+      <h2 class="slide-title" style="margin:0;">Construcción de <em>direcciones ANTop</em></h2>
+    </div>
     <div class="h3-grid-area">
       <svg id="svg-h3g-0" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
         <ul class="key-points" style="gap:18px;">
-          <li>Una dirección ANTop es una <strong>secuencia de movimientos IJK</strong> desde el origen hasta la celda objetivo.</li>
-          <li>Hay <strong>6 movimientos posibles</strong> (uno por dirección de vecindad), numerados del 1 al 6.</li>
-          <li>Cada movimiento se codifica en <strong>3 bits</strong>. Se empaquetan <strong>2 movimientos por byte</strong>.</li>
-          <li>La <strong>distancia de Hamming</strong> entre dos direcciones ANTop aproxima la distancia real en H3.</li>
+          <li>Dirección = <strong>secuencia de movimientos IJK</strong> al destino</li>
+          <li><strong>6 movimientos</strong> posibles (1 por vecino)</li>
+          <li>Cada movimiento: <strong>3 bits</strong>, 2 por byte</li>
+          <li>Hamming ≈ <strong>distancia real</strong> en H3</li>
         </ul>
       </div>
     </div>
@@ -1639,8 +1605,10 @@ html, body {
 
   <!-- ─── SLIDE H3-5 — Paso 1: descomposición ─────────────── -->
   <div class="slide" id="slide-h3-5">
-    <p class="section-tag">H3</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 1 — <em>descomposición en movimientos</em></h2>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">H3</p>
+      <h2 class="slide-title" style="margin:0;">Paso 1 — <em>descomposición en movimientos</em></h2>
+    </div>
     <div class="h3-grid-area">
       <svg id="svg-h3g-1" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
@@ -1670,8 +1638,10 @@ html, body {
 
   <!-- ─── SLIDE H3-6 — Paso 2: codificación en bits ───────── -->
   <div class="slide" id="slide-h3-6">
-    <p class="section-tag">H3</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 2 — <em>codificación en 3 bits</em></h2>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">H3</p>
+      <h2 class="slide-title" style="margin:0;">Paso 2 — <em>codificación en 3 bits</em></h2>
+    </div>
     <div class="h3-grid-area">
       <svg id="svg-h3g-2" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
@@ -1699,8 +1669,10 @@ html, body {
 
   <!-- ─── SLIDE H3-7 — Paso 3: compresión en bytes ────────── -->
   <div class="slide" id="slide-h3-7">
-    <p class="section-tag">H3</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Paso 3 — <em>compresión en bytes</em></h2>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">H3</p>
+      <h2 class="slide-title" style="margin:0;">Paso 3 — <em>compresión en bytes</em></h2>
+    </div>
     <div class="h3-grid-area">
       <svg id="svg-h3g-3" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
@@ -1720,15 +1692,15 @@ html, body {
             <span style="color:var(--dim);font-size:16px;">→</span>
             <span class="h3-byte h3-byte-hi">00000100</span>
           </div>
-          <div style="margin-top:6px;padding-top:10px;border-top:1px solid rgba(63,79,103,0.35);">
+          <div style="margin-top:-7px;padding-top:7px;border-top:1px solid rgba(63,79,103,0.35);">
             <p class="h3-enc-label" style="margin-bottom:6px;">Dirección ANTop</p>
             <div class="h3-enc-row">
               <span class="h3-byte h3-byte-hi">00110100</span>
               <span class="h3-byte h3-byte-hi">00000100</span>
             </div>
           </div>
-          <div style="margin-top:6px;padding-top:10px;border-top:1px solid rgba(63,79,103,0.35);">
-            <p class="h3-enc-label" style="margin-bottom:10px;">Distancia de Hamming al origen</p>
+          <div style="margin-top:-7px;padding-top:7px;border-top:1px solid rgba(63,79,103,0.35);">
+            <p class="h3-enc-label" style="margin-bottom:6px;">Distancia de Hamming al origen</p>
             <div style="display:flex;flex-direction:column;gap:8px;">
               <div class="h3-enc-row">
                 <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Origen</span>
@@ -1741,7 +1713,6 @@ html, body {
                 <span class="h3-byte h3-byte-hi">00000<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
               </div>
             </div>
-            <p style="margin-top:12px;font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,1.5vw,22px);font-weight:700;color:rgba(251,146,60,0.95);">d<sub style="font-size:0.7em;">H</sub> = 4</p>
           </div>
         </div>
       </div>
@@ -1750,23 +1721,22 @@ html, body {
 
   <!-- ─── SLIDE H3-8 — Dimensión prima ────────────────────── -->
   <div class="slide" id="slide-h3-8">
-    <p class="section-tag">H3</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">La <em>dimensión prima</em></h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:20px;width:100%;flex:1;min-height:0;">
-      <div class="h3-panel" style="gap:12px;min-height:0;">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">H3</p>
+      <h2 class="slide-title" style="margin:0;">La <em>dimensión prima</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:12px;width:100%;flex:1;min-height:0;">
+      <div class="h3-panel" style="gap:6px;min-height:0;padding:6px 8px;">
         <p class="h3-panel-tag">IJK original</p>
         <svg id="svg-ijk-orig" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
         <p class="h3-cap" style="color:var(--muted);">Celda <span style="color:#34d399;">verde</span>: 1 paso. Celda <span style="color:#f87171;">roja</span>: requiere &gt;1 paso</p>
       </div>
-      <div class="h3-panel h3-panel-hi" style="gap:12px;min-height:0;">
+      <div class="h3-panel h3-panel-hi" style="gap:6px;min-height:0;padding:6px 8px;">
         <p class="h3-panel-tag h3-panel-tag-hi">IJK prima (rotado 60°)</p>
         <svg id="svg-ijk-prime" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
         <p class="h3-cap h3-cap-hi">La misma celda <span style="color:#f87171;">roja</span> es ahora alcanzable en <strong>1 paso</strong></p>
       </div>
     </div>
-    <p class="s3-footnote" style="text-align:center;">
-      Juntos, IJK + IJK' cubren las <strong>6 direcciones de vecindad</strong> hexagonal → se eliminan los saltos extra.
-    </p>
   </div>
 
   <!-- ─── SLIDE H3-9 — Origen del hipercubo ──────────────── -->
@@ -1776,10 +1746,10 @@ html, body {
         <p class="section-tag">H3</p>
         <h2 class="slide-title">Origen del<br><em>hipercubo</em></h2>
         <ul class="key-points">
-          <li>El sistema IJK es <strong>local</strong>: los hexágonos no comparten orientación porque los <strong>pentágonos</strong> rompen la uniformidad de la grilla.</li>
-          <li>Usarlo a escala global introduce <strong>ruido</strong>: distorsiones que crecen cuanto más lejos está la celda del origen.</li>
-          <li>Solución: <strong>múltiples hipercubos independientes</strong>, uno por cada celda pentagonal.</li>
-          <li>Exactamente <strong>12 pentágonos</strong> por resolución, distribuidos aproximadamente de forma uniforme → partición equilibrada.</li>
+          <li>IJK es <strong>local</strong>: los <strong>pentágonos</strong> rompen la uniformidad de la grilla</li>
+          <li>A escala global introduce <strong>distorsiones crecientes</strong></li>
+          <li>Solución: <strong>un hipercubo por pentágono</strong></li>
+          <li><strong>12 pentágonos</strong> por resolución → partición equilibrada</li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 46%;">
@@ -1812,11 +1782,11 @@ html, body {
         <p class="section-tag">dtnsim</p>
         <h2 class="slide-title">El simulador<br><em>DTNSim</em></h2>
         <ul class="key-points">
-          <li>Simulador de redes DTN para el estudio de protocolos de <strong>enrutamiento y reenvío</strong>.</li>
-          <li>La red se modela mediante <strong>contact plans</strong>: descripciones explícitas de cuándo dos nodos pueden comunicarse.</li>
-          <li>Los bundles <strong>esperan en buffer</strong> hasta que un contacto disponible permite la transmisión.</li>
-          <li>Soporta múltiples algoritmos de ruteo, incluyendo <strong>CGR</strong>.</li>
-          <li>Es el entorno base sobre el que se implementa y evalúa <strong>ANTop</strong>.</li>
+          <li>Simulador de protocolos de <strong>ruteo DTN</strong></li>
+          <li>Red modelada con <strong>contact plans</strong></li>
+          <li>Bundles esperan en <strong>buffer</strong> hasta el próximo contacto</li>
+          <li>Soporte nativo de <strong>CGR</strong></li>
+          <li>Entorno de implementación y evaluación de <strong>ANTop</strong></li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 46%;">
@@ -1829,8 +1799,10 @@ html, body {
 
   <!-- ─── SLIDE dtnsim-2 — ContactlessDtn ─────────────────────── -->
   <div class="slide" id="slide-dtnsim-2">
-    <p class="section-tag">dtnsim</p>
-    <h2 class="slide-title" style="text-align:center;margin-bottom:0;">Conectividad <em>dinámica</em></h2>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
+      <p class="section-tag" style="margin:0;">dtnsim</p>
+      <h2 class="slide-title" style="margin:0;">Conectividad <em>dinámica</em></h2>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:20px;width:100%;flex:1;min-height:0;">
       <div class="h3-panel" style="min-height:0;gap:10px;">
         <p class="h3-panel-tag">DTN original</p>
@@ -1852,10 +1824,10 @@ html, body {
         <p class="section-tag">dtnsim</p>
         <h2 class="slide-title">Constelaciones<br>paramétricas <em>Atlas</em></h2>
         <ul class="key-points">
-          <li><strong>Atlas</strong> define constelaciones satelitales de forma completamente <strong>paramétrica</strong>, configurando satélites, planos, altitud e inclinación.</li>
-          <li>Permite explorar distintas topologías sin depender de datos orbitales reales.</li>
-          <li><strong>Extensión:</strong> Atlas no soportaba <strong>phase offset</strong> → se extendió para modelar constelaciones <strong>Walker</strong> completas.</li>
-          <li>El phase offset distribuye los satélites uniformemente entre planos → mayor cobertura H3 → mejor conectividad.</li>
+          <li>Define constelaciones de forma <strong>paramétrica</strong></li>
+          <li>Sin dependencia de datos orbitales reales</li>
+          <li><strong>Extensión:</strong> soporte de <strong>phase offset</strong> para constelaciones Walker</li>
+          <li>Phase offset → distribución uniforme → <strong>mejor conectividad</strong></li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 46%;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:center;">
