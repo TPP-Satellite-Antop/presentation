@@ -70,7 +70,7 @@ html, body {
   position: fixed;
   bottom: 22px; right: 36px;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   color: var(--dim);
   z-index: 200;
   letter-spacing: 0.1em;
@@ -375,8 +375,25 @@ html, body {
 /* Slide 7 — static hypercube */
 #canvas-7  { width: 100%; aspect-ratio: 400 / 340; display: block; border-radius: 14px; }
 
-/* Slide 14 — incomplete hypercube (same proportions as slide 7) */
-#canvas-14 { width: 100%; aspect-ratio: 400 / 340; display: block; border-radius: 14px; }
+/* Slide 14 — incomplete hypercube (fills col-visual like s13-left) */
+#slide-14 .col-visual {
+  position: relative;
+  flex: 0 0 50%;
+  align-self: stretch;
+}
+#canvas-14 {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#slide-14 .col-visual .s2-caption {
+  position: absolute;
+  bottom: 90px;
+  left: 0; right: 0;
+  text-align: center;
+}
 
 /* Slides 8–11 — greedy routing overlays (title + distance rendered in HTML) */
 .greedy-overlay {
@@ -390,14 +407,14 @@ html, body {
 .greedy-title {
   margin-top: 5vh;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(16px, 1.6vw, 24px);
+  font-size: clamp(22px, 2.2vw, 33px);
   font-weight: 600;
   color: var(--white);
 }
 .greedy-dist {
   margin-top: 1vh;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(13px, 1.2vw, 17px);
+  font-size: clamp(18px, 1.7vw, 25px);
   font-weight: 400;
   color: var(--muted);
 }
@@ -558,7 +575,7 @@ html, body {
 
 .s13-left .s2-caption {
   position: absolute;
-  bottom: 32px;
+  bottom: 90px;
   left: 0; right: 0;
   text-align: center;
 }
@@ -636,7 +653,7 @@ html, body {
   padding: 36px 6vw; gap: 20px;
 }
 .lp-canvas { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 8px; margin-top: 6px; }
-.lp-step { font-size: clamp(11px, 0.9vw, 13px); color: var(--muted); text-align: center; font-family: 'Space Grotesk', sans-serif; margin-top: 2px; opacity: 0.75; }
+.lp-step { display: none; }
 .s15-comp { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
 .s15-panel {
   background: rgba(255,255,255,0.025); border-radius: 14px;
@@ -644,10 +661,10 @@ html, body {
 }
 .s15-panel-bad  { border: 1px solid rgba(248,113,113,0.20); }
 .s15-panel-good { border: 1px solid rgba(56,189,248,0.20); }
-.s15-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.s15-label { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .s15-label-bad  { color: #f87171; }
 .s15-label-good { color: var(--blue); }
-.s15-panel h3 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(14px,1.3vw,18px); font-weight: 600; color: var(--white); margin: 0; }
+.s15-panel h3 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(16px,1.5vw,21px); font-weight: 600; color: var(--white); margin: 0; }
 .s15-desc { font-size: clamp(12px,1.05vw,14px); color: var(--muted); line-height: 1.5; }
 .s15-steps { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 0; }
 .s15-steps li { display: flex; gap: 10px; align-items: flex-start; font-size: clamp(12px,1.0vw,14px); color: var(--muted); line-height: 1.4; }
@@ -787,6 +804,7 @@ html, body {
   font-size: clamp(16px,1.5vw,22px);
   font-weight: 700;
   color: var(--blue);
+  text-align: center;
 }
 .sim-metric-desc {
   font-size: clamp(13px,1vw,16px);
@@ -963,29 +981,29 @@ html, body {
           <line x1="72"  y1="150" x2="200" y2="68"  stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
           <line x1="200" y1="68"  x2="328" y2="150" stroke="#38bdf8" stroke-width="2"   opacity="0.75"/>
           <!-- Time window labels — non-path -->
-          <text x="118" y="212" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[0, 40]</text>
-          <text x="278" y="215" fill="#3f4f67" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">[50, 90]</text>
+          <text x="118" y="212" fill="#3f4f67" font-size="13" font-family="ui-monospace,monospace" text-anchor="middle">[0, 40]</text>
+          <text x="282" y="212" fill="#3f4f67" font-size="13" font-family="ui-monospace,monospace" text-anchor="middle">[50, 90]</text>
           <!-- Time window labels — path -->
-          <text x="122" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[10, 35]</text>
-          <text x="278" y="92"  fill="#38bdf8" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[38, 70]</text>
+          <text x="122" y="92"  fill="#38bdf8" font-size="13" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[10, 35]</text>
+          <text x="278" y="92"  fill="#38bdf8" font-size="13" font-family="ui-monospace,monospace" text-anchor="middle" opacity="0.85">[38, 70]</text>
           <!-- Node A (source) -->
           <circle cx="72"  cy="150" r="22" fill="#071426" stroke="#38bdf8" stroke-width="2"/>
-          <text   x="72"   y="155" fill="#38bdf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">A</text>
-          <text   x="72"   y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-1</text>
+          <text   x="72"   y="155" fill="#38bdf8" font-size="16" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">A</text>
+          <text   x="72"   y="188" fill="#3f4f67" font-size="12" font-family="Inter,sans-serif" text-anchor="middle">SAT-1</text>
           <!-- Node B (relay, on path) -->
           <circle cx="200" cy="68"  r="18" fill="#071426" stroke="rgba(56,189,248,0.5)" stroke-width="1.5"/>
-          <text   x="200"  y="73"  fill="#94a3b8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">B</text>
-          <text   x="200"  y="97"  fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-2</text>
+          <text   x="200"  y="73"  fill="#94a3b8" font-size="15" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">B</text>
+          <text   x="200"  y="103" fill="#3f4f67" font-size="12" font-family="Inter,sans-serif" text-anchor="middle">SAT-2</text>
           <!-- Node C (relay, off path) -->
           <circle cx="200" cy="240" r="18" fill="#071426" stroke="#3f4f67" stroke-width="1.2"/>
-          <text   x="200"  y="245" fill="#3f4f67" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">C</text>
-          <text   x="200"  y="268" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-3</text>
+          <text   x="200"  y="245" fill="#3f4f67" font-size="15" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">C</text>
+          <text   x="200"  y="274" fill="#3f4f67" font-size="12" font-family="Inter,sans-serif" text-anchor="middle">SAT-3</text>
           <!-- Node D (destination) -->
           <circle cx="328" cy="150" r="22" fill="#071426" stroke="#818cf8" stroke-width="2"/>
-          <text   x="328"  y="155" fill="#818cf8" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">D</text>
-          <text   x="328"  y="182" fill="#3f4f67" font-size="10" font-family="Inter,sans-serif" text-anchor="middle">SAT-4</text>
+          <text   x="328"  y="155" fill="#818cf8" font-size="16" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">D</text>
+          <text   x="328"  y="188" fill="#3f4f67" font-size="12" font-family="Inter,sans-serif" text-anchor="middle">SAT-4</text>
           <!-- Legend -->
-          <text x="200" y="28" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" opacity="0.7" letter-spacing="1.5">RUTA ÓPTIMA — BDT MÍNIMO</text>
+          <text x="200" y="28" fill="#38bdf8" font-size="15" font-family="Space Grotesk,sans-serif" text-anchor="middle" opacity="0.7" letter-spacing="1.5">RUTA ÓPTIMA — BDT MÍNIMO</text>
         </svg>
         <p class="s2-caption">Contact Graph — ventanas de tiempo y ruta óptima</p>
       </div>
@@ -2156,9 +2174,9 @@ const _initialSlide = parseInt(new URLSearchParams(location.search).get('slide')
 let current   = (_initialSlide >= 1 && _initialSlide <= slides.length) ? _initialSlide - 1 : 0;
 
 // Windowed dot nav: 13 dots, center (index 6) = current slide.
-// Sizes by distance from center: 0→9px, 1→7px, 2→6px, 3→5px, 4→4px, 5→3px, 6→3px
+// Sizes by distance from center: 0→7px, 1→5px, 2→4px, 3→4px, 4→3px, 5→3px, 6→3px
 const NAV_HALF  = 6;
-const DOT_SIZES = [9, 7, 6, 5, 5, 4, 4];
+const DOT_SIZES = [7, 5, 4, 4, 3, 3, 3];
 
 function updateDots() {
   dots.forEach((dot, i) => {
