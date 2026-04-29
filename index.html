@@ -713,6 +713,7 @@ html, body {
 /* Triple comparativa */
 #slide-h3-1 { padding-bottom: 62px; }
 #slide-h3-8 { padding-bottom: 72px; }
+#slide-h3-8 .h3-panel-tag { font-size: 16px; }
 .h3-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; width: 100%; flex: 1; min-height: 0; }
 .h3-panel { background: rgba(255,255,255,0.02); border: 1px solid rgba(63,79,103,0.35); border-radius: 14px; display: flex; flex-direction: column; align-items: center; padding: 10px 10px; gap: 6px; }
 .h3-panel-hi { background: rgba(56,189,248,0.04); border-color: rgba(56,189,248,0.28); }
@@ -729,10 +730,10 @@ html, body {
 .h3-grid-side { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 .h3-encoding { display: flex; flex-direction: column; gap: 14px; }
 .h3-enc-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.h3-byte { font-family: 'ui-monospace','Cascadia Mono',monospace; font-size: clamp(15px,1.4vw,20px); background: rgba(255,255,255,0.04); border: 1px solid rgba(63,79,103,0.5); border-radius: 4px; padding: 4px 12px; letter-spacing: 0.06em; color: var(--muted); }
+.h3-byte { font-family: 'ui-monospace','Cascadia Mono',monospace; font-size: clamp(18px,1.6vw,24px); background: rgba(255,255,255,0.04); border: 1px solid rgba(63,79,103,0.5); border-radius: 4px; padding: 4px 12px; letter-spacing: 0.06em; color: var(--muted); }
 .h3-byte-hi { color: var(--blue); border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.06); }
 .h3-byte-pu { color: var(--purple); border-color: rgba(129,140,248,0.4); background: rgba(129,140,248,0.06); }
-.h3-enc-label { font-size: clamp(11px,1vw,14px); color: var(--dim); font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; }
+.h3-enc-label { font-size: clamp(14px,1.2vw,18px); color: var(--dim); font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* Resolution zoom */
 .h3-res-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; width: 100%; }
@@ -1630,7 +1631,7 @@ html, body {
     <div class="h3-grid-area">
       <svg id="svg-h3g-1" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
       <div class="h3-grid-side">
-        <p style="font-family:'Space Grotesk',sans-serif;font-size:clamp(14px,1.4vw,18px);color:var(--muted);line-height:1.6;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);color:var(--muted);line-height:1.6;">
           Celda objetivo: <strong style="color:var(--white);">IJK (3, 1, 0)</strong><br>
           Distancia física: <strong style="color:var(--blue);">3 saltos</strong><br>
           Pasos IJK necesarios: <strong style="color:var(--purple);">4</strong>
@@ -1639,15 +1640,15 @@ html, body {
           <p class="h3-enc-label">Movimientos</p>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-hi">(1,0,0)</span>
-            <span style="color:var(--dim);font-size:16px;">dirección I</span>
+            <span style="color:var(--dim);font-size:20px;">dirección I</span>
           </div>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-pu">(1,1,0)</span>
-            <span style="color:var(--dim);font-size:16px;">dirección IJ</span>
+            <span style="color:var(--dim);font-size:20px;">dirección IJ</span>
           </div>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-hi">(1,0,0)</span>
-            <span style="color:var(--dim);font-size:16px;">dirección I</span>
+            <span style="color:var(--dim);font-size:20px;">dirección I</span>
           </div>
         </div>
       </div>
@@ -1667,17 +1668,17 @@ html, body {
           <p class="h3-enc-label">Codificación</p>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-hi">(1,0,0)</span>
-            <span style="color:var(--dim);font-size:16px;">→ dir. 4 →</span>
+            <span style="color:var(--dim);font-size:20px;">→ dir. 4 →</span>
             <span class="h3-byte h3-byte-hi">100</span>
           </div>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-pu">(1,1,0)</span>
-            <span style="color:var(--dim);font-size:16px;">→ dir. 6 →</span>
+            <span style="color:var(--dim);font-size:20px;">→ dir. 6 →</span>
             <span class="h3-byte h3-byte-pu">110</span>
           </div>
           <div class="h3-enc-row">
             <span class="h3-byte h3-byte-hi">(1,0,0)</span>
-            <span style="color:var(--dim);font-size:16px;">→ dir. 4 →</span>
+            <span style="color:var(--dim);font-size:20px;">→ dir. 4 →</span>
             <span class="h3-byte h3-byte-hi">100</span>
           </div>
         </div>
@@ -1697,36 +1698,36 @@ html, body {
         <div class="h3-encoding">
           <p class="h3-enc-label">Empaquetado (2 movimientos / byte)</p>
           <div class="h3-enc-row">
-            <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 1</span>
+            <span style="color:var(--dim);font-size:18px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 1</span>
             <span class="h3-byte h3-byte-hi">100</span>
             <span class="h3-byte" style="color:var(--dim);">+</span>
             <span class="h3-byte h3-byte-pu">110</span>
-            <span style="color:var(--dim);font-size:16px;">→</span>
+            <span style="color:var(--dim);font-size:20px;">→</span>
             <span class="h3-byte h3-byte-hi">00110100</span>
           </div>
           <div class="h3-enc-row">
-            <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 2</span>
+            <span style="color:var(--dim);font-size:18px;font-family:'Space Grotesk',sans-serif;letter-spacing:0.1em;">BYTE 2</span>
             <span class="h3-byte h3-byte-hi">100</span>
-            <span style="color:var(--dim);font-size:16px;">→</span>
+            <span style="color:var(--dim);font-size:20px;">→</span>
             <span class="h3-byte h3-byte-hi">00000100</span>
           </div>
-          <div style="margin-top:-7px;padding-top:7px;border-top:1px solid rgba(63,79,103,0.35);">
+          <div style="padding-top:14px;border-top:1px solid rgba(63,79,103,0.35);">
             <p class="h3-enc-label" style="margin-bottom:6px;">Dirección ANTop</p>
             <div class="h3-enc-row">
               <span class="h3-byte h3-byte-hi">00110100</span>
               <span class="h3-byte h3-byte-hi">00000100</span>
             </div>
           </div>
-          <div style="margin-top:-7px;padding-top:7px;border-top:1px solid rgba(63,79,103,0.35);">
+          <div style="padding-top:14px;border-top:1px solid rgba(63,79,103,0.35);">
             <p class="h3-enc-label" style="margin-bottom:6px;">Distancia de Hamming al origen</p>
             <div style="display:flex;flex-direction:column;gap:8px;">
               <div class="h3-enc-row">
-                <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Origen</span>
+                <span style="color:var(--dim);font-size:18px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Origen</span>
                 <span class="h3-byte">00000000</span>
                 <span class="h3-byte">00000000</span>
               </div>
               <div class="h3-enc-row">
-                <span style="color:var(--dim);font-size:14px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Destino</span>
+                <span style="color:var(--dim);font-size:18px;font-family:'Space Grotesk',sans-serif;min-width:64px;">Destino</span>
                 <span class="h3-byte h3-byte-hi">00<span style="color:rgba(251,146,60,0.95);font-weight:700;">11</span>0<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
                 <span class="h3-byte h3-byte-hi">00000<span style="color:rgba(251,146,60,0.95);font-weight:700;">1</span>00</span>
               </div>
@@ -1747,12 +1748,10 @@ html, body {
       <div class="h3-panel" style="gap:6px;min-height:0;padding:6px 8px;">
         <p class="h3-panel-tag">IJK original</p>
         <svg id="svg-ijk-orig" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
-        <p class="h3-cap" style="color:var(--muted);">Celda <span style="color:#34d399;">verde</span>: 1 paso. Celda <span style="color:#f87171;">roja</span>: requiere &gt;1 paso</p>
       </div>
       <div class="h3-panel h3-panel-hi" style="gap:6px;min-height:0;padding:6px 8px;">
         <p class="h3-panel-tag h3-panel-tag-hi">IJK prima (rotado 60°)</p>
         <svg id="svg-ijk-prime" viewBox="0 0 240 185" class="h3-panel-svg"></svg>
-        <p class="h3-cap h3-cap-hi">La misma celda <span style="color:#f87171;">roja</span> es ahora alcanzable en <strong>1 paso</strong></p>
       </div>
     </div>
   </div>
