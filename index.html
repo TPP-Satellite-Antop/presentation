@@ -163,6 +163,76 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   SLIDE IDX — ÍNDICE
+═══════════════════════════════════════════════════════════════ */
+#slide-idx {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.idx-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 36px;
+}
+
+.idx-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: clamp(340px, 52vw, 720px);
+}
+
+.idx-item {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.08);
+  cursor: default;
+}
+
+.idx-item:first-child {
+  border-top: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.idx-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(11px, 1vw, 13px);
+  font-weight: 600;
+  color: var(--blue);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  width: 20px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.idx-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(14px, 1.45vw, 20px);
+  font-weight: 500;
+  color: var(--white);
+  flex: 1;
+}
+
+.idx-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SLIDE 2 — EL PROBLEMA
 ═══════════════════════════════════════════════════════════════ */
 #slide-2 {
@@ -865,6 +935,48 @@ html, body {
         <span class="author-name">Valentina Adelsflügel</span>
       </p>
     </div>
+  </div>
+
+  <!-- ──────────────────────── SLIDE IDX — ÍNDICE ─────────────────────── -->
+  <div class="slide" id="slide-idx">
+    <p class="idx-title">Contenidos</p>
+    <ol class="idx-list">
+      <li class="idx-item">
+        <span class="idx-num">1</span>
+        <span class="idx-name">Introducción</span>
+        <span class="idx-sub">Redes LEO · DTN</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">2</span>
+        <span class="idx-name">Estado del arte</span>
+        <span class="idx-sub">DTN · CGR · ANTop original</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">3</span>
+        <span class="idx-name">ANTop Satelital</span>
+        <span class="idx-sub">Hipercubo dinámico · Loop epoch</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">4</span>
+        <span class="idx-name">H3</span>
+        <span class="idx-sub">Hexágonos · Coordenadas IJK · Direcciones ANTop</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">5</span>
+        <span class="idx-name">DTNSim</span>
+        <span class="idx-sub">Arquitectura · Limitaciones · Integración</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">6</span>
+        <span class="idx-name">Simulaciones y resultados</span>
+        <span class="idx-sub">ANTop vs CGR · Escenarios LEO</span>
+      </li>
+      <li class="idx-item">
+        <span class="idx-num">7</span>
+        <span class="idx-name">Conclusiones</span>
+        <span class="idx-sub">Aportes · Trabajo futuro</span>
+      </li>
+    </ol>
   </div>
 
   <!-- ─────────────────────── SLIDE 2 ─────────────────────── -->
@@ -2158,7 +2270,7 @@ html, body {
   <div class="dot"></div>
   <div class="dot"></div>
 </div>
-<div id="slide-counter">1 / 53</div>
+<div id="slide-counter">1 / 54</div>
 
 <script>
 'use strict';
