@@ -1165,7 +1165,7 @@ html, body {
         <p class="section-tag">Estado del arte</p>
         <h2 class="slide-title">ANTop: <em>topología codificada<br>en las direcciones</em></h2>
         <ul class="key-points">
-          <li>Dirección  posición en el <strong>hipercubo</strong></li>
+          <li>Dirección = posición en el <strong>hipercubo</strong></li>
           <li>Ruteo con <strong>información local</strong> únicamente</li>
           <li>Distancia entre nodos = <strong>distancia Hamming</strong></li>
           <li>Redes <strong>ad-hoc descentralizadas</strong></li>
@@ -1703,8 +1703,6 @@ html, body {
         <ul class="key-points">
           <li>Tres ejes separados <strong>120°</strong> entre sí</li>
           <li>Cada celda = desplazamiento <strong>IJK</strong> desde origen</li>
-          <li>6 vecinos pero solo 3 ejes → <strong>no hay correspondencia exacta</strong></li>
-          <li>Distancia IJK puede <strong>superar</strong> la distancia física</li>
         </ul>
       </div>
       <div class="col-visual" style="flex:0 0 48%;">
@@ -1854,6 +1852,15 @@ html, body {
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:0;">
       <p class="section-tag" style="margin:0;">H3</p>
       <h2 class="slide-title" style="margin:0;">La <em>dimensión prima</em></h2>
+    </div>
+     <div class="h3-grid-area" style="justify-content:flex-start;>
+      <svg id="svg-h3g-0" viewBox="0 0 320 280" style="display:block;border-radius:10px;flex:0 0 48%;min-width:0;"></svg>
+      <div class="h3-grid-side">
+        <ul class="key-points" style="gap:18px;">
+          <li>6 vecinos pero solo 3 ejes → <strong>no hay correspondencia exacta</strong></li>
+          <li>Distancia IJK puede <strong>superar</strong> la distancia física</li>
+        </ul>
+      </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr;gap:12px;width:100%;flex:1;min-height:0;">
       <div class="h3-panel" style="gap:6px;min-height:0;padding:6px 8px;">
